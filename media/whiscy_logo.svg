@@ -16,7 +16,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="whiscy_logo.svg">
+   sodipodi:docname="whiscy_logo.svg"
+   inkscape:export-filename="/Users/bjimenez/workspaces/haddocking/whiscy/media/whiscy_logo.png"
+   inkscape:export-xdpi="44.630001"
+   inkscape:export-ydpi="44.630001">
   <metadata
      id="metadata46">
     <rdf:RDF>
@@ -25,7 +28,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -44,8 +47,8 @@
      inkscape:window-height="890"
      id="namedview42"
      showgrid="false"
-     inkscape:zoom="0.79307804"
-     inkscape:cx="513.77629"
+     inkscape:zoom="0.52"
+     inkscape:cx="658.23644"
      inkscape:cy="166.89332"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -106,17 +109,17 @@
      inkscape:export-ydpi="63.918789" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:69.32582092px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     x="223.22633"
-     y="275.19849"
+     style="font-style:normal;font-weight:normal;font-size:61.85874176px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="186.15273"
+     y="314.06046"
      id="text4823"
      sodipodi:linespacing="125%"
-     transform="scale(0.80499988,1.2422362)"
+     transform="scale(0.91179353,1.0967395)"
      inkscape:export-xdpi="63.918789"
      inkscape:export-ydpi="63.918789"><tspan
        sodipodi:role="line"
        id="tspan4825"
-       x="223.22633"
-       y="275.19849"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:311.96615601px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold'">WHISCY</tspan></text>
+       x="186.15273"
+       y="314.06046"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:278.36428833px;font-family:Montserrat;-inkscape-font-specification:'Montserrat Bold';letter-spacing:17.54000009px">WHISCY</tspan></text>
 </svg>
