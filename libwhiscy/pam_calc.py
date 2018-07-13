@@ -84,7 +84,7 @@ def pam_load_sequences(alignment_file, distance_file):
     with open(alignment_file, "rU") as input_alignment:
         first_line = input_alignment.readline().rstrip(os.linesep)
         fields = first_line.split()
-        seqlen = int(fields[0])
+        seqlen = int(fields[1])
         if seqlen < 1 or seqnr > 10000:
             raise SystemExit("ERROR: Invalid sequence length")
 
