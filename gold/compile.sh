@@ -1,3 +1,4 @@
 #!/bin/bash
+CFLAGS=DEBUG
 
-g++ -o whiscy whiscy.cpp pamcalc.cpp -O3
+g++ -D ${CFLAGS} -o whiscy whiscy.cpp pamcalc.cpp -O3

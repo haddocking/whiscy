@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <ctime>
 #include <cstring>
+#include <iostream>
+#include <iomanip>
 using namespace std;
 
 typedef double (matrix)[20][20];
@@ -28,7 +30,14 @@ int seqlen;
 int DistCompare(const void *pd1, const void *pd2) {
   const Distance *d1 = (const Distance *) pd1;
   const Distance *d2 = (const Distance *) pd2;
-  return (d1->dist > d2->dist);
+
+  if (d1->dist < d2->dist)
+      return -1;
+   else if (d1->dist > d2->dist)
+      return 1;
+   else
+      return 0;
+  // return (d1->dist > d2->dist);
 }
 
 void pamInit() {
@@ -323,6 +332,14 @@ int pamLoadSequences(const char *seqfile, const char *distfile, int *retseqnr, i
   }
   fclose(f);
 
+  #ifdef DEBUG
+  cout << "***Dis***" << endl;
+  for (n = 0; n < seqnr; n++) {
+    cout << fixed << setprecision(6) << dis[n].dist << endl;
+  }
+  cout << "******" << endl;
+  #endif
+
   f = fopen(seqfile, "r");
   if (f == NULL) return 2;
   seq = new int*[seqnr];
@@ -342,10 +359,27 @@ int pamLoadSequences(const char *seqfile, const char *distfile, int *retseqnr, i
   }
 
   qsort(dis, seqnr, sizeof(Distance), DistCompare);
+
+  #ifdef DEBUG
+  cout << "***SortedDis***" << endl;
+  for (n = 0; n < seqnr; n++) {
+    cout << fixed << setprecision(6) << dis[n].dist << endl;
+  }
+  cout << "******" << endl;
+  #endif
+
   seqtodis = new int[seqnr];
   for (n = 0; n < seqnr; n++) {
     seqtodis[dis[n].seq] = n;
   }
+
+  #ifdef DEBUG
+  cout << "***Seqtodis***" << endl;
+  for (n = 0; n < seqnr; n++) {
+    cout << seqtodis[n] << endl;
+  }
+  cout << "******" << endl;
+  #endif
 
   fclose(f);
   delete[] buf;

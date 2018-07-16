@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <iostream>
 using namespace std;
 
 extern void pamInit();
@@ -47,6 +48,12 @@ int main(int argc, char *argv[]) {
   }
   vector<int> surlist;
   loadlist(surfile, surlist, "surface", argv[1]);
+  
+  #ifdef DEBUG
+  for (vector<int>::const_iterator i = surlist.begin(); i != surlist.end(); ++i)
+    cout << *i << ' ';
+  cout << endl;
+  #endif
 
   fprintf(stderr, "Loading conversion table...\n");
 
@@ -70,6 +77,12 @@ int main(int argc, char *argv[]) {
     conv[from] = to;
   }
 
+  #ifdef DEBUG
+  for(map<int,int>::const_iterator it = conv.begin(); it != conv.end(); ++it)
+    cout << it->first << ": " << it->second << ", ";
+  cout << endl;
+  #endif
+
   fprintf(stderr, "Converting...\n");
 
   for (n = 0; n < surlist.size(); n++) {
@@ -83,6 +96,12 @@ int main(int argc, char *argv[]) {
     surlist[n] = conv[surlist[n]];
   }
 
+  #ifdef DEBUG
+  for (vector<int>::const_iterator i = surlist.begin(); i != surlist.end(); ++i)
+    cout << *i << ' ';
+  cout << endl;
+  #endif
+
   int sum = surlist.size();
   if (!sum) {fprintf(stderr, "ERROR: No surface residues\n"); return 1;}
 
@@ -93,6 +112,13 @@ int main(int argc, char *argv[]) {
   int seqnr, seqlen;
   char *refseq;
   int err = pamLoadSequences(argv[3], argv[4], &seqnr, &seqlen, &refseq);
+
+  #ifdef DEBUG
+  cout << seqnr << endl;
+  cout << seqlen << endl;
+  cout << refseq << endl;
+  #endif
+
   switch(err) {
     case 0: break;
     case 1: fprintf(stderr, "ERROR: Distance file %s does not exist\n", argv[4]); return 1;

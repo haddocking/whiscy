@@ -104,6 +104,22 @@ def pam_load_sequences(alignment_file, distance_file):
     for n in range(seqnr):
         seqtodis[sorted_distances[n].seq] = n
 
+    # print("***Dis***")
+    # for x in distances:
+    #     print("%.6f" % x.dist)
+    #     print(' '.join([("%.6f" % i)  for i in x.expect]) + ' ')
+    # print("******")
+
+    # print("***SortedDis***")
+    # for x in sorted_distances:
+    #     print("%.6f" % x.dist)
+    # print("******")
+
+    # print("***Seqtodis***")
+    # for x in seqtodis:
+    #     print(x)
+    # print("******")
+
     return seqnr, seqlen, refseq, sorted_distances, sequences, seqtodis
 
 
