@@ -6,6 +6,7 @@ import argparse
 import os
 from libwhiscy.pam_calc import pam_load_sequences, pam_calc_similarity
 from libwhiscy.pam_data import code
+from libwhiscy.quotes import get_one
 
 
 def load_surface_list(file_name):
@@ -57,7 +58,7 @@ class Residue():
 
 if __name__ == "__main__":
 
-     # Parse command line
+    # Parse command line
     parser = argparse.ArgumentParser(prog='whiscy')
     parser.add_argument("surface_list", help="Surface list", metavar="surface_list")
     parser.add_argument("conversion_table", help="Conversion table", metavar="conversion_table")
@@ -131,3 +132,6 @@ if __name__ == "__main__":
         print("Prediction written to {0}".format(args.output_file))
     else:
         print(prediction)
+
+    # Ending with a quote
+    print(get_one())
