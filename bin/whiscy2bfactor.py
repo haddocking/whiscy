@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""Adds the WHISCY scoring prediction to the B-factor column of a given PDB"""
+
 import os
 import sys
 import argparse
@@ -12,6 +14,7 @@ STANDARD_TYPES = {'ALA': 'A', 'ARG': 'R', 'ASN': 'N', 'ASP': 'D', 'CYS': 'C',
 
 
 def parse_whiscy_scores(file_name):
+    """Parses a WHISCY scores output file"""
     scores = {}
     with open(file_name) as input:
         for line in input:
@@ -48,7 +51,8 @@ if __name__ == "__main__":
                     res_num = line[22:26].strip()
                     res_id = "{}{}".format(res, res_num)
                     try:
-                        # 100 * WHISCYSCORE + 50
+                        # Normalized Score = 100 * WHISCYSCORE + 50
+                        # Values are truncated between 0 and 100
                         normalized_score = max(0.0, min(100.0, 100.0 * (scores[res_id] + 50.0)))
                     except KeyError:
                         normalized_score = 0.0
