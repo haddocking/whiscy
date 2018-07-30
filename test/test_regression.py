@@ -11,7 +11,7 @@ def test_regression_2SNIE():
     conversion_file = os.path.join(golden_data_path, 'regression', '2SNIE.conv')
     alignment_file = os.path.join(golden_data_path, 'regression', '2SNIE.phylseq')
     distance_file = os.path.join(golden_data_path, 'regression', '2SNIE.out')
-    prediction_file = os.path.join(golden_data_path, 'regression', '2SNIE.whyscy')
+    prediction_file = os.path.join(golden_data_path, 'regression', '2SNIE.whiscy')
 
     whiscy_bin =  os.environ['WHISCY_BIN']
     if os.path.exists(scratch_path):
