@@ -13,6 +13,7 @@ _quotes = {"Mark Twain": "Too much of anything is bad, but too much good whiskey
           "James Joyce": "The light music of whiskey falling into a glass—an agreeable interlude.",
           "Igor Stravinsky": "My God, so much I like to drink Scotch that sometimes I think my name is Igor Stra-whiskey.",
           "Haruki Murakami": "The second whiskey is always my favorite. From the third on, it no longer has any taste. It's just something to pour into your stomach.",
+          "Mikael Trellet": "Whiscy, to use without moderation."
           }
 
 
