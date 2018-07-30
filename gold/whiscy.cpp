@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
     conv[from] = to;
   }
 
-  #ifdef DEBUG
+  #if DEBUG
   for(map<int,int>::const_iterator it = conv.begin(); it != conv.end(); ++it)
     cout << it->first << ": " << it->second << ", ";
   cout << endl;
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     surlist[n] = conv[surlist[n]];
   }
 
-  #ifdef DEBUG
+  #if DEBUG
   for (vector<int>::const_iterator i = surlist.begin(); i != surlist.end(); ++i)
     cout << *i << ' ';
   cout << endl;
@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
   char *refseq;
   int err = pamLoadSequences(argv[3], argv[4], &seqnr, &seqlen, &refseq);
 
-  #ifdef DEBUG
+  #if DEBUG
   cout << seqnr << endl;
   cout << seqlen << endl;
   cout << refseq << endl;

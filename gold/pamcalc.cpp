@@ -37,6 +37,10 @@ int DistCompare(const void *pd1, const void *pd2) {
       return 1;
    else
       return 0;
+
+  /* Old implementation. Works fine in Linux (tested on Ubuntu),
+   * but behavior is different on OSX
+   */
   // return (d1->dist > d2->dist);
 }
 
@@ -332,7 +336,7 @@ int pamLoadSequences(const char *seqfile, const char *distfile, int *retseqnr, i
   }
   fclose(f);
 
-  #ifdef DEBUG
+  #if DEBUG
   cout << "***Dis***" << endl;
   for (n = 0; n < seqnr; n++) {
     cout << fixed << setprecision(6) << dis[n].dist << endl;
@@ -360,7 +364,7 @@ int pamLoadSequences(const char *seqfile, const char *distfile, int *retseqnr, i
 
   qsort(dis, seqnr, sizeof(Distance), DistCompare);
 
-  #ifdef DEBUG
+  #if DEBUG
   cout << "***SortedDis***" << endl;
   for (n = 0; n < seqnr; n++) {
     cout << fixed << setprecision(6) << dis[n].dist << endl;
@@ -373,7 +377,7 @@ int pamLoadSequences(const char *seqfile, const char *distfile, int *retseqnr, i
     seqtodis[dis[n].seq] = n;
   }
 
-  #ifdef DEBUG
+  #if DEBUG
   cout << "***Seqtodis***" << endl;
   for (n = 0; n < seqnr; n++) {
     cout << seqtodis[n] << endl;
