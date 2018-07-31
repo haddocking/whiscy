@@ -2,3 +2,4 @@
 CFLAGS="DEBUG=0"
 
 g++ -D ${CFLAGS} -o whiscy whiscy.cpp pamcalc.cpp -O3
+g++ -D ${CFLAGS} -o parasmooth parasmooth.cpp -O3

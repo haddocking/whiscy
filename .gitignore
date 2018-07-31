@@ -106,3 +106,4 @@ venv.bak/
 .DS_Store
 sandbox
 gold/whiscy
+gold/parasmooth
