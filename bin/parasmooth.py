@@ -22,6 +22,9 @@ class Distance:
         self.nr2 = nr2
         self.dis = dis
 
+    def __str__(self):
+        return "{} - {}: {}".format(self.nr1, self.nr2, self.dis)
+
 
 def get_weight(par, val):
     """Calculates the weight in the OrderedDict par of the key val"""
@@ -77,6 +80,23 @@ def read_low_accessible_cons_file(file_name):
     return residues
 
 
+def read_residue_distance_matrix(file_name):
+    """Reads and parses the residue distance matrix"""
+    distances = []
+    with open(file_name, 'rU') as handle:
+        for line in handle:
+            if line:
+                fields = line.rstrip(os.linesep).split()
+                try:
+                    nr1 = int(fields[0])
+                    nr2 = int(fields[1])
+                    distance = float(fields[2])
+                    distances.append(Distance(nr1, nr2, distance))
+                except:
+                    raise SystemExit("ERROR: Reading error in distance matrix file {}".format(file_name))
+    return distances
+
+
 if __name__ == "__main__":
 
     # Parse command line
@@ -94,3 +114,6 @@ if __name__ == "__main__":
 
     # Read .lcons file:
     res_lac = read_low_accessible_cons_file(args.low_accessible_cons_file)
+
+    # Read .rd file:
+    resdist = read_residue_distance_matrix(args.residue_distance_matrix)
