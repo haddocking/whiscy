@@ -97,6 +97,22 @@ def read_residue_distance_matrix(file_name):
     return distances
 
 
+def read_smoothing_parameter_file(file_name):
+    """Reads and parses the smoothing parameter file"""
+    par = {}
+    with open(file_name, 'rU') as handle:
+        for line in handle:
+            if line:
+                fields = line.rstrip(os.linesep).split()
+                try:
+                    v = float(fields[0])
+                    w = float(fields[1])
+                    par[v] = w
+                except:
+                    raise SystemExit("ERROR: Reading error in smoothing parameter file {}".format(file_name))
+    return par
+
+
 if __name__ == "__main__":
 
     # Parse command line
@@ -117,3 +133,6 @@ if __name__ == "__main__":
 
     # Read .rd file:
     resdist = read_residue_distance_matrix(args.residue_distance_matrix)
+
+    # Read .par file:
+    par = read_smoothing_parameter_file(args.smoothing_parameter_file)
