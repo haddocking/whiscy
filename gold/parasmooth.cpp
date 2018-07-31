@@ -138,28 +138,28 @@ int main(int argc, char *argv[]) {
       bool found = 0;
       if (resdist[i].dis < maxdis) {
         for (int nn = 0; nn < res_surnr; nn++) {
-	  if (n == nn) continue;
-	  if (res_sur[nn].nr == partner) {
-	    found = 1;
-	    double currweight = getweight(resdist[i].dis);
-	    double currscore = currweight * res_sur[nn].score;
-	    weight += currweight;
-	    score += currscore;
-	    break;
-	  }
-	}
+      	  if (n == nn) continue;
+      	  if (res_sur[nn].nr == partner) {
+      	    found = 1;
+      	    double currweight = getweight(resdist[i].dis);
+      	    double currscore = currweight * res_sur[nn].score;
+      	    weight += currweight;
+      	    score += currscore;
+      	    break;
+      	  }
+      	}
       }
       if (found) continue;
       if (resdist[i].dis < maxdis) {
         for (int nn = 0; nn < res_lacnr; nn++) {
-	  if (res_lac[nn].nr == partner) {
-	    double currweight = getweight(resdist[i].dis);
-	    double currscore = currweight * res_lac[nn].score;
-	    weight += currweight;
-	    score += currscore;
-            break;
-	  }
-	}
+      	  if (res_lac[nn].nr == partner) {
+      	    double currweight = getweight(resdist[i].dis);
+      	    double currscore = currweight * res_lac[nn].score;
+      	    weight += currweight;
+      	    score += currscore;
+                  break;
+      	  }
+      	}
       }
     }
     res_sur[n].score = score/weight;

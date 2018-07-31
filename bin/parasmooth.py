@@ -136,3 +136,51 @@ if __name__ == "__main__":
 
     # Read .par file:
     par = read_smoothing_parameter_file(args.smoothing_parameter_file)
+
+    maxdis = sorted(par.keys())[-2]
+    for n in range(len(res_sur)):
+        weight = 1.0
+        score = res_sur[n].score
+        for i in range(len(resdist)):
+            if resdist[i].dis > maxdis:
+                continue
+            partner = -1
+
+            if resdist[i].nr1 == res_sur[n].nr:
+                partner = resdist[i].nr2
+            elif resdist[i].nr2 == res_sur[n].nr:
+                partner = resdist[i].nr1
+            if partner == -1: 
+                continue
+            
+            found = False
+            if resdist[i].dis < maxdis:
+                for nn in range(len(res_sur)):
+                    if n == nn:
+                        continue
+                    if res_sur[nn].nr == partner:
+                        found = True
+                        currweight = get_weight(par, resdist[i].dis)
+                        currscore = currweight * res_sur[nn].score
+                        weight += currweight
+                        score += currscore
+                        break
+            if found:
+                continue
+
+            if resdist[i].dis < maxdis:
+                for nn in range(len(res_lac)):
+                    if res_lac[nn].nr == partner:
+                        currweight = get_weight(par, resdist[i].dis)
+                        currscore = currweight * res_lac[nn].score
+                        weight += currweight
+                        score += currscore
+                        break
+
+        res_sur[n].score = score / weight
+
+    res_sur = sorted(res_sur, key=lambda res: res.score, reverse=True)
+
+    for n in range(len(res_sur)):
+        print("{}  {}{}".format(res_sur[n].score, res_sur[n].code, res_sur[n].nr))
+
