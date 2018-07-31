@@ -17,8 +17,8 @@ def load_surface_list(file_name):
     marked as surface.
     """
     surface_list = []
-    with open(file_name, "rU") as input:
-        for line in input:
+    with open(file_name, "rU") as handle:
+        for line in handle:
             if line:
                 try:
                     surface_list.append(int(line))
@@ -36,8 +36,8 @@ def load_conversion_table(file_name):
     aligment file.
     """
     conversion_table = {}
-    with open(file_name, "rU") as input:
-        for line in input:
+    with open(file_name, "rU") as handle:
+        for line in handle:
             if line:
                 fields = line.rstrip(os.linesep).split()
                 try:
