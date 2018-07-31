@@ -56,7 +56,24 @@ def read_surface_cons_file(file_name):
                     nr = int(fields[1][1:])
                     residues.append(Residue(nr, code, score))
                 except:
-                    pass
+                    raise SystemExit("ERROR: Reading error in surface conservation file {}".format(file_name))
+    return residues
+
+
+def read_low_accessible_cons_file(file_name):
+    """Reads and parses a .lcons file"""
+    residues = []
+    with open(file_name, 'rU') as handle:
+        for line in handle:
+            if line:
+                fields = line.rstrip(os.linesep).split()
+                try:
+                    score = float(fields[0])
+                    code = fields[1][0].upper()
+                    nr = int(fields[1][1:])
+                    residues.append(Residue(nr, code, score))
+                except:
+                    raise SystemExit("ERROR: Reading error in low-accessible conservation file {}".format(file_name))
     return residues
 
 
@@ -73,4 +90,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Read .acons file:
-    residues = read_surface_cons_file(args.surface_cons_file)
+    res_sur = read_surface_cons_file(args.surface_cons_file)
+
+    # Read .lcons file:
+    res_lac = read_low_accessible_cons_file(args.low_accessible_cons_file)
