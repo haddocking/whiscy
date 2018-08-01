@@ -10,6 +10,7 @@ from Bio.PDB import PDBList
 from Bio.PDB.PDBParser import PDBParser
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO, SeqIO
+from libwhiscy import hssp
 
 
 def load_config(config_file='etc/local.json'):
@@ -73,6 +74,11 @@ if __name__ == "__main__":
         with open("{0}_{1}.fasta".format(filename, chain_id), "w") as output_handle:
             SeqIO.write(sequences, output_handle, "fasta")
 
+    # Get the HSSP alignment from FTP
+    print("Downloading HSSP alignment...")
+    hssp_file = hssp.get_from_ftp(pdb_code)
+    print("HSSP alignment stored to {}".format(hssp_file))
+    
     input_sequence_file = "{0}_{1}.fasta".format(filename, chain_id)
     output_alignment_file = "{0}_{1}_msa.fasta".format(filename, chain_id)
     msa = muscle_msa(config, input_sequence_file, output_alignment_file)

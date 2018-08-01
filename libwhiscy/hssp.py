@@ -1,0 +1,23 @@
+from ftplib import FTP
+import os
+
+
+def get_from_ftp(pdb_code, path_to_store='.',
+                 ftp_server='ftp.cmbi.ru.nl', ftp_path='/pub/molbio/data/hssp/'):
+    """Downloads using FTP protocol an HSSP alignment for the given pdb_code"""
+
+    # Start connection
+    ftp = FTP(ftp_server)
+    # Anonymous login
+    ftp.login()
+    # Move to path where HSSP alignments are stored
+    ftp.cwd(ftp_path)
+    # File name format
+    file_name = '{}.hssp.bz2'.format(pdb_code.lower())
+    # Retrieve file
+    path_to_file = os.path.join(path_to_store, file_name)
+    ftp.retrbinary("RETR " + file_name, open(path_to_file, 'wb').write)
+    # Close connection
+    ftp.close()
+
+    return path_to_file
