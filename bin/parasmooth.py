@@ -112,30 +112,10 @@ def read_smoothing_parameter_file(file_name):
     return par
 
 
-if __name__ == "__main__":
+def calculate_parasmooth(res_sur, res_lac, resdist, par):
+    """Main function, calculates parasmooth values"""
 
-    # Parse command line
-    parser = argparse.ArgumentParser(prog='param_smooth')
-    parser.add_argument("surface_cons_file", help="Surface conservation file", metavar="surface_cons_file")
-    parser.add_argument("low_accessible_cons_file", help="Low accessible conservation file", metavar="low_accessible_cons_file")
-    parser.add_argument("residue_distance_matrix", help="Residue distance matrix", metavar="residue_distance_matrix")
-    parser.add_argument("smoothing_parameter_file", help="Smoothing parameter file", metavar="smoothing_parameter_file")
-    parser.add_argument("-o", "--output", help="If sets, output prediction to this file", 
-                        dest="output_file", metavar="output_file")
-    args = parser.parse_args()
-
-    # Read .acons file:
-    res_sur = read_surface_cons_file(args.surface_cons_file)
-
-    # Read .lcons file:
-    res_lac = read_low_accessible_cons_file(args.low_accessible_cons_file)
-
-    # Read .rd file:
-    resdist = read_residue_distance_matrix(args.residue_distance_matrix)
-
-    # Read .par file:
-    par = read_smoothing_parameter_file(args.smoothing_parameter_file)
-
+    # Get the max distance
     maxdis = sorted(par.keys())[-1]
 
     for n in range(len(res_sur)):
@@ -179,8 +159,40 @@ if __name__ == "__main__":
 
         res_sur[n].score = score / weight
 
+    # Sort by scores in reverse order:
     res_sur = sorted(res_sur, key=lambda res: res.score, reverse=True)
 
+    return res_sur
+
+
+if __name__ == "__main__":
+
+    # Parse command line
+    parser = argparse.ArgumentParser(prog='parasmooth')
+    parser.add_argument("surface_cons_file", help="Surface conservation file", metavar="surface_cons_file")
+    parser.add_argument("low_accessible_cons_file", help="Low accessible conservation file", metavar="low_accessible_cons_file")
+    parser.add_argument("residue_distance_matrix", help="Residue distance matrix", metavar="residue_distance_matrix")
+    parser.add_argument("smoothing_parameter_file", help="Smoothing parameter file", metavar="smoothing_parameter_file")
+    parser.add_argument("-o", "--output", help="If sets, output prediction to this file", 
+                        dest="output_file", metavar="output_file")
+    args = parser.parse_args()
+
+    # Read .acons file:
+    res_sur = read_surface_cons_file(args.surface_cons_file)
+
+    # Read .lcons file:
+    res_lac = read_low_accessible_cons_file(args.low_accessible_cons_file)
+
+    # Read .rd file:
+    resdist = read_residue_distance_matrix(args.residue_distance_matrix)
+
+    # Read .par file:
+    par = read_smoothing_parameter_file(args.smoothing_parameter_file)
+
+    # Calculate parasmooth values:
+    res_sur = calculate_parasmooth(res_sur, res_lac, resdist, par)
+
+    # If output to file:
     if args.output_file:
         with open(args.output_file, 'w') as handle:
             for n in range(len(res_sur)):
