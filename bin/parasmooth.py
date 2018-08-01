@@ -181,6 +181,13 @@ if __name__ == "__main__":
 
     res_sur = sorted(res_sur, key=lambda res: res.score, reverse=True)
 
-    for n in range(len(res_sur)):
-        print("{:8.5f}   {}{}".format(res_sur[n].score, res_sur[n].code, res_sur[n].nr))
-
+    if args.output_file:
+        with open(args.output_file, 'w') as handle:
+            for n in range(len(res_sur)):
+                handle.write("{:8.5f}   {}{}{}".format(res_sur[n].score, 
+                                                       res_sur[n].code, 
+                                                       res_sur[n].nr,
+                                                       os.linesep))
+    else:
+        for n in range(len(res_sur)):
+            print("{:8.5f}   {}{}".format(res_sur[n].score, res_sur[n].code, res_sur[n].nr))
