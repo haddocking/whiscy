@@ -3,6 +3,7 @@
 #include <cmath>
 #include <map>
 #include <algorithm>
+#include <iostream>
 using namespace std;
 struct Residue {
   int nr;
@@ -22,6 +23,7 @@ inline double getweight(double val) {
   map<double,double>::iterator parpos = par.lower_bound(val);
   double vh = parpos->first;
   double wh = parpos->second;
+
   if (val == vh || parpos == par.begin()) return wh;
   else {
     parpos--;

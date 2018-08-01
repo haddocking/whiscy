@@ -2,7 +2,6 @@
 
 import math
 import os
-from collections import OrderedDict
 import argparse
 
 
@@ -27,12 +26,11 @@ class Distance:
 
 
 def get_weight(par, val):
-    """Calculates the weight in the OrderedDict par of the key val"""
+    """Calculates the weight in the par dictionary of the key val"""
     i = 0
-    for k, v in par.items():
-        if v <= val:
-            vh, wh = k, v
-        else:
+    for k in sorted(par.keys()):
+        if k > val:
+            vh, wh = k, par[k]
             break
         i += 1
 
@@ -43,6 +41,7 @@ def get_weight(par, val):
         key = list(par.keys())[i]
         vl = key
         wl = par[key]
+
         return wl + (wh - wl) * (val - vl)/(vh - vl)
 
 
@@ -137,7 +136,8 @@ if __name__ == "__main__":
     # Read .par file:
     par = read_smoothing_parameter_file(args.smoothing_parameter_file)
 
-    maxdis = sorted(par.keys())[-2]
+    maxdis = sorted(par.keys())[-1]
+
     for n in range(len(res_sur)):
         weight = 1.0
         score = res_sur[n].score
@@ -152,7 +152,7 @@ if __name__ == "__main__":
                 partner = resdist[i].nr1
             if partner == -1: 
                 continue
-            
+
             found = False
             if resdist[i].dis < maxdis:
                 for nn in range(len(res_sur)):
@@ -182,5 +182,5 @@ if __name__ == "__main__":
     res_sur = sorted(res_sur, key=lambda res: res.score, reverse=True)
 
     for n in range(len(res_sur)):
-        print("{}  {}{}".format(res_sur[n].score, res_sur[n].code, res_sur[n].nr))
+        print("{:8.5f}   {}{}".format(res_sur[n].score, res_sur[n].code, res_sur[n].nr))
 
