@@ -1,5 +1,6 @@
 from ftplib import FTP
 import os
+import bz2
 
 
 def get_from_ftp(pdb_code, path_to_store='.',
@@ -21,3 +22,10 @@ def get_from_ftp(pdb_code, path_to_store='.',
     ftp.close()
 
     return path_to_file
+
+
+def decompress_bz2(file_name_input, file_name_output):
+    """Decompresses file_name_input in BZ2 format into file_name_output""" 
+    with open(file_name_output, 'wb') as new_file, bz2.BZ2File(file_name_input, 'rb') as file:
+        for data in iter(lambda : file.read(100 * 1024), b''):
+            new_file.write(data)

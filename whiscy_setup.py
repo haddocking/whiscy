@@ -76,7 +76,9 @@ if __name__ == "__main__":
 
     # Get the HSSP alignment from FTP
     print("Downloading HSSP alignment...")
-    hssp_file = hssp.get_from_ftp(pdb_code)
+    compressed_hssp_file = hssp.get_from_ftp(pdb_code)
+    hssp_file = "{}.hssp".format(pdb_code)
+    hssp.decompress_bz2(compressed_hssp_file, hssp_file)
     print("HSSP alignment stored to {}".format(hssp_file))
     
     input_sequence_file = "{0}_{1}.fasta".format(filename, chain_id)
