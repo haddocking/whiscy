@@ -14,7 +14,8 @@ from Bio import AlignIO, SeqIO
 from libwhiscy import hssp
 import warnings
 # Import SearchIO and suppress experimental warning
-from Bio import BiopythonExperimentalWarning
+from Bio import BiopythonExperimentalWarning, BiopythonWarning
+warnings.simplefilter('ignore', BiopythonWarning)
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', BiopythonExperimentalWarning)
     from Bio import SearchIO
@@ -25,6 +26,16 @@ def load_config(config_file='etc/local.json'):
     with open(config_file, 'r') as f:
         config = json.load(f)
         return config
+
+
+def download_pdb_structure(pdb_code):
+    """Downloads a PDB structure from the Protein Data Bank"""
+    pdbl = PDBList()
+    file_name = pdbl.retrieve_pdb_file(pdb_code, file_format='pdb', pdir='.', overwrite=True)
+    if os.path.exists(file_name):
+        os.rename(file_name, input_pdb_file)
+    else:
+        raise SystemExit("ERROR: can not download structure: {0}".format(pdb_code))
 
 
 def muscle_msa(config, input_sequence_file, output_alignment_file):
@@ -75,21 +86,23 @@ if __name__ == "__main__":
     config = load_config()
 
     filename, file_extension = os.path.splitext(os.path.basename(args.pdb_file_name))
-    input_pdb_file = args.pdb_file_name
+    with_pdb_code = (file_extension == '')
+    input_pdb_file = None
 
-    # PDB code has been specified instead of a PDB file name
-    if file_extension == '':
+    if with_pdb_code:
+        # PDB code has been specified instead of a PDB file name
         pdb_code = args.pdb_file_name
         input_pdb_file = '{0}.pdb'.format(pdb_code)
         if not os.path.exists(input_pdb_file):
-            pdbl = PDBList()
-            file_name = pdbl.retrieve_pdb_file(pdb_code, file_format='pdb', pdir='.', overwrite=True)
-            if os.path.exists(file_name):
-                os.rename(file_name, input_pdb_file)
-            else:
-                raise SystemExit("Error downloading structure: {0}".format(pdb_code))
+            download_pdb_structure(pdb_code)
         else:
             print("PDB structure already exists ({}), no need to download it again".format(input_pdb_file))
+    else:
+        pdb_code = filename
+        input_pdb_file = args.pdb_file_name
+
+    if not os.path.exists(input_pdb_file):
+        raise SystemExit("ERROR: PDB structure file {} not found".format(input_pdb_file))
 
     # Check if chain belongs to this PDB
     parser = PDBParser(PERMISSIVE=True, QUIET=True)
@@ -97,56 +110,76 @@ if __name__ == "__main__":
     chain_ids = [chain.id for chain in structure.get_chains()]
     chain_id = args.chain_id.upper()
     if len(chain_id) > 1:
-        raise SystemExit("Wrong chain id {0}".format(chain_id))
+        raise SystemExit("ERROR: Wrong chain id {0}".format(chain_id))
     if chain_id not in chain_ids:
-        raise SystemExit("Chain {0} provided not in available chains: {1}".format(chain_id, str(chain_ids)))
+        raise SystemExit("ERROR: Chain {0} provided not in available chains: {1}".format(chain_id, str(chain_ids)))
 
     # Get structure sequence
+    sequences = []
     with open(input_pdb_file, "rU") as handle:
-        sequences = []
+        # Try before using the header of the PDB file
         for record in SeqIO.parse(handle, "pdb-seqres"):
             if record.id[-1] == chain_id:
                 sequences.append(record)
-
+        # Try again using pdb-atom, reset handle pointer
+        if not len(sequences):
+            handle.seek(0)
+            for record in SeqIO.parse(handle, "pdb-atom"):
+                if record.id[-1] == chain_id:
+                    sequences.append(record)
+        # Sequence not found
+        if not len(sequences):
+            raise SystemExit("ERROR: Sequence could not be determined")
         with open("{0}_{1}.fasta".format(filename, chain_id), "w") as output_handle:
             SeqIO.write(sequences, output_handle, "fasta")
 
-    # Get the HSSP alignment from FTP if pdb code specified
+    # Store master sequence
+    master_sequence = sequences[0].seq
+
     hssp_file = "{}.hssp".format(pdb_code)
-    if pdb_code and not os.path.exists(hssp_file):
-        print("Downloading HSSP alignment...")
-        compressed_hssp_file = hssp.get_from_ftp(pdb_code)
-        hssp.decompress_bz2(compressed_hssp_file, hssp_file)
-        print("HSSP alignment stored to {}".format(hssp_file))
-    
-    # Run BLASTP if needed
-    blast_output_file = "{0}_{1}_blast.xml".format(filename, chain_id)
-    input_sequence_file = "{0}_{1}.fasta".format(filename, chain_id)
-    if not os.path.exists(blast_output_file):
-        print("Please wait while running BLASTP against NCBI servers...")
-        ncbi_blast(input_sequence_file, blast_output_file)
-        print("Result stored in {}".format(blast_output_file))
-    else:
-        print("BLAST file found ({}), nothing to do".format(blast_output_file))
+    phylip_file = "{}.phylseq".format(pdb_code)
 
-    # Convert file to FASTA format
-    blast_qresult = SearchIO.read(blast_output_file, 'blast-xml')
-    records = []
-    for hit in blast_qresult:
-        records.append(hit[0].hit)
-    blast_fasta_file = "{0}_{1}_blast.fasta".format(filename, chain_id)
-    SeqIO.write(records, blast_fasta_file, "fasta")
+    if with_pdb_code:
+        # Get the HSSP alignment from FTP if pdb code specified
+        if not os.path.exists(hssp_file):
+            print("Downloading HSSP alignment...")
+            try:
+                compressed_hssp_file = hssp.get_from_ftp(pdb_code)
+                hssp.decompress_bz2(compressed_hssp_file, hssp_file)
+                print("HSSP alignment stored to {}".format(hssp_file))
+                print("Converting from HSSP to PHYLIP file...")
+                hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
+                print("Done")
+            except:
+                print("HSSP file could not be generated, creating a MSA with BLASTP and MUSCLE")
 
-    # Multiple sequence alignment
-    print("MSA using MUSCLE...")
-    output_alignment_file = "{0}_{1}_msa.fasta".format(filename, chain_id)
-    msa = muscle_msa(config, blast_fasta_file, output_alignment_file)
-    print("Done.")
+    if not os.path.exists(hssp_file):
+        # Run BLASTP if needed
+        blast_output_file = "{0}_{1}_blast.xml".format(filename, chain_id)
+        input_sequence_file = "{0}_{1}.fasta".format(filename, chain_id)
+        if not os.path.exists(blast_output_file):
+            print("Please wait while running BLASTP against NCBI servers...")
+            ncbi_blast(input_sequence_file, blast_output_file)
+            print("Result stored in {}".format(blast_output_file))
+        else:
+            print("BLAST file found ({}), nothing to do".format(blast_output_file))
 
-    # Convert MSA to Phylipseq
-    print("Converting MSA file to Phylseq format...")
-    output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
-    master_sequence = SeqIO.read(input_sequence_file, format="fasta")
-    msa_to_phylseq(msa, master_sequence.seq, output_phylseq_file)
-    print("{} file written".format(output_phylseq_file))
+        # Convert file to FASTA format
+        blast_qresult = SearchIO.read(blast_output_file, 'blast-xml')
+        records = []
+        for hit in blast_qresult:
+            records.append(hit[0].hit)
+        blast_fasta_file = "{0}_{1}_blast.fasta".format(filename, chain_id)
+        SeqIO.write(records, blast_fasta_file, "fasta")
 
+        # Multiple sequence alignment
+        print("MSA using MUSCLE...")
+        output_alignment_file = "{0}_{1}_msa.fasta".format(filename, chain_id)
+        msa = muscle_msa(config, blast_fasta_file, output_alignment_file)
+        print("Done.")
+
+        # Convert MSA to Phylipseq
+        print("Converting MSA file to Phylseq format...")
+        output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
+        msa_to_phylseq(msa, master_sequence, output_phylseq_file)
+        print("{} file written".format(output_phylseq_file))
