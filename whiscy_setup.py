@@ -30,12 +30,12 @@ def load_config(config_file='etc/local.json'):
         return config
 
 
-def download_pdb_structure(pdb_code):
+def download_pdb_structure(pdb_code, pdb_file_name, file_path='.'):
     """Downloads a PDB structure from the Protein Data Bank"""
     pdbl = PDBList()
-    file_name = pdbl.retrieve_pdb_file(pdb_code, file_format='pdb', pdir='.', overwrite=True)
+    file_name = pdbl.retrieve_pdb_file(pdb_code, file_format='pdb', pdir=file_path, overwrite=True)
     if os.path.exists(file_name):
-        os.rename(file_name, input_pdb_file)
+        os.rename(file_name, pdb_file_name)
     else:
         raise SystemExit("ERROR: can not download structure: {0}".format(pdb_code))
 
@@ -89,7 +89,7 @@ def msa_to_phylseq(msa, master_sequence, output_file):
 def calculate_protdist(phylip_file, protdist_output_file):
     """Calculates the protdist of the given MSA"""
     protdist_bin = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bin", "protdist", "protdist")
-    cmd = "{0} {1} {2}".format(protdist_bin, phylip_file, protdist_output_file)
+    cmd = "{0} {1} {2} > /dev/null 2>&1".format(protdist_bin, phylip_file, protdist_output_file)
     subprocess.run(cmd, shell=True)
 
 
@@ -113,7 +113,7 @@ if __name__ == "__main__":
         pdb_code = args.pdb_file_name
         input_pdb_file = '{0}.pdb'.format(pdb_code)
         if not os.path.exists(input_pdb_file):
-            download_pdb_structure(pdb_code)
+            download_pdb_structure(pdb_code, input_pdb_file)
         else:
             print("PDB structure already exists ({}), no need to download it again".format(input_pdb_file))
     else:
