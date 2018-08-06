@@ -86,6 +86,13 @@ def msa_to_phylseq(msa, master_sequence, output_file):
                                                     os.linesep))
 
 
+def calculate_protdist(phylip_file, protdist_output_file):
+    """Calculates the protdist of the given MSA"""
+    protdist_bin = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bin", "protdist", "protdist")
+    cmd = "{0} {1} {2}".format(protdist_bin, phylip_file, protdist_output_file)
+    subprocess.run(cmd, shell=True)
+
+
 if __name__ == "__main__":
 
     # Parse command line
@@ -163,7 +170,7 @@ if __name__ == "__main__":
     master_sequence = sequences[0].seq
 
     hssp_file = "{}.hssp".format(pdb_code)
-    phylip_file = "{}.phylseq".format(pdb_code)
+    phylip_file = "{0}_{1}.phylseq".format(pdb_code, chain_id)
 
     if with_pdb_code:
         # Get the HSSP alignment from FTP if pdb code specified
@@ -209,3 +216,7 @@ if __name__ == "__main__":
         output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
         msa_to_phylseq(msa, master_sequence, output_phylseq_file)
         print("{} file written".format(output_phylseq_file))
+
+    # Calculate protdist:
+    protdist_output_file = "{0}_{1}.out".format(filename, chain_id)
+    calculate_protdist(phylip_file, protdist_output_file)
