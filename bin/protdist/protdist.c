@@ -144,7 +144,7 @@ static double pamprobs[20][20] =
        -0.00084536, 0.01631369, 0.00095063,-0.09570217, 0.06480321}
     };
 
-openfile(fp,filename,mode,application,perm)
+int openfile(fp,filename,mode,application,perm)
 FILE **fp;
 char *filename;
 char *mode;
@@ -180,6 +180,7 @@ char *perm;
   *fp=of;
   if (perm != NULL)
     strcpy(perm,file);
+  return 0;
 }
 
 
@@ -1516,7 +1517,7 @@ void makedists()
 }  /* makedists */
 
 
-main(argc, argv)
+int main(argc, argv)
 int argc;
 Char *argv[];
 {  /* ML Protein distances by PAM or categories model */
@@ -1611,5 +1612,6 @@ if (!mem)
   memerror();
 else
   return (MALLOCRETURN *)mem;
+return 0;
 }
 
