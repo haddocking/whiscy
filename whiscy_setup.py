@@ -8,6 +8,7 @@ import json
 import Bio
 from Bio.PDB import PDBList
 from Bio.PDB.PDBParser import PDBParser
+from Bio.PDB import PDBIO
 from Bio.Blast import NCBIWWW
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO, SeqIO
@@ -19,6 +20,7 @@ warnings.simplefilter('ignore', BiopythonWarning)
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', BiopythonExperimentalWarning)
     from Bio import SearchIO
+import subprocess
 
 
 def load_config(config_file='etc/local.json'):
@@ -36,6 +38,16 @@ def download_pdb_structure(pdb_code):
         os.rename(file_name, input_pdb_file)
     else:
         raise SystemExit("ERROR: can not download structure: {0}".format(pdb_code))
+
+
+def calculate_sasa(pdb_file_name, output_file_name):
+    """Calculates the SASA using freesasa.
+
+    Uses the command line interface and not the Python bindings to be able to get 
+    a RSA NACCESS-format like file.
+    """
+    cmd = "freesasa {} -n 20 --format=rsa --radii=naccess -o {}".format(pdb_file_name, output_file_name)
+    subprocess.run(cmd, shell=True)
 
 
 def muscle_msa(config, input_sequence_file, output_alignment_file):
@@ -113,6 +125,20 @@ if __name__ == "__main__":
         raise SystemExit("ERROR: Wrong chain id {0}".format(chain_id))
     if chain_id not in chain_ids:
         raise SystemExit("ERROR: Chain {0} provided not in available chains: {1}".format(chain_id, str(chain_ids)))
+    
+    # Save only the given chain:
+    io = PDBIO()
+    output_pdb_file = "{}_{}.pdb".format(pdb_code, chain_id)
+    for chain in structure.get_chains():
+        if chain.id == chain_id:
+            io.set_structure(chain)
+            io.save(output_pdb_file)
+    print("PDB structure with chain {} saved to {}".format(chain_id, output_pdb_file))
+
+    # Calculate SASA:
+    rsa_output_file = "{}_{}.rsa".format(pdb_code, chain_id)
+    calculate_sasa(output_pdb_file, rsa_output_file)
+    print("SASA calculated to {}".format(rsa_output_file))
 
     # Get structure sequence
     sequences = []
