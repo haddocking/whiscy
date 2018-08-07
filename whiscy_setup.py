@@ -12,7 +12,6 @@ from Bio.PDB import PDBIO
 from Bio.Blast import NCBIWWW
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO, SeqIO
-from libwhiscy import hssp
 import warnings
 # Import SearchIO and suppress experimental warning
 from Bio import BiopythonExperimentalWarning, BiopythonWarning
@@ -21,6 +20,8 @@ with warnings.catch_warnings():
     warnings.simplefilter('ignore', BiopythonExperimentalWarning)
     from Bio import SearchIO
 import subprocess
+from libwhiscy import hssp
+from libwhiscy import access
 
 
 def load_config(config_file='etc/local.json'):
@@ -38,16 +39,6 @@ def download_pdb_structure(pdb_code, pdb_file_name, file_path='.'):
         os.rename(file_name, pdb_file_name)
     else:
         raise SystemExit("ERROR: can not download structure: {0}".format(pdb_code))
-
-
-def calculate_sasa(pdb_file_name, output_file_name):
-    """Calculates the SASA using freesasa.
-
-    Uses the command line interface and not the Python bindings to be able to get 
-    a RSA NACCESS-format like file.
-    """
-    cmd = "freesasa {} -n 20 --format=rsa --radii=naccess -o {}".format(pdb_file_name, output_file_name)
-    subprocess.run(cmd, shell=True)
 
 
 def muscle_msa(config, input_sequence_file, output_alignment_file):
@@ -144,8 +135,8 @@ if __name__ == "__main__":
 
     # Calculate SASA:
     rsa_output_file = "{}_{}.rsa".format(pdb_code, chain_id)
-    calculate_sasa(output_pdb_file, rsa_output_file)
-    print("SASA calculated to {}".format(rsa_output_file))
+    access.calculate_accessibility(output_pdb_file, rsa_output_file)
+    print("Atom accessibility calculated to {}".format(rsa_output_file))
 
     # Get structure sequence
     sequences = []
