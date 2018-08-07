@@ -138,6 +138,11 @@ if __name__ == "__main__":
     access.calculate_accessibility(output_pdb_file, rsa_output_file)
     print("Atom accessibility calculated to {}".format(rsa_output_file))
 
+    # Calculate the different accessibility files according to the cutoffs:
+    cutoffs = config['CUTOFF']
+    access.create_cutoff_files(rsa_output_file, pdb_code, chain_id, cutoffs)
+    print("Surface and buried residues calculated")
+
     # Get structure sequence
     sequences = []
     with open(input_pdb_file, "rU") as handle:
@@ -174,8 +179,9 @@ if __name__ == "__main__":
                 print("Converting from HSSP to PHYLIP file...")
                 hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
                 print("Done")
-            except:
-                print("HSSP file could not be generated, creating a MSA with BLASTP and MUSCLE")
+            except Exception as err:
+                print("ERROR: {0}".format(err))
+                raise SystemExit("HSSP file could not be generated")
 
     if not os.path.exists(hssp_file):
         # Run BLASTP if needed
@@ -207,6 +213,9 @@ if __name__ == "__main__":
         output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
         msa_to_phylseq(msa, master_sequence, output_phylseq_file)
         print("{} file written".format(output_phylseq_file))
+
+    if not os.path.exists(phylip_file):
+        raise SystemExit("ERROR: PHYLIP sequence file {} not found".format(phylip_file))
 
     # Calculate protdist:
     protdist_output_file = "{0}_{1}.out".format(filename, chain_id)
