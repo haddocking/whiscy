@@ -120,8 +120,8 @@ def hssp_file_to_phylip(hssp_file_name, phylip_file_name, chain_id, master_seque
 
         non_valid = [k for k in proteins.keys() if alignments[k].count('-') == seqlength]
         with open(phylip_file_name, 'w') as output_handle:
-            # Write header
-            output_handle.write("{}  {}{}".format(len(proteins) - len(non_valid), seqlength, os.linesep))
+            # Write header, MASTER also counts
+            output_handle.write("{}  {}{}".format(len(proteins) - len(non_valid) + 1, seqlength, os.linesep))
             # Write master sequence
             output_handle.write("MASTER    {}{}".format(master_sequence, os.linesep))
             # Write the rest of non null alignments
