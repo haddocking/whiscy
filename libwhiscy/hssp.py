@@ -49,6 +49,7 @@ def _parse_hssp_alignments(line_buffer, chain_id, num_alignments):
     alignments = [[] for i in range(num_alignments)]
     first_alignment = 0
     last_alignment = 0
+    current_num_alignments = 0
     for line in line_buffer:
         if line.startswith(" SeqNo") or line[12] == '!':
             continue
@@ -58,9 +59,10 @@ def _parse_hssp_alignments(line_buffer, chain_id, num_alignments):
             # in the ALINGMENTS header
             first_alignment = int(fields[0]) - 1
             last_alignment = int(fields[1]) - 1
+            current_num_alignments = last_alignment - first_alignment + 1
         else:
             if line[12] == chain_id:
-                for i, s in enumerate(line[51:]):
+                for i, s in enumerate(line[51:51+current_num_alignments]):
                     # We will convert spaces or dots to -
                     if s == '.' or s == ' ':
                         s = '-'
