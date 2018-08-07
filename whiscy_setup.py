@@ -11,6 +11,7 @@ from Bio.PDB.PDBParser import PDBParser
 from Bio.PDB import PDBIO
 from Bio.Blast import NCBIWWW
 from Bio.Align.Applications import MuscleCommandline
+from Bio.PDB.Polypeptide import is_aa, three_to_one
 from Bio import AlignIO, SeqIO
 import warnings
 # Import SearchIO and suppress experimental warning
@@ -84,6 +85,46 @@ def calculate_protdist(phylip_file, protdist_output_file):
     subprocess.run(cmd, shell=True)
 
 
+def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False):
+    """Gets the PDB sequence in a dictionary"""
+    mapping = {}
+    pdb_parser = PDBParser(PERMISSIVE=True, QUIET=True)
+    structure = pdb_parser.get_structure(input_pdb_file, input_pdb_file)
+    model = structure[0]
+    chain = model[chain_id]
+    for res in chain :
+        # Remove alternative location residues
+        if "CA" in res.child_dict and is_aa(res) and res.id[2] == ' ':
+            mapping[res.id[1]] = three_to_one(res.get_resname())
+    if mapping_output:
+        return mapping
+    else:
+        return ''.join([mapping[k] for k in sorted(mapping.keys())])
+
+
+def write_to_fasta(output_fasta_file, sequence):
+    """Writes a sequence to a FASTA format file"""
+    with open(output_fasta_file, 'w') as output_handle:
+        output_handle.write(">{}{}".format(output_fasta_file, os.linesep))
+        n = 60
+        seq = [sequence[i:i+n] for i in range(0, len(sequence), n)]
+        for chunk in seq:
+            output_handle.write("{}{}".format(chunk, os.linesep))
+
+
+def map_protein_to_sequence_alignment(pdb_file, chain_id, sequence, output_file_name):
+    """Creates a dictionary .conv file mapping protein residue numeration to aligment"""
+    mapping = get_pdb_sequence(pdb_file, chain_id, mapping_output=True)
+    # Check if sequence is the same
+    pdb_seq = ''.join([mapping[k] for k in sorted(mapping.keys())])
+    if pdb_seq != sequence:
+        raise SystemExit("ERROR: PDB sequence doest not match sequence alignment")
+
+    with open(output_file_name, 'w') as output_handle:
+        for seq_res_id, pdb_res_id in enumerate(sorted(mapping.keys())):
+            output_handle.write("{}     {}{}".format(pdb_res_id, seq_res_id+1, os.linesep))
+
+
 if __name__ == "__main__":
 
     # Parse command line
@@ -115,8 +156,8 @@ if __name__ == "__main__":
         raise SystemExit("ERROR: PDB structure file {} not found".format(input_pdb_file))
 
     # Check if chain belongs to this PDB
-    parser = PDBParser(PERMISSIVE=True, QUIET=True)
-    structure = parser.get_structure(filename, input_pdb_file)
+    pdb_parser = PDBParser(PERMISSIVE=True, QUIET=True)
+    structure = pdb_parser.get_structure(filename, input_pdb_file)
     chain_ids = [chain.id for chain in structure.get_chains()]
     chain_id = args.chain_id.upper()
     if len(chain_id) > 1:
@@ -144,26 +185,8 @@ if __name__ == "__main__":
     print("Surface and buried residues calculated")
 
     # Get structure sequence
-    sequences = []
-    with open(input_pdb_file, "rU") as handle:
-        # Try before using the header of the PDB file
-        for record in SeqIO.parse(handle, "pdb-seqres"):
-            if record.id[-1] == chain_id:
-                sequences.append(record)
-        # Try again using pdb-atom, reset handle pointer
-        if not len(sequences):
-            handle.seek(0)
-            for record in SeqIO.parse(handle, "pdb-atom"):
-                if record.id[-1] == chain_id:
-                    sequences.append(record)
-        # Sequence not found
-        if not len(sequences):
-            raise SystemExit("ERROR: Sequence could not be determined")
-        with open("{0}_{1}.fasta".format(filename, chain_id), "w") as output_handle:
-            SeqIO.write(sequences, output_handle, "fasta")
-
-    # Store master sequence
-    master_sequence = sequences[0].seq
+    master_sequence = get_pdb_sequence(input_pdb_file, chain_id)
+    write_to_fasta("{0}_{1}.fasta".format(filename, chain_id), master_sequence)
 
     hssp_file = "{}.hssp".format(pdb_code)
     phylip_file = "{0}_{1}.phylseq".format(pdb_code, chain_id)
@@ -217,6 +240,14 @@ if __name__ == "__main__":
     if not os.path.exists(phylip_file):
         raise SystemExit("ERROR: PHYLIP sequence file {} not found".format(phylip_file))
 
-    # Calculate protdist:
+    # Calculate protdist
     protdist_output_file = "{0}_{1}.out".format(filename, chain_id)
     calculate_protdist(phylip_file, protdist_output_file)
+    print("Protdist calculated")
+
+    # Generate conversion table file
+    conv_output_file = "{0}_{1}.conv".format(filename, chain_id)
+    map_protein_to_sequence_alignment(input_pdb_file, chain_id, master_sequence, conv_output_file)
+    print("Conversion table file generated")
+
+    print("Whiscy setup finished")
