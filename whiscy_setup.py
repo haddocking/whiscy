@@ -10,11 +10,8 @@ import warnings
 from Bio import AlignIO, SeqIO
 from Bio.Blast import NCBIWWW
 from Bio.Align.Applications import MuscleCommandline
-from Bio.PDB import PDBList
 from Bio.PDB.PDBParser import PDBParser
 from Bio.PDB import PDBIO
-from Bio.PDB.PDBIO import Select
-from Bio.PDB.Polypeptide import is_aa, three_to_one
 # Import SearchIO and suppress experimental warning
 from Bio import BiopythonExperimentalWarning, BiopythonWarning
 warnings.simplefilter('ignore', BiopythonWarning)
@@ -23,6 +20,7 @@ with warnings.catch_warnings():
     from Bio import SearchIO
 from libwhiscy import hssp
 from libwhiscy import access
+from libwhiscy import pdbutil
 
 # Logging
 import logging
@@ -35,17 +33,6 @@ def load_config(config_file='etc/local.json'):
     with open(config_file, 'r') as f:
         config = json.load(f)
         return config
-
-
-def download_pdb_structure(pdb_code, pdb_file_name, file_path='.'):
-    """Downloads a PDB structure from the Protein Data Bank"""
-    pdbl = PDBList()
-    file_name = pdbl.retrieve_pdb_file(pdb_code, file_format='pdb', pdir=file_path, overwrite=True)
-    if os.path.exists(file_name):
-        os.rename(file_name, pdb_file_name)
-    else:
-        logger.error("Can not download structure: {0}".format(pdb_code))
-        raise SystemExit
 
 
 def muscle_msa(config, input_sequence_file, output_alignment_file):
@@ -91,23 +78,6 @@ def calculate_protdist(phylip_file, protdist_output_file):
     subprocess.run(cmd, shell=True)
 
 
-def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False):
-    """Gets the PDB sequence in a dictionary"""
-    mapping = {}
-    pdb_parser = PDBParser(PERMISSIVE=True, QUIET=True)
-    structure = pdb_parser.get_structure(input_pdb_file, input_pdb_file)
-    model = structure[0]
-    chain = model[chain_id]
-    for res in chain:
-        # Remove alternative location residues
-        if "CA" in res.child_dict and is_aa(res) and res.id[2] == ' ':
-            mapping[res.id[1]] = three_to_one(res.get_resname())
-    if mapping_output:
-        return mapping
-    else:
-        return ''.join([mapping[k] for k in sorted(mapping.keys())])
-
-
 def write_to_fasta(output_fasta_file, sequence):
     """Writes a sequence to a FASTA format file"""
     with open(output_fasta_file, 'w') as output_handle:
@@ -116,19 +86,6 @@ def write_to_fasta(output_fasta_file, sequence):
         seq = [sequence[i:i+n] for i in range(0, len(sequence), n)]
         for chunk in seq:
             output_handle.write("{0}{1}".format(chunk, os.linesep))
-
-
-def map_protein_to_sequence_alignment(pdb_file, chain_id, sequence, output_file_name):
-    """Creates a dictionary .conv file mapping protein residue numeration to aligment"""
-    mapping = get_pdb_sequence(pdb_file, chain_id, mapping_output=True)
-    # Check if sequence is the same
-    pdb_seq = ''.join([mapping[k] for k in sorted(mapping.keys())])
-    if pdb_seq != sequence:
-        raise SystemExit("ERROR: PDB sequence doest not match sequence alignment")
-
-    with open(output_file_name, 'w') as output_handle:
-        for seq_res_id, pdb_res_id in enumerate(sorted(mapping.keys())):
-            output_handle.write("{0}     {1}{2}".format(pdb_res_id, seq_res_id+1, os.linesep))
 
 
 if __name__ == "__main__":
@@ -151,7 +108,7 @@ if __name__ == "__main__":
         pdb_code = args.pdb_file_name
         input_pdb_file = '{0}.pdb'.format(pdb_code)
         if not os.path.exists(input_pdb_file):
-            download_pdb_structure(pdb_code, input_pdb_file)
+            pdbutil.download_pdb_structure(pdb_code, input_pdb_file)
         else:
             logger.warning("PDB structure already exists ({0}), no need to download it again".format(input_pdb_file))
     else:
@@ -173,10 +130,6 @@ if __name__ == "__main__":
     if chain_id not in chain_ids:
         logger.error("Chain {0} provided not in available chains: {1}".format(chain_id, str(chain_ids)))
         raise SystemExit
-    
-    class NotAlternative(Select):
-        def accept_residue(self, residue):
-            return (is_aa(residue) and residue.id[2] == ' ')
 
     # Save only the given chain and discard residues with alternative positions
     io = PDBIO()
@@ -184,7 +137,7 @@ if __name__ == "__main__":
     for chain in structure.get_chains():
         if chain.id == chain_id:
             io.set_structure(chain)
-            io.save(current_pdb_file, select=NotAlternative())
+            io.save(current_pdb_file, select=pdbutil.NotAlternative())
     logger.info("PDB structure with chain {0} saved to {1}".format(chain_id, current_pdb_file))
 
     # Calculate SASA:
@@ -198,7 +151,7 @@ if __name__ == "__main__":
     logger.info("Surface and buried residues calculated")
 
     # Get structure sequence
-    master_sequence = get_pdb_sequence(input_pdb_file, chain_id)
+    master_sequence = pdbutil.get_pdb_sequence(input_pdb_file, chain_id)
     write_to_fasta("{0}_{1}.fasta".format(filename, chain_id), master_sequence)
 
     hssp_file = "{0}.hssp".format(pdb_code)
@@ -261,7 +214,7 @@ if __name__ == "__main__":
 
     # Generate conversion table file
     conv_output_file = "{0}_{1}.conv".format(filename, chain_id)
-    map_protein_to_sequence_alignment(current_pdb_file, chain_id, master_sequence, conv_output_file)
+    pdbutil.map_protein_to_sequence_alignment(current_pdb_file, chain_id, master_sequence, conv_output_file)
     logger.info("Conversion table file generated")
 
     logger.info("Whiscy setup finished")
