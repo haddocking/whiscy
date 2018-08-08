@@ -2,6 +2,7 @@
 """Util functions involving structure and PDB files"""
 
 import os
+import re
 from Bio.PDB import PDBList
 from Bio.PDB.PDBParser import PDBParser
 from Bio.PDB.Polypeptide import is_aa, three_to_one
@@ -9,8 +10,16 @@ from Bio.PDB.PDBIO import Select
 
 
 class NotAlternative(Select):
+    """Removes alternative AAs"""
     def accept_residue(self, residue):
         return (is_aa(residue) and residue.id[2] == ' ')
+
+
+_hydrogen = re.compile("[123 ]*H.*")
+def is_hydrogen(atom):
+    """Checks if atom is an hydrogen"""
+    name = atom.get_id() 
+    return _hydrogen.match(name)
 
 
 def download_pdb_structure(pdb_code, pdb_file_name, file_path='.'):

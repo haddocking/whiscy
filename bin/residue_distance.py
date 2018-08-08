@@ -9,40 +9,13 @@ to make such assumptions.
 
 import os
 import argparse
-import re
 from Bio.PDB.PDBParser import PDBParser
+from libwhiscy.whiscy_data import load_conversion_table
+from libwhiscy.pdbutil import is_hydrogen
 # Logging
 import logging
 logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("residue_distance")
-
-
-def load_conversion_table(file_name):
-    """Loads the data from a conversion dictionary file.
-
-    Tipically, this file has extension .conv and its content is two columns.
-    Left column is the id of the position of the residue in the original PDB 
-    structure. Right Column is the id of the position of the residue in Phylseq
-    aligment file.
-    """
-    conversion_table = {}
-    with open(file_name, "rU") as handle:
-        for line in handle:
-            if line:
-                fields = line.rstrip(os.linesep).split()
-                try:
-                    from_index, to_index = int(fields[0]), int(fields[1])
-                    conversion_table[from_index] = to_index
-                except ValueError:
-                    pass
-    return conversion_table
-
-
-_hydrogen = re.compile("[123 ]*H.*")
-def is_hydrogen(atom):
-    """Checks if atom is an hydrogen"""
-    name = atom.get_id() 
-    return _hydrogen.match(name)
 
 
 if __name__ == "__main__":
@@ -84,5 +57,5 @@ if __name__ == "__main__":
                                             min_distance = d
                         output_handle.write("{0} {1} {2:.6f}{3}".format(res1.id[1], res2.id[1], 
                                                                         min_distance, os.linesep))
-    
+
     logger.info("Residue distances written to {}".format(args.output_file))
