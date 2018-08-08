@@ -9,6 +9,7 @@ import Bio
 from Bio.PDB import PDBList
 from Bio.PDB.PDBParser import PDBParser
 from Bio.PDB import PDBIO
+from Bio.PDB.PDBIO import Select
 from Bio.Blast import NCBIWWW
 from Bio.Align.Applications import MuscleCommandline
 from Bio.PDB.Polypeptide import is_aa, three_to_one
@@ -165,13 +166,17 @@ if __name__ == "__main__":
     if chain_id not in chain_ids:
         raise SystemExit("ERROR: Chain {0} provided not in available chains: {1}".format(chain_id, str(chain_ids)))
     
+    class NotAlternative(Select):
+        def accept_residue(self, residue):
+            return (is_aa(residue) and residue.id[2] == ' ')
+
     # Save only the given chain:
     io = PDBIO()
     output_pdb_file = "{}_{}.pdb".format(pdb_code, chain_id)
     for chain in structure.get_chains():
         if chain.id == chain_id:
             io.set_structure(chain)
-            io.save(output_pdb_file)
+            io.save(output_pdb_file, select=NotAlternative())
     print("PDB structure with chain {} saved to {}".format(chain_id, output_pdb_file))
 
     # Calculate SASA:
