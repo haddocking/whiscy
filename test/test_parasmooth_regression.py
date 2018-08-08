@@ -19,12 +19,12 @@ def test_regression_2SNIE():
     os.mkdir(scratch_path)
 
     test_prediction_output = os.path.join(scratch_path, 'test.prediction')
-    cmd_line = "{0} {1} {2} {3} {4} -o {5} > /dev/null".format(parasmooth_bin,
-                                                               acons_file,
-                                                               lcons_file,
-                                                               rd_file,
-                                                               par_file,
-                                                               test_prediction_output)
+    cmd_line = "{0} {1} {2} {3} {4} -o {5} > /dev/null 2>&1".format(parasmooth_bin,
+                                                                    acons_file,
+                                                                    lcons_file,
+                                                                    rd_file,
+                                                                    par_file,
+                                                                    test_prediction_output)
     os.system(cmd_line)
 
     assert filecmp.cmp(test_prediction_output, prediction_file)

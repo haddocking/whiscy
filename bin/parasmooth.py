@@ -3,9 +3,14 @@
 import math
 import os
 import argparse
+# Logging
+import logging
+logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
+logger = logging.getLogger("parasmooth")
 
 
 class Residue:
+    """Represents a residue"""
     def __init__(self, nr, code, score):
         self.nr = nr
         self.code = code
@@ -16,6 +21,7 @@ class Residue:
 
 
 class Distance:
+    """Represents the distance between two residues"""
     def __init__(self, nr1, nr2, dis):
         self.nr1 = nr1
         self.nr2 = nr2
@@ -58,7 +64,8 @@ def read_surface_cons_file(file_name):
                     nr = int(fields[1][1:])
                     residues.append(Residue(nr, code, score))
                 except:
-                    raise SystemExit("ERROR: Reading error in surface conservation file {}".format(file_name))
+                    logger.error("Reading error in surface conservation file {}".format(file_name))
+                    raise SystemExit
     return residues
 
 
@@ -75,7 +82,8 @@ def read_low_accessible_cons_file(file_name):
                     nr = int(fields[1][1:])
                     residues.append(Residue(nr, code, score))
                 except:
-                    raise SystemExit("ERROR: Reading error in low-accessible conservation file {}".format(file_name))
+                    logger.error("Reading error in low-accessible conservation file {}".format(file_name))
+                    raise SystemExit
     return residues
 
 
@@ -92,7 +100,8 @@ def read_residue_distance_matrix(file_name):
                     distance = float(fields[2])
                     distances.append(Distance(nr1, nr2, distance))
                 except:
-                    raise SystemExit("ERROR: Reading error in distance matrix file {}".format(file_name))
+                    logger.error("Reading error in distance matrix file {}".format(file_name))
+                    raise SystemExit
     return distances
 
 
@@ -108,7 +117,8 @@ def read_smoothing_parameter_file(file_name):
                     w = float(fields[1])
                     par[v] = w
                 except:
-                    raise SystemExit("ERROR: Reading error in smoothing parameter file {}".format(file_name))
+                    logger.error("Reading error in smoothing parameter file {}".format(file_name))
+                    raise SystemExit
     return par
 
 
@@ -177,22 +187,25 @@ if __name__ == "__main__":
                         dest="output_file", metavar="output_file")
     args = parser.parse_args()
 
-    # Read .acons file:
+    logger.info("Reading input files")
+
+    # Read .acons file
     res_sur = read_surface_cons_file(args.surface_cons_file)
 
-    # Read .lcons file:
+    # Read .lcons file
     res_lac = read_low_accessible_cons_file(args.low_accessible_cons_file)
 
-    # Read .rd file:
+    # Read .rd file
     resdist = read_residue_distance_matrix(args.residue_distance_matrix)
 
-    # Read .par file:
+    # Read .par file
     par = read_smoothing_parameter_file(args.smoothing_parameter_file)
 
-    # Calculate parasmooth values:
+    # Calculate parasmooth values
+    logger.info("Calculating parameter smoothing")
     res_sur = calculate_parasmooth(res_sur, res_lac, resdist, par)
 
-    # If output to file:
+    # If output to file
     if args.output_file:
         with open(args.output_file, 'w') as handle:
             for n in range(len(res_sur)):
@@ -200,6 +213,7 @@ if __name__ == "__main__":
                                                        res_sur[n].code, 
                                                        res_sur[n].nr,
                                                        os.linesep))
+        logger.info("Result written to {}".format(args.output_file))
     else:
         for n in range(len(res_sur)):
             print("{:8.5f}   {}{}".format(res_sur[n].score, res_sur[n].code, res_sur[n].nr))
