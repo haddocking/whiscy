@@ -30,7 +30,7 @@ logger = logging.getLogger("whiscy_setup")
 
 def load_config(config_file='etc/local.json'):
     """Load Whiscy configuration"""
-    with open(config_file, 'r') as f:
+    with open(os.path.join(os.environ['WHISCY_PATH'], config_file), 'r') as f:
         config = json.load(f)
         return config
 
