@@ -98,7 +98,7 @@ def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False):
     structure = pdb_parser.get_structure(input_pdb_file, input_pdb_file)
     model = structure[0]
     chain = model[chain_id]
-    for res in chain :
+    for res in chain:
         # Remove alternative location residues
         if "CA" in res.child_dict and is_aa(res) and res.id[2] == ' ':
             mapping[res.id[1]] = three_to_one(res.get_resname())

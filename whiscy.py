@@ -69,7 +69,7 @@ if __name__ == "__main__":
     parser.add_argument("conversion_table", help="Conversion table", metavar="conversion_table")
     parser.add_argument("alignment_file", help="Alignment file", metavar="alignment_file")
     parser.add_argument("distance_file", help="Distance file", metavar="distance_file")
-    parser.add_argument("-o", "--output", help="If sets, output prediction to this file", 
+    parser.add_argument("-o", "--output", help="If set, output prediction to this file", 
                         dest="output_file", metavar="output_file")
     args = parser.parse_args()
 

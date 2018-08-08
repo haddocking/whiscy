@@ -183,7 +183,7 @@ if __name__ == "__main__":
     parser.add_argument("low_accessible_cons_file", help="Low accessible conservation file", metavar="low_accessible_cons_file")
     parser.add_argument("residue_distance_matrix", help="Residue distance matrix", metavar="residue_distance_matrix")
     parser.add_argument("smoothing_parameter_file", help="Smoothing parameter file", metavar="smoothing_parameter_file")
-    parser.add_argument("-o", "--output", help="If sets, output prediction to this file", 
+    parser.add_argument("-o", "--output", help="If set, output prediction to this file", 
                         dest="output_file", metavar="output_file")
     args = parser.parse_args()
 
