@@ -13,7 +13,7 @@ def test_regression_2SNIE():
     par_file = os.path.join(golden_data_path, 'regression_parasmooth', 'parasmooth.par')
     prediction_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.parasmooth')
 
-    parasmooth_bin =  os.environ['PARASMOOTH_BIN']
+    parasmooth_bin =  os.path.join(os.environ['WHISCY_PATH'], 'bin', 'parasmooth.py')
     if os.path.exists(scratch_path):
         shutil.rmtree(scratch_path)
     os.mkdir(scratch_path)
