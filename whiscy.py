@@ -8,6 +8,11 @@ from libwhiscy.pam_calc import pam_load_sequences, pam_calc_similarity
 from libwhiscy.pam_data import code
 from libwhiscy.quotes import get_one
 
+# Logging
+import logging
+logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
+logger = logging.getLogger("whiscy")
+
 
 def load_surface_list(file_name):
     """Loads the data from a surface list file.
@@ -68,35 +73,37 @@ if __name__ == "__main__":
                         dest="output_file", metavar="output_file")
     args = parser.parse_args()
 
-    print("Parsing surface list...")
+    logger.info("Parsing surface list...")
     surface_list = load_surface_list(args.surface_list)
 
-    print("Loading conversion table...")
+    logger.info("Loading conversion table...")
     conversion_table = load_conversion_table(args.conversion_table)
 
-    print("Converting...")
+    logger.info("Converting...")
     converted_surface = []
     for n in range(len(surface_list)):
         if not surface_list[n] in conversion_table or conversion_table[surface_list[n]] < 1: 
-            print("WARNING: Surface residue number {0} cannot be converted", surface_list[n])
-            print("Continuing program...")
+            logger.warning("Surface residue number {0} cannot be converted", surface_list[n])
+            logger.info("Continuing program...")
         else:
             converted_surface.append(conversion_table[surface_list[n]])
     
     if not len(converted_surface):
-        raise SystemExit("ERROR: No surface residues")
+        logger.error("No surface residues")
+        raise SystemExit
 
-    print("Initializing score calculation...")
+    logger.info("Initializing score calculation...")
     seqnr, seqlen, refseq, seq_distances, sequences, seqtodis = pam_load_sequences(args.alignment_file, args.distance_file)
 
-    print("Calculating scores...")
+    logger.info("Calculating scores...")
     realsum = 0
     totlist = []
     for n in range(len(converted_surface)):
         r = Residue(converted_surface[n], -1000.)
         totlist.append(r)
         if r.nr > seqlen or r.nr < 1:
-            raise SystemExit("ERROR: surface residue out of range")
+            logger.error("Surface residue out of range")
+            raise SystemExit
         posnr, distances, scores = pam_calc_similarity(converted_surface[n]-1, seqnr, sequences, seq_distances)
         if posnr <= 0 or posnr > seqnr:
             continue
@@ -104,9 +111,10 @@ if __name__ == "__main__":
         r.score = scores[posnr - 1]
 
     if realsum == 0:
-        raise SystemExit("ERROR: No sequence information for any surface residues")
+        logger.error("No sequence information for any surface residues")
+        raise SystemExit
 
-    print("Subtracting average value ...")
+    logger.info("Subtracting average value ...")
 
     scoresum = 0.0
     for n in range(realsum):
@@ -116,10 +124,10 @@ if __name__ == "__main__":
     for n in range(realsum):
         totlist[n].score -= scoreaverage
 
-    print("Sorting scores...")
+    logger.info("Sorting scores...")
     sorted_totlist = sorted(totlist, key=lambda res: res.score, reverse=True)
 
-    print("Writing scores...")
+    logger.info("Writing scores...")
     prediction = ""
     for n in range(realsum):
         r = sorted_totlist[n]
@@ -129,9 +137,10 @@ if __name__ == "__main__":
     if args.output_file:
         with open(args.output_file, "w") as output:
             output.write(prediction)
-        print("Prediction written to {0}".format(args.output_file))
+        logger.info("Prediction written to {0}".format(args.output_file))
     else:
         print(prediction)
 
     # Ending with a quote
+    print()
     print(get_one())
