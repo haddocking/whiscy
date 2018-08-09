@@ -7,28 +7,8 @@ import argparse
 import logging
 logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("parasmooth")
-
-
-class Residue:
-    """Represents a residue"""
-    def __init__(self, nr, code, score):
-        self.nr = nr
-        self.code = code
-        self.score = score
-
-    def __str__(self):
-        return "{}.{}: {}".format(self.code, self.nr, self.score)
-
-
-class Distance:
-    """Represents the distance between two residues"""
-    def __init__(self, nr1, nr2, dis):
-        self.nr1 = nr1
-        self.nr2 = nr2
-        self.dis = dis
-
-    def __str__(self):
-        return "{} - {}: {}".format(self.nr1, self.nr2, self.dis)
+from libwhiscy.whiscy_data import read_surface_cons_file, read_low_accessible_cons_file, \
+                                    read_smoothing_parameter_file, read_residue_distance_matrix
 
 
 def get_weight(par, val):
@@ -49,77 +29,6 @@ def get_weight(par, val):
         wl = par[key]
 
         return wl + (wh - wl) * (val - vl)/(vh - vl)
-
-
-def read_surface_cons_file(file_name):
-    """Reads and parses a .acons file"""
-    residues = []
-    with open(file_name, 'rU') as handle:
-        for line in handle:
-            if line:
-                fields = line.rstrip(os.linesep).split()
-                try:
-                    score = float(fields[0])
-                    code = fields[1][0].upper()
-                    nr = int(fields[1][1:])
-                    residues.append(Residue(nr, code, score))
-                except:
-                    logger.error("Reading error in surface conservation file {}".format(file_name))
-                    raise SystemExit
-    return residues
-
-
-def read_low_accessible_cons_file(file_name):
-    """Reads and parses a .lcons file"""
-    residues = []
-    with open(file_name, 'rU') as handle:
-        for line in handle:
-            if line:
-                fields = line.rstrip(os.linesep).split()
-                try:
-                    score = float(fields[0])
-                    code = fields[1][0].upper()
-                    nr = int(fields[1][1:])
-                    residues.append(Residue(nr, code, score))
-                except:
-                    logger.error("Reading error in low-accessible conservation file {}".format(file_name))
-                    raise SystemExit
-    return residues
-
-
-def read_residue_distance_matrix(file_name):
-    """Reads and parses the residue distance matrix"""
-    distances = []
-    with open(file_name, 'rU') as handle:
-        for line in handle:
-            if line:
-                fields = line.rstrip(os.linesep).split()
-                try:
-                    nr1 = int(fields[0])
-                    nr2 = int(fields[1])
-                    distance = float(fields[2])
-                    distances.append(Distance(nr1, nr2, distance))
-                except:
-                    logger.error("Reading error in distance matrix file {}".format(file_name))
-                    raise SystemExit
-    return distances
-
-
-def read_smoothing_parameter_file(file_name):
-    """Reads and parses the smoothing parameter file"""
-    par = {}
-    with open(file_name, 'rU') as handle:
-        for line in handle:
-            if line:
-                fields = line.rstrip(os.linesep).split()
-                try:
-                    v = float(fields[0])
-                    w = float(fields[1])
-                    par[v] = w
-                except:
-                    logger.error("Reading error in smoothing parameter file {}".format(file_name))
-                    raise SystemExit
-    return par
 
 
 def calculate_parasmooth(res_sur, res_lac, resdist, par):
