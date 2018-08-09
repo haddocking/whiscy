@@ -1,5 +1,5 @@
 import os
-from math import exp
+from math import exp, isclose
 from libwhiscy.pam_data import logpameigval, pameigvec, pameigvecinv, code
 
 
@@ -158,7 +158,7 @@ def pam_calc_similarity(pos, seqnr, seq, dis):
                 break
         if n == (seqnr - 1):
             break
-        if currdist == lastdist: 
+        if isclose(currdist, lastdist): 
             continue
         
         m = dis[currnr].mat
