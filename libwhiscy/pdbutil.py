@@ -59,5 +59,8 @@ def map_protein_to_sequence_alignment(pdb_file, chain_id, sequence, output_file_
         raise SystemExit("ERROR: PDB sequence doest not match sequence alignment")
 
     with open(output_file_name, 'w') as output_handle:
+        output_handle.write("# Conversion table from {} and chain {} to sequence{}".format(pdb_file,
+                                                                                           chain_id,
+                                                                                           os.linesep))
         for seq_res_id, pdb_res_id in enumerate(sorted(mapping.keys())):
             output_handle.write("{0}     {1}{2}".format(pdb_res_id, seq_res_id+1, os.linesep))
