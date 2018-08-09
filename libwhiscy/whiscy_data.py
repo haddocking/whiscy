@@ -139,4 +139,16 @@ def load_residue_weights(file_name):
                 except:
                     pass
     return resweight
-    
+
+
+def load_z_table(file_name):
+    """Loads the Z-table, 25000 rows"""
+    z_values = []
+    with open(file_name, 'rU') as handle:
+        for line in handle:
+            try:
+                line = line.rstrip(os.linesep)
+                z_values.append(float(line))
+            except:
+                pass
+    return z_values
