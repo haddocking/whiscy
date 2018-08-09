@@ -69,7 +69,7 @@ def load_conversion_table(file_name):
     return conversion_table
 
 
-def load_surface_cons_file(file_name):
+def load_cons_file(file_name):
     """Reads and parses a .acons file"""
     residues = []
     with open(file_name, 'rU') as handle:
@@ -82,24 +82,7 @@ def load_surface_cons_file(file_name):
                     nr = int(fields[1][1:])
                     residues.append(Residue(nr, code, score))
                 except:
-                    raise Exception("Reading error in surface conservation file {}".format(file_name))
-    return residues
-
-
-def load_low_accessible_cons_file(file_name):
-    """Reads and parses a .lcons file"""
-    residues = []
-    with open(file_name, 'rU') as handle:
-        for line in handle:
-            if line:
-                fields = line.rstrip(os.linesep).split()
-                try:
-                    score = float(fields[0])
-                    code = fields[1][0].upper()
-                    nr = int(fields[1][1:])
-                    residues.append(Residue(nr, code, score))
-                except:
-                    raise Exception("Reading error in low-accessible conservation file {}".format(file_name))
+                    raise Exception("Reading error in conservation file {}".format(file_name))
     return residues
 
 

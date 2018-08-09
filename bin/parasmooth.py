@@ -7,8 +7,8 @@ import argparse
 import logging
 logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("parasmooth")
-from libwhiscy.whiscy_data import load_surface_cons_file, load_low_accessible_cons_file, \
-                                    load_smoothing_parameter_file, load_residue_distance_matrix
+from libwhiscy.whiscy_data import load_cons_file, load_smoothing_parameter_file, \
+                                    load_residue_distance_matrix
 
 
 def get_weight(par, val):
@@ -100,10 +100,10 @@ if __name__ == "__main__":
 
     try:
         # Read .acons file
-        res_sur = load_surface_cons_file(args.surface_cons_file)
+        res_sur = load_cons_file(args.surface_cons_file)
 
         # Read .lcons file
-        res_lac = load_low_accessible_cons_file(args.low_accessible_cons_file)
+        res_lac = load_cons_file(args.low_accessible_cons_file)
 
         # Read .rd file
         resdist = load_residue_distance_matrix(args.residue_distance_matrix)

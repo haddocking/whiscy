@@ -3,7 +3,7 @@
 import math
 import os
 import argparse
-from libwhiscy.whiscy_data import load_residue_weights
+from libwhiscy.whiscy_data import load_residue_weights, load_cons_file
 # Logging
 import logging
 logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
@@ -29,9 +29,15 @@ if __name__ == "__main__":
         logger.error("Weight file {} does not exist".format(args.residue_weight_file))
         raise SystemExit    
 
+    if not os.path.exists(args.z_table_file):
+        logger.error("Z-table {} does not exist".format(args.z_table_file))
+        raise SystemExit 
+
     logger.info("Reading input files")
 
     resweight = load_residue_weights(args.residue_weight_file)
+
+    residues = load_cons_file(args.cons_file)
 
     # If output to file
     if args.output_file:
