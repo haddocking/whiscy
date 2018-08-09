@@ -26,6 +26,10 @@ class Distance:
         return "{} - {}: {}".format(self.nr1, self.nr2, self.dis)
 
 
+_accepted_residue_codes = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 
+                           'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
+
+
 def load_surface_list(file_name):
     """Loads the data from a surface list file.
 
@@ -65,7 +69,7 @@ def load_conversion_table(file_name):
     return conversion_table
 
 
-def read_surface_cons_file(file_name):
+def load_surface_cons_file(file_name):
     """Reads and parses a .acons file"""
     residues = []
     with open(file_name, 'rU') as handle:
@@ -78,12 +82,11 @@ def read_surface_cons_file(file_name):
                     nr = int(fields[1][1:])
                     residues.append(Residue(nr, code, score))
                 except:
-                    logger.error("Reading error in surface conservation file {}".format(file_name))
-                    raise SystemExit
+                    raise Exception("Reading error in surface conservation file {}".format(file_name))
     return residues
 
 
-def read_low_accessible_cons_file(file_name):
+def load_low_accessible_cons_file(file_name):
     """Reads and parses a .lcons file"""
     residues = []
     with open(file_name, 'rU') as handle:
@@ -96,12 +99,11 @@ def read_low_accessible_cons_file(file_name):
                     nr = int(fields[1][1:])
                     residues.append(Residue(nr, code, score))
                 except:
-                    logger.error("Reading error in low-accessible conservation file {}".format(file_name))
-                    raise SystemExit
+                    raise Exception("Reading error in low-accessible conservation file {}".format(file_name))
     return residues
 
 
-def read_residue_distance_matrix(file_name):
+def load_residue_distance_matrix(file_name):
     """Reads and parses the residue distance matrix"""
     distances = []
     with open(file_name, 'rU') as handle:
@@ -114,12 +116,11 @@ def read_residue_distance_matrix(file_name):
                     distance = float(fields[2])
                     distances.append(Distance(nr1, nr2, distance))
                 except:
-                    logger.error("Reading error in distance matrix file {}".format(file_name))
-                    raise SystemExit
+                    raise Exception("Reading error in distance matrix file {}".format(file_name))
     return distances
 
 
-def read_smoothing_parameter_file(file_name):
+def load_smoothing_parameter_file(file_name):
     """Reads and parses the smoothing parameter file"""
     par = {}
     with open(file_name, 'rU') as handle:
@@ -131,6 +132,28 @@ def read_smoothing_parameter_file(file_name):
                     w = float(fields[1])
                     par[v] = w
                 except:
-                    logger.error("Reading error in smoothing parameter file {}".format(file_name))
-                    raise SystemExit
+                    raise Exception("Reading error in smoothing parameter file {}".format(file_name))
     return par
+
+
+def load_residue_weights(file_name):
+    """Loads a file containing for each line a residue in one letter code and a weight.
+
+    Ignores lines starting with '#', only accepts a residue the first time it appears in the file
+    and only if it belongs to standard list of residues.
+    """
+    resweight = {}
+    with open(file_name, 'rU') as handle:
+        for line in handle:
+            line = line.rstrip(os.linesep)
+            if line[0] != '#':
+                try:
+                    fields = line.split()
+                    residue_id = fields[0].upper()
+                    weight = float(fields[1])
+                    if residue_id in _accepted_residue_codes and residue_id not in resweight:
+                        resweight[residue_id] = weight
+                except:
+                    pass
+    return resweight
+    

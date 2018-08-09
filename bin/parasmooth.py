@@ -7,8 +7,8 @@ import argparse
 import logging
 logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("parasmooth")
-from libwhiscy.whiscy_data import read_surface_cons_file, read_low_accessible_cons_file, \
-                                    read_smoothing_parameter_file, read_residue_distance_matrix
+from libwhiscy.whiscy_data import load_surface_cons_file, load_low_accessible_cons_file, \
+                                    load_smoothing_parameter_file, load_residue_distance_matrix
 
 
 def get_weight(par, val):
@@ -98,21 +98,25 @@ if __name__ == "__main__":
 
     logger.info("Reading input files")
 
-    # Read .acons file
-    res_sur = read_surface_cons_file(args.surface_cons_file)
+    try:
+        # Read .acons file
+        res_sur = load_surface_cons_file(args.surface_cons_file)
 
-    # Read .lcons file
-    res_lac = read_low_accessible_cons_file(args.low_accessible_cons_file)
+        # Read .lcons file
+        res_lac = load_low_accessible_cons_file(args.low_accessible_cons_file)
 
-    # Read .rd file
-    resdist = read_residue_distance_matrix(args.residue_distance_matrix)
+        # Read .rd file
+        resdist = load_residue_distance_matrix(args.residue_distance_matrix)
 
-    # Read .par file
-    par = read_smoothing_parameter_file(args.smoothing_parameter_file)
+        # Read .par file
+        par = load_smoothing_parameter_file(args.smoothing_parameter_file)
 
-    # Calculate parasmooth values
-    logger.info("Calculating parameter smoothing")
-    res_sur = calculate_parasmooth(res_sur, res_lac, resdist, par)
+        # Calculate parasmooth values
+        logger.info("Calculating parameter smoothing")
+        res_sur = calculate_parasmooth(res_sur, res_lac, resdist, par)
+    except Exception as err:
+        logger.error(str(err))
+        raise SystemExit
 
     # If output to file
     if args.output_file:
