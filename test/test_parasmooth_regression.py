@@ -10,7 +10,7 @@ def test_regression_2SNIE():
     acons_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.acons')
     lcons_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.lcons')
     rd_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.rd')
-    par_file = os.path.join(golden_data_path, 'regression_parasmooth', 'parasmooth.par')
+    par_file = os.path.join(os.environ['WHISCY_PATH'], 'param', 'parasmooth.par')
     prediction_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.parasmooth')
 
     parasmooth_bin =  os.path.join(os.environ['WHISCY_PATH'], 'bin', 'parasmooth.py')
