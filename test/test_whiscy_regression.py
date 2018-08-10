@@ -4,15 +4,15 @@ import filecmp
 
 
 golden_data_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/golden_data/'
-scratch_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/scratch_regression'
+scratch_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/scratch_regression_whiscy'
 
 
 def test_regression_2SNIE():
-    surface_file = os.path.join(golden_data_path, 'regression', '2SNIE.sur')
-    conversion_file = os.path.join(golden_data_path, 'regression', '2SNIE.conv')
-    alignment_file = os.path.join(golden_data_path, 'regression', '2SNIE.phylseq')
-    distance_file = os.path.join(golden_data_path, 'regression', '2SNIE.out')
-    prediction_file = os.path.join(golden_data_path, 'regression', '2SNIE.whiscy')
+    surface_file = os.path.join(golden_data_path, 'regression_whiscy', '2SNIE.sur')
+    conversion_file = os.path.join(golden_data_path, 'regression_whiscy', '2SNIE.conv')
+    alignment_file = os.path.join(golden_data_path, 'regression_whiscy', '2SNIE.phylseq')
+    distance_file = os.path.join(golden_data_path, 'regression_whiscy', '2SNIE.out')
+    prediction_file = os.path.join(golden_data_path, 'regression_whiscy', '2SNIE.whiscy')
 
     whiscy_bin =  os.environ['WHISCY_BIN']
     if os.path.exists(scratch_path):
