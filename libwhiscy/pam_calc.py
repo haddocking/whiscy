@@ -36,10 +36,10 @@ def get_pam_assemble(distance):
 def pam_load_sequences(alignment_file, distance_file):
     """Loads the aligment and distance files"""
     if not os.path.exists(distance_file):
-        raise SystemExit("ERROR: Distance file {0} does not exist".format(distance_file))
+        raise Exception("Distance file {0} does not exist".format(distance_file))
 
     if not os.path.exists(alignment_file):
-        raise SystemExit("ERROR: Sequence file {0} does not exist".format(alignment_file))
+        raise Exception("Sequence file {0} does not exist".format(alignment_file))
 
     refseq = ''
     seqtodis = []
@@ -49,14 +49,17 @@ def pam_load_sequences(alignment_file, distance_file):
     with open(distance_file, "rU") as input_distances:
         first_line = input_distances.readline().rstrip(os.linesep)
         fields = first_line.split()
-        seqnr = int(fields[0])
+        try:
+            seqnr = int(fields[0])
+        except:
+            raise Exception("Can not read sequence number")
         if seqnr < 1 or seqnr > 10000:
-            raise SystemExit("ERROR: Invalid number of sequences")
+            raise Exception("Invalid number of sequences")
 
         raw = input_distances.readline().rstrip(os.linesep).split()
 
         if len(raw) != (seqnr + 1):
-            raise SystemExit("ERROR: Reading error in distance file {0}".format(distance_file))
+            raise Exception("Reading error in distance file {0}".format(distance_file))
 
         for n in range(seqnr):
             seq = n
@@ -67,7 +70,7 @@ def pam_load_sequences(alignment_file, distance_file):
                     raise ValueError()
                 dist = val
             except ValueError:
-                raise SystemExit("ERROR: Reading error in distance file {0}".format(distance_file))
+                raise Exception("Reading error in distance file {0}".format(distance_file))
 
             m = get_pam_assemble(100 * dist)
 
@@ -86,7 +89,7 @@ def pam_load_sequences(alignment_file, distance_file):
         fields = first_line.split()
         seqlen = int(fields[1])
         if seqlen < 1 or seqnr > 10000:
-            raise SystemExit("ERROR: Invalid sequence length")
+            raise Exception("Invalid sequence length")
 
         for n in range(seqnr):
             sequences[n] = []

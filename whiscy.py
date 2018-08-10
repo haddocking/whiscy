@@ -54,7 +54,11 @@ if __name__ == "__main__":
         raise SystemExit
 
     logger.info("Initializing score calculation...")
-    seqnr, seqlen, refseq, seq_distances, sequences, seqtodis = pam_load_sequences(args.alignment_file, args.distance_file)
+    try:
+        seqnr, seqlen, refseq, seq_distances, sequences, seqtodis = pam_load_sequences(args.alignment_file, args.distance_file)
+    except Exception as err:
+        logger.error(str(err))
+        raise SystemExit
 
     logger.info("Calculating scores...")
     realsum = 0
