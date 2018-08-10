@@ -108,7 +108,11 @@ if __name__ == "__main__":
         pdb_code = args.pdb_file_name
         input_pdb_file = '{0}.pdb'.format(pdb_code)
         if not os.path.exists(input_pdb_file):
-            pdbutil.download_pdb_structure(pdb_code, input_pdb_file)
+            try:
+                pdbutil.download_pdb_structure(pdb_code, input_pdb_file)
+            except Exception as err:
+                logger.error(str(err))
+                raise SystemExit
         else:
             logger.warning("PDB structure already exists ({0}), no need to download it again".format(input_pdb_file))
     else:

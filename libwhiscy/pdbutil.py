@@ -29,8 +29,7 @@ def download_pdb_structure(pdb_code, pdb_file_name, file_path='.'):
     if os.path.exists(file_name):
         os.rename(file_name, pdb_file_name)
     else:
-        logger.error("Can not download structure: {0}".format(pdb_code))
-        raise SystemExit
+        raise Exception("Can not download structure: {0}".format(pdb_code))
 
 
 def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False):
@@ -43,7 +42,11 @@ def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False):
     for res in chain:
         # Remove alternative location residues
         if "CA" in res.child_dict and is_aa(res) and res.id[2] == ' ':
-            mapping[res.id[1]] = three_to_one(res.get_resname())
+            try:
+                mapping[res.id[1]] = three_to_one(res.get_resname())
+            except KeyError:
+                # Ignore non standard residues such as HIC, MSE, etc.
+                pass
     if mapping_output:
         return mapping
     else:
