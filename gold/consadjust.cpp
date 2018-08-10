@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string>
 #include <map>
+#include <iostream>
 using namespace std;
 
 float z[25000];
@@ -97,6 +98,7 @@ int main(int argc, char *argv[]) {
   for (n = 0; n < consnr; n++) {
     zcalc[n] = (r[n].score - mean) / stddev;
   }
+
 
   fgets(buf, 500, zf);
   err = 0;

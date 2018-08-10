@@ -3,7 +3,7 @@
 import math
 import os
 import argparse
-import bisect
+import numpy as np
 from libwhiscy.whiscy_data import load_residue_weights, load_cons_file, load_z_table
 # Logging
 import logging
@@ -57,11 +57,10 @@ if __name__ == "__main__":
     zcalc = [(res.score - mean) / stddev for res in residues]
 
     # Load Z-matrix
-    z_values = load_z_table(args.z_table_file)
+    z_values = np.array(load_z_table(args.z_table_file))
     if len(z_values) != 25000:
         logger.error("Reading error in Z-table {}".format(args.cons_file))
         raise SystemExit
-
 
     for n in range(consnr):
         pscore = 0.0
@@ -71,16 +70,14 @@ if __name__ == "__main__":
             currz *= -1
             neg = True
     
-        index = min(bisect.bisect_right(z_values, currz), 24999)
+        index = np.argmax(z_values<currz)
         upperz = z_values[index]
 
-        while True:
-            if index >= 24999:
-                pscore = 0.5
-                break
-            if index <= 0:
-                pscore = 0.0
-                break
+        if index >= 24999:
+            pscore = 0.5
+        if index <= 0:
+            pscore = 0.0
+        else: 
             pscore = index - (currz - z_values[index]) / (z_values[index-1] - z_values[index])
 
         newneg = False
