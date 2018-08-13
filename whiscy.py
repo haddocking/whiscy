@@ -44,7 +44,7 @@ if __name__ == "__main__":
     converted_surface = []
     for n in range(len(surface_list)):
         if not surface_list[n] in conversion_table or conversion_table[surface_list[n]] < 1: 
-            logger.warning("Surface residue number {0} cannot be converted", surface_list[n])
+            logger.warning("Surface residue number {0} cannot be converted".format(surface_list[n]))
             logger.info("Continuing program...")
         else:
             converted_surface.append(conversion_table[surface_list[n]])
