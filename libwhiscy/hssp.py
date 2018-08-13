@@ -61,16 +61,14 @@ def _parse_hssp_alignments(line_buffer, chain_id, num_alignments):
             last_alignment = int(fields[1]) - 1
             current_num_alignments = last_alignment - first_alignment + 1
         else:
-            if line[12] == chain_id:
+            if line[12] == chain_id and line[14] != 'X':
                 for i, s in enumerate(line[51:51+current_num_alignments]):
                     # We will convert spaces or dots to -
                     if s == '.' or s == ' ':
                         s = '-'
-                    else:
-                        # Just in case to avoid insertion characters in minor case
-                        s = s.upper()
+                    # We leave residues in minor case as if to not forget insertions
                     alignments[first_alignment + i].append(s)
-    alignments = [''.join(s) for s in alignments]
+    alignments = [(''.join(s)) for s in alignments]
     return alignments
 
 
