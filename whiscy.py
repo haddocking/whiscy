@@ -94,9 +94,10 @@ if __name__ == "__main__":
 
     logger.info("Writing scores...")
     prediction = ""
+    inv_conversion_table = {v: k for k, v in conversion_table.items()}
     for n in range(realsum):
         r = sorted_totlist[n]
-        rid = "{0}{1}".format(refseq[r.nr-1], r.nr)
+        rid = "{0}{1}".format(refseq[r.nr-1], inv_conversion_table[r.nr])
         prediction += "{:7.5f}  {:^5s}{}".format(r.score, rid, os.linesep)
 
     if args.output_file:

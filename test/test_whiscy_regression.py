@@ -31,3 +31,29 @@ def test_regression_2SNIE():
     assert filecmp.cmp(test_prediction_output, prediction_file)
 
     shutil.rmtree(scratch_path)
+
+
+def test_regression_3QI0C():
+    surface_file = os.path.join(golden_data_path, 'regression_whiscy', '3qi0_C.sur')
+    conversion_file = os.path.join(golden_data_path, 'regression_whiscy', '3qi0_C.conv')
+    alignment_file = os.path.join(golden_data_path, 'regression_whiscy', '3qi0_C.phylseq')
+    distance_file = os.path.join(golden_data_path, 'regression_whiscy', '3qi0_C.out')
+    prediction_file = os.path.join(golden_data_path, 'regression_whiscy', '3qi0_C.cons')
+
+    whiscy_bin =  os.environ['WHISCY_BIN']
+    if os.path.exists(scratch_path):
+        shutil.rmtree(scratch_path)
+    os.mkdir(scratch_path)
+
+    test_prediction_output = os.path.join(scratch_path, 'test.prediction')
+    cmd_line = "{0} {1} {2} {3} {4} -o {5} > /dev/null 2>&1".format(whiscy_bin,
+                                                                    surface_file,
+                                                                    conversion_file,
+                                                                    alignment_file,
+                                                                    distance_file,
+                                                                    test_prediction_output)
+    os.system(cmd_line)
+
+    assert filecmp.cmp(test_prediction_output, prediction_file)
+
+    shutil.rmtree(scratch_path)

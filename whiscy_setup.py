@@ -172,8 +172,12 @@ if __name__ == "__main__":
             except Exception as err:
                 logger.error("HSSP file could not be generated")
                 raise SystemExit("Error is: {0}".format(err))
-
-        hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
+        try:
+            hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
+        except Exception as err:
+            logger.error(str(err))
+            raise SystemExit
+        
         logger.info("HSSP file converted to PHYLIP format")
 
     if not os.path.exists(hssp_file):

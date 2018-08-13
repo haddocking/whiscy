@@ -118,7 +118,12 @@ def hssp_file_to_phylip(hssp_file_name, phylip_file_name, chain_id, master_seque
         proteins = _parse_hssp_proteins(prot_line_buffer)
         alignments = _parse_hssp_alignments(line_buffer, chain_id.upper(), num_alignments)
 
-        non_valid = [k for k in proteins.keys() if alignments[k].count('-') == seqlength]
+        all_zero = (sum([len(a) for a in alignments]) == 0)
+
+        if all_zero:
+            raise Exception("Not a single alignment found for chain {}".format(chain_id))
+
+        non_valid = [k for k in proteins.keys() if alignments[k].count('-') >= seqlength]
         with open(phylip_file_name, 'w') as output_handle:
             # Write header, MASTER also counts
             output_handle.write("{}  {}{}".format(len(proteins) - len(non_valid) + 1, seqlength, os.linesep))
