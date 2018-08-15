@@ -104,8 +104,8 @@ venv.bak/
 .mypy_cache/
 
 .DS_Store
-sandbox
-gold/whiscy
-gold/parasmooth
-gold/consadjust
+# Ignore WHISCY old binaries
+test/gold/whiscy
+test/gold/parasmooth
+test/gold/consadjust
 bin/protdist/protdist
