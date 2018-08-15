@@ -1,5 +1,16 @@
 ![WHISCY](media/whiscy_logo.png)
 
+<hr>
+
+Table of Contents
+=================
+
+  * [WHat Information does Surface Conservation Yield](#what-information-does-surface-conservation-yield)
+  * [How does WHISCY work?](#how-does-whiscy-work)
+  * [1. Installation](#1-installation)
+  * [2. WHISCY setup](#2-whiscy-setup)
+  * [3. WHISCY prediction](#3-whiscy-prediction)
+
 ## WHat Information does Surface Conservation Yield?
 
 WHISCY is a program to predict protein-protein interfaces. It is primarily based on conservation, but it also takes into account structural information. A sequence alignment is used to calculate a prediction score for each surface residue of your protein.
@@ -11,12 +22,29 @@ This repository contains the Python 3 implementation of the original code develo
 > *Proteins: Struc. Funct. & Bioinformatics*; 2006, **63**(3): 479-489.
 
 
-Table of Contents
-=================
+## How does WHISCY work?
 
-  * [1. Installation](#1-installation)
-  * [2. WHISCY setup](#2-whiscy-setup)
-  * [3. WHISCY prediction](#3-whiscy-prediction)
+WHISCY requires a protein structure and a sequence alignment. First, it identifies a master sequence, the sequence that best matches the structure.
+
+The sequence distance (amount of mutation) between the master sequence and all sequences is estimated. This determines the amount of expected mutation.
+
+Then, for each residue, the expected mutation is compared with the observed mutation. Less change than expected means conservation, translated into a positive WHISCY score.
+
+<div style="text-align:center;">
+    <img src="media/compare.jpg"/>
+</div>
+
+Next, the interface propensity is taken into account.
+
+Phenylalanines, for example, are likely to be in a protein-protein interface, so all phenylalanines receive a higher score. Lysines are much less likely to be in a protein-protein interface, so lysines receive a lower score.
+
+Finally, all scores are smoothed over the surface of the protein structure.
+
+Interfaces often form patches, so that neighbours of interface residues often are interface residues, too. The smoothing means that the scores of these neighbours are taken into account.
+
+<div style="text-align:center;">
+    <img src="media/interface.jpg"/>
+</div>
 
 
 
@@ -272,3 +300,47 @@ whiscy [INFO] Prediction written to 1ppe_E.cons
 
 The prediction in this case will be saved to the [1ppe_E.cons](example/1ppe_E.cons) file.
 
+### 3.1. WHISCY server-like prediction
+
+To mimic the WHISCY server behavior using interface propensities and surface smoothing, there is a BASH script in the WHICY home directory. You can execute it like in this example:
+
+```bash
+whiscy_protocol.sh 1ppe_E
+```
+
+After a few seconds, there will be a new `.pscons` file with the predicted residues in the interface sorted by their WHISCY score:
+
+```bash
+$ head 1ppe_E.pscons 
+ 0.61467   I73
+ 0.58322   G78
+ 0.56459   V75
+ 0.55906   F82
+ 0.49307   Q81
+ 0.48432   L114
+ 0.47943   E80
+ 0.46539   Y39
+ 0.45669   V76
+ 0.43158   N72
+```
+
+As stated in the original WHISCY publication, residues predicted to be in the interface if the WHISCY score is  higher than 0.180, corresponds to a 29.4% of sensitivity.
+
+
+### 3.2. Show WHISCY predictions
+
+There is a Python3 script in the `bin` directory called `whiscy2bfactor.py` in charge of mapping the WHISCY interface residues prediction into the B-factor column of the PDB file.
+
+An usage example:
+
+```bash
+$ cd ${WHISCY_PATH}/example
+$ ../bin/whiscy2bfactor.py 1ppe_E.pdb 1ppe_E_whiscy.pdb 1ppe_E.pscons
+1ppe_E_whiscy.pdb PDB file with WHISCY scores in B-factor column has been created
+```
+
+We can use any molecular visualization software to depict our molecule using the B-factor column over the surface (example from UCSF Chimera using Cyan-Maroon scale for predicted/not-predicted):
+
+<div style="text-align:center;">
+    <img src="media/1ppe_whiscy.png"/>
+</div>
