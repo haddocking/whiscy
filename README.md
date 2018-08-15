@@ -195,3 +195,80 @@ Note that `whiscy_setup.py` requires of internet access in order to gather the r
 | [1ppe_E.suract](example/1ppe_E.suract)   | >30 % surface residue list according to `sa_act_cutoff` cutoff  | 
 | [1ppe_E.lac](example/1ppe_E.lac)         | 0-15 % accessible residue list                                  | 
 
+
+## 3. WHISCY prediction
+
+Running the main `whiscy.py` script without parameters will give you a guess of the required files for WHISCY in order to predict the interface residues of your protein:
+
+```bash
+$ whiscy.py
+usage: whiscy [-h] [-o output_file]
+              surface_list conversion_table alignment_file distance_file
+whiscy: error: the following arguments are required: surface_list, conversion_table, alignment_file, distance_file
+```
+
+WHISCY needs of four input files:
+
+* `surface_list` which is a list of residues in the interface. Tipically comes with `.sur`extension, for example [1ppe_E.sur](example/1ppe_E.sur).
+* `conversion_table`, the file representing the mapping of the PDB file residue numeration into the FASTA sequence numeration, tipically with `.conv` extension and for example, [1ppe_E.conv](example/1ppe_E.conv).
+* `alignment_file` is the MSA file in PHYLIP format, `.phylseq` extension, [1ppe_E.phylseq](example/1ppe_E.phylseq).
+* `distance_file` is the output of protdist software, in our example with extension `.out`: [1ppe_E.out](example/1ppe_E.out).
+
+If we try the input from our example `whiscy_setup.py` run with the protein [1PPE](https://www.rcsb.org/structure/1ppe) and chain `E`:
+
+```bash
+$ whiscy.py 1ppe_E.sur 1ppe_E.conv 1ppe_E.phylseq 1ppe_E.out 
+whiscy [INFO] Parsing surface list...
+whiscy [INFO] Loading conversion table...
+whiscy [INFO] Converting...
+whiscy [INFO] Initializing score calculation...
+whiscy [INFO] Calculating scores...
+whiscy [INFO] Subtracting average value ...
+whiscy [INFO] Sorting scores...
+whiscy [INFO] Writing scores...
+0.95155   G19 
+0.95070  G219 
+0.91582  G133 
+0.90942   H57 
+0.87666   P28 
+0.84307   G18 
+0.82484  K107 
+0.80778  L123 
+0.75653  P173 
+...
+-1.24180  K222 
+-1.31572  G187 
+-1.41471  G203 
+-1.43181  G193 
+-1.54083  L185 
+-1.64713  Y184 
+-2.41928  C232 
+-2.49188  C191 
+-2.67467  W237 
+-2.77188  W215 
+
+
+"My God, so much I like to drink Scotch that sometimes I think my name is Igor Stra-whiskey."
+  -  Igor Stravinsky
+```
+
+There is also the possibility of writing the WHISCY scores to a file if we use the `-o` flag:
+
+```bash
+$ whiscy.py 1ppe_E.sur 1ppe_E.conv 1ppe_E.phylseq 1ppe_E.out -o 1ppe_E.cons
+whiscy [INFO] Parsing surface list...
+whiscy [INFO] Loading conversion table...
+whiscy [INFO] Converting...
+whiscy [INFO] Initializing score calculation...
+whiscy [INFO] Calculating scores...
+whiscy [INFO] Subtracting average value ...
+whiscy [INFO] Sorting scores...
+whiscy [INFO] Writing scores...
+whiscy [INFO] Prediction written to 1ppe_E.cons
+
+"My God, so much I like to drink Scotch that sometimes I think my name is Igor Stra-whiskey."
+  -  Igor Stravinsky
+```
+
+The prediction in this case will be saved to the [1ppe_E.cons](example/1ppe_E.cons) file.
+
