@@ -339,7 +339,7 @@ $ ../bin/whiscy2bfactor.py 1ppe_E.pdb 1ppe_E_whiscy.pdb 1ppe_E.pscons
 1ppe_E_whiscy.pdb PDB file with WHISCY scores in B-factor column has been created
 ```
 
-We can use any molecular visualization software to depict our molecule using the B-factor column over the surface (example from UCSF Chimera using Cyan-Maroon scale for predicted/not-predicted):
+We can use any molecular visualization software to depict our molecule using the B-factor column over the surface (example from [UCSF Chimera](https://www.cgl.ucsf.edu/chimera/) using Cyan-Maroon scale for predicted/not-predicted):
 
 <div style="text-align:center;">
     <img src="media/1ppe_whiscy.png"/>
