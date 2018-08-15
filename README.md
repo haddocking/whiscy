@@ -24,7 +24,7 @@ Software version is indicative except for Python, which has to be from the 3.6.x
 
 ### 1.1. Installation in macOS
 
-### 1.1.1. Python3, GCC and libraries
+#### 1.1.1. Python3, GCC and libraries
 Using [Macports](https://www.macports.org/), you can install Python 3 and the necessary libraries, GCC and git:
 
 ```bash
@@ -36,10 +36,10 @@ Similar installation should be possible using [Homebrew](https://brew.sh/) inste
 If you already have `python3` and `pip3` installed, it is completely OK to install `bio`, `numpy`and `nose` libraries using `pip3`.
 
 
-### 1.1.2. MUSCLE
+#### 1.1.2. MUSCLE
 To install MUSCLE, go to [the official download site](https://www.drive5.com/muscle/downloads.htm), download the Mac OS X version suitable for your architecture (32 or 64bit) and follow the instructions provided by the authors.
 
-### 1.1.3. FreeSASA
+#### 1.1.3. FreeSASA
 Go to the [FreeSASA main site](https://freesasa.github.io/) and follow the `Quick-start guide`. We don't need the Python bindings as we will be calling freesasa binary from command line.
 
 **Make sure freesasa binary is in your path:**
@@ -57,7 +57,7 @@ Report bugs to <https://github.com/mittinatten/freesasa/issues>
 Home page: <http://freesasa.github.io>
 ```
 
-### 1.1.4. WHISCY
+#### 1.1.4. WHISCY
 Then, the next step is to clone the repository
 
 ```bash
@@ -123,4 +123,13 @@ There is only one final step where we tell WHISCY where to find MUSCLE binary. E
 Change the `MUSCLE_BIN` variable to the correct path of your MUSCLE binary.
 
 
+### 1.2. Installation in GNU/Linux
+
+In Debian/Ubuntu flavours use `apt`:
+
+```bash
+sudo apt-get install python3 python3-numpy python3-nose2 python3-biopython gcc-4.6 git-all
+```
+
+For the next steps, see the macOS instructions which also apply: [1.1.2](#112-muscle), [1.1.3](#113-freesasa) and [1.1.4](#114-whiscy).
 
