@@ -9,6 +9,7 @@ import os
 import json
 import subprocess
 import warnings
+import shutil
 from Bio import AlignIO, SeqIO
 from Bio.Blast import NCBIWWW
 from Bio.Align.Applications import MuscleCommandline
@@ -29,6 +30,13 @@ import logging
 logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("whiscy_setup")
 
+#Some extra checks...
+if 'WHISCY_PATH' not in os.environ:
+    logger.warning("WHISCY_PATH variable not defined in the environment. Assuming the path of the script...")
+    os.environ['WHISCY_PATH'] = os.path.abspath(os.path.dirname(__file__))+os.path.sep
+if shutil.which("freesasa") is None:
+    logger.critical("FreeSASA not in PATH. Please set environment correctly.")
+    raise SystemExit
 
 def load_config(config_file='etc/local.json'):
     """Load Whiscy configuration"""
@@ -41,6 +49,9 @@ def muscle_msa(config, input_sequence_file, output_alignment_file):
     """Calculates a MSA using MUSCLE's Biopython wrapper"""
     muscle_bin = config['ALIGN']['MUSCLE_BIN']
     muscle_cline = MuscleCommandline(muscle_bin, input=input_sequence_file, out=output_alignment_file)
+    if not os.path.exists(muscle_bin):
+        logger.critical("The path defined for the MUSCLE binary is not correct. Check the configuration file!")
+        raise SystemExit
     stdout, stderr = muscle_cline()
     MultipleSeqAlignment = AlignIO.read(output_alignment_file, "fasta") 
     return MultipleSeqAlignment
@@ -76,8 +87,14 @@ def msa_to_phylseq(msa, master_sequence, output_file):
 def calculate_protdist(phylip_file, protdist_output_file):
     """Calculates the protdist of the given MSA"""
     protdist_bin = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bin", "protdist", "protdist")
+    if not os.path.exists(protdist_bin):
+        logger.critical("Protdist was not compiled. Please check the installation instructions")
+        raise SystemExit
     cmd = "{0} {1} {2} > /dev/null 2>&1".format(protdist_bin, phylip_file, protdist_output_file)
-    subprocess.run(cmd, shell=True)
+    try:
+        subprocess.run(cmd, shell=True)
+    except:
+        subprocess.check_call(cmd, shell=True)
 
 
 def write_to_fasta(output_fasta_file, sequence):
