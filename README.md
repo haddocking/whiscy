@@ -5,7 +5,7 @@
 Table of Contents
 =================
 
-  * [WHat Information does Surface Conservation Yield](#what-information-does-surface-conservation-yield)
+  * [WHat Information does Surface Conservation Yield?](#what-information-does-surface-conservation-yield)
   * [How does WHISCY work?](#how-does-whiscy-work)
   * [1. Installation](#1-installation)
   * [2. WHISCY setup](#2-whiscy-setup)
@@ -96,7 +96,7 @@ Home page: <http://freesasa.github.io>
 ```
 
 #### 1.1.4. WHISCY
-Then, the next step is to clone the repository
+Then, the next step is to clone thise repository:
 
 ```bash
 git clone https://github.com/haddocking/whiscy.git
@@ -104,7 +104,7 @@ cd whiscy
 pwd
 ```
 
-With `pwd`, you will get the directory where you have cloned `whiscy`. Please, copy that directory path because you will need to specify it in your `.bashrc` or `.bash_profile` file:
+With `pwd`, you will get the directory where you have cloned `whiscy`. Please, copy that directory path because you will need to specify it in your `.bashrc` or `.bash_profile` file.
 
 Edit your `.bashrc` or `.bash_profile` and add the following lines:
 
@@ -133,9 +133,9 @@ If we see an output like this:
 Too few arguments for this modified version of PROTDIST
 Usage: protdist <infile> <outfile>
 ```
-everythin is ready.
+everything is ready.
 
-There is only one final step where we tell WHISCY where to find MUSCLE binary. Edit `$WHISCY_PATH/etc/local.json`:
+There is only one final step where we tell WHISCY about where to find MUSCLE binary. Edit `$WHISCY_PATH/etc/local.json`:
 
 ```json
 {
@@ -220,7 +220,7 @@ Note that `whiscy_setup.py` requires of internet access in order to gather the r
 | [1ppe_E.conv](example/1ppe_E.conv)       | PDB residue numeration to FASTA sequence numeration             | 
 | [1ppe_E.out](example/1ppe_E.out)         | Output of the `protdist` software on 1ppe_E.pdb                 | 
 | [1ppe_E.sur](example/1ppe_E.sur)         | >15 % surface residue list according to `sa_pred_cutoff` cutoff | 
-| [1ppe_E.suract](example/1ppe_E.suract)   | >30 % surface residue list according to `sa_act_cutoff` cutoff  | 
+| [1ppe_E.suract](example/1ppe_E.suract)   | >40 % surface residue list according to `sa_act_cutoff` cutoff  | 
 | [1ppe_E.lac](example/1ppe_E.lac)         | 0-15 % accessible residue list                                  | 
 
 
@@ -242,7 +242,7 @@ WHISCY needs of four input files:
 * `alignment_file` is the MSA file in PHYLIP format, `.phylseq` extension, [1ppe_E.phylseq](example/1ppe_E.phylseq).
 * `distance_file` is the output of protdist software, in our example with extension `.out`: [1ppe_E.out](example/1ppe_E.out).
 
-If we try the input from our example `whiscy_setup.py` run with the protein [1PPE](https://www.rcsb.org/structure/1ppe) and chain `E`:
+If we try the input from our example, `whiscy_setup.py` runs with the protein [1PPE](https://www.rcsb.org/structure/1ppe) and chain `E`:
 
 ```bash
 $ whiscy.py 1ppe_E.sur 1ppe_E.conv 1ppe_E.phylseq 1ppe_E.out 
@@ -302,7 +302,7 @@ The prediction in this case will be saved to the [1ppe_E.cons](example/1ppe_E.co
 
 ### 3.1. WHISCY server-like prediction
 
-To mimic the WHISCY server behavior using interface propensities and surface smoothing, there is a BASH script in the WHICY home directory. You can execute it like in this example:
+To mimic the WHISCY server behavior using interface propensities and surface smoothing, there is a BASH script in the WHISCY home directory. You can execute it like in this example:
 
 ```bash
 whiscy_protocol.sh 1ppe_E
@@ -324,7 +324,7 @@ $ head 1ppe_E.pscons
  0.43158   N72
 ```
 
-As stated in the original WHISCY publication, residues predicted to be in the interface if the WHISCY score is  higher than 0.180, corresponds to a 29.4% of sensitivity.
+As stated in the original WHISCY publication, residues are predicted to be in the interface if the WHISCY score is higher than 0.180, corresponding to a 29.4% of sensitivity.
 
 
 ### 3.2. Show WHISCY predictions
