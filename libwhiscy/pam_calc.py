@@ -1,5 +1,9 @@
 import os
-from math import exp, isclose
+try:
+    from math import exp, isclose
+except:
+    from math import exp
+    from numpy import isclose
 from libwhiscy.pam_data import logpameigval, pameigvec, pameigvecinv, code
 
 

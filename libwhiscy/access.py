@@ -9,7 +9,10 @@ def calculate_accessibility(pdb_file_name, output_file_name):
     a RSA NACCESS-format like file.
     """
     cmd = "freesasa {} -n 20 --format=rsa --radii=naccess -o {}".format(pdb_file_name, output_file_name)
-    subprocess.run(cmd, shell=True)
+    try:
+        subprocess.run(cmd, shell=True)
+    except:
+        subprocess.check_call(cmd, shell=True)
 
 
 class ResidueSASA():
