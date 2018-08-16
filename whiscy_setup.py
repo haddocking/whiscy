@@ -2,6 +2,8 @@
 
 """Whiscy predictor setup"""
 
+__version__ = 1.0
+
 import argparse
 import os
 import json
@@ -94,6 +96,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='whiscy_setup')
     parser.add_argument("pdb_file_name", help="PDB file name (.pdb extension) or PDB code", metavar="pdb_file_name")
     parser.add_argument("chain_id", help="Chain ID to be predicted", metavar="chain_id")
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
     # Load configuration

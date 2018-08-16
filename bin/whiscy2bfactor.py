@@ -2,6 +2,8 @@
 
 """Adds the WHISCY scoring prediction to the B-factor column of a given PDB"""
 
+__version__ = 1.0
+
 import os
 import sys
 import argparse
@@ -33,6 +35,7 @@ if __name__ == "__main__":
     parser.add_argument("input_pdb_file", help="Input PDB structure file", metavar="input_pdb_file")
     parser.add_argument("output_pdb_file", help="Output PDB file", metavar="output_pdb_file")
     parser.add_argument("whiscy_scores_file", help="WHISCY scores file", metavar="whiscy_scores_file")
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
     input_pdb_file_name = args.input_pdb_file

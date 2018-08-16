@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+__version__ = 1.0
+
 import math
 import os
 import argparse
@@ -94,6 +96,7 @@ if __name__ == "__main__":
     parser.add_argument("smoothing_parameter_file", help="Smoothing parameter file", metavar="smoothing_parameter_file")
     parser.add_argument("-o", "--output", help="If set, output prediction to this file", 
                         dest="output_file", metavar="output_file")
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
     logger.info("Reading input files")

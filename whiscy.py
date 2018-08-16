@@ -2,6 +2,8 @@
 
 """Python 3 implementation of the Whiscy C binary"""
 
+__version__ = "1.0"
+
 import argparse
 import os
 from libwhiscy.pam_calc import pam_load_sequences, pam_calc_similarity
@@ -32,6 +34,7 @@ if __name__ == "__main__":
     parser.add_argument("distance_file", help="Distance file", metavar="distance_file")
     parser.add_argument("-o", "--output", help="If set, output prediction to this file", 
                         dest="output_file", metavar="output_file")
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
     logger.info("Parsing surface list...")

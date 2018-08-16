@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+__version__ = 1.0
+
 import math
 import os
 import argparse
@@ -14,12 +16,13 @@ logger = logging.getLogger("consadjust")
 if __name__ == "__main__":
 
     # Parse command line
-    parser = argparse.ArgumentParser(prog='parasmooth')
+    parser = argparse.ArgumentParser(prog='consadjust')
     parser.add_argument("cons_file", help="Conservation file", metavar="cons_file")
     parser.add_argument("residue_weight_file", help="Residue weight file", metavar="residue_weight_file")
     parser.add_argument("z_table_file", help="Z-table file", metavar="z_table_file")
     parser.add_argument("-o", "--output", help="If set, output prediction to this file", 
                         dest="output_file", metavar="output_file")
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
     if not os.path.exists(args.cons_file):

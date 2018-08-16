@@ -7,6 +7,8 @@ alternative positions. As this script should be executed after whiscy_setup, it 
 to make such assumptions.
 """
 
+__version__ = 1.0
+
 import os
 import argparse
 from Bio.PDB.PDBParser import PDBParser
@@ -25,6 +27,7 @@ if __name__ == "__main__":
     parser.add_argument("pdb_file", help="PDB file", metavar="pdb_file")
     parser.add_argument("conv_file", help="Conversion table file", metavar="conv_file")
     parser.add_argument("output_file", help="Output file name", metavar="output_file")
+    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
     # Read conversion table file
