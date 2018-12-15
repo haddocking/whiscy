@@ -15,7 +15,7 @@ Table of Contents
 
 WHISCY is a program to predict protein-protein interfaces. It is primarily based on conservation, but it also takes into account structural information. A sequence alignment is used to calculate a prediction score for each surface residue of your protein.
 
-This repository contains the Python 3 implementation of the original code developed by [Sjoerd de Vries](https://scholar.google.de/citations?user=fpjNl3wAAAAJ&hl=en) and originally published in [2006](http://dx.doi.org/doi:10.1002/prot.20842):
+This repository contains the Python 3 implementation of the original code developed by [Sjoerd de Vries](https://scholar.google.de/citations?user=fpjNl3wAAAAJ&hl=en) and originally published in [2006](https://doi.org/doi:10.1002/prot.20842):
 
 > *De Vries SJ, van Dijk ADJ, and Bonvin AMJJ*<br>
 > WHISCY: What information does surface conservation yield? Application to data-driven docking.<br>
