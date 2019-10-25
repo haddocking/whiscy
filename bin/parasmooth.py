@@ -5,10 +5,16 @@ __version__ = 1.0
 import math
 import os
 import argparse
+import sys
 # Logging
 import logging
-logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("parasmooth")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter('%(name)s [%(levelname)s] %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 from libwhiscy.whiscy_data import load_cons_file, load_smoothing_parameter_file, \
                                     load_residue_distance_matrix
 

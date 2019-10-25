@@ -10,14 +10,20 @@ to make such assumptions.
 __version__ = 1.0
 
 import os
+import sys
 import argparse
 from Bio.PDB.PDBParser import PDBParser
 from libwhiscy.whiscy_data import load_conversion_table
 from libwhiscy.pdbutil import is_hydrogen
 # Logging
 import logging
-logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("residue_distance")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter('%(name)s [%(levelname)s] %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 if __name__ == "__main__":

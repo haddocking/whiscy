@@ -4,13 +4,19 @@ __version__ = 1.0
 
 import math
 import os
+import sys
 import argparse
 import numpy as np
 from libwhiscy.whiscy_data import load_residue_weights, load_cons_file, load_z_table
 # Logging
 import logging
-logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("consadjust")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter('%(name)s [%(levelname)s] %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 if __name__ == "__main__":

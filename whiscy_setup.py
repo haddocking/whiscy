@@ -6,6 +6,7 @@ __version__ = 1.0
 
 import argparse
 import os
+import sys
 import json
 import subprocess
 import warnings
@@ -27,8 +28,13 @@ from libwhiscy import pdbutil
 
 # Logging
 import logging
-logging.basicConfig(format='%(name)s [%(levelname)s] %(message)s', level=logging.INFO)
 logger = logging.getLogger("whiscy_setup")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter('%(name)s [%(levelname)s] %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 #Some extra checks...
 if 'WHISCY_PATH' not in os.environ:
