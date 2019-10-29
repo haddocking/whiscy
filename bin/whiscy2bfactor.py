@@ -35,6 +35,7 @@ if __name__ == "__main__":
     parser.add_argument("input_pdb_file", help="Input PDB structure file", metavar="input_pdb_file")
     parser.add_argument("output_pdb_file", help="Output PDB file", metavar="output_pdb_file")
     parser.add_argument("whiscy_scores_file", help="WHISCY scores file", metavar="whiscy_scores_file")
+    parser.add_argument("--norm", help="Normalize WHISCY scores", dest="norm", action='store_true', default=False)
     parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
@@ -54,13 +55,15 @@ if __name__ == "__main__":
                     res_num = line[22:26].strip()
                     res_id = "{}{}".format(res, res_num)
                     try:
-                        # Normalized Score = 100 * WHISCYSCORE + 50
-                        # Values are truncated between 0 and 100
-                        normalized_score = max(0.0, min(100.0, 100.0 * (scores[res_id] + 50.0)))
+                        score = scores[res_id]
+                        if args.norm:
+                            # Normalized Score = 100 * WHISCYSCORE + 50
+                            # Values are truncated between 0 and 100
+                            score = max(0.0, min(100.0, 100.0 * (score + 50.0)))
                     except KeyError:
-                        normalized_score = 0.0
+                        score = 0.0
 
-                    line = line[:61] + "%6.2f" % normalized_score + line[66:]
+                    line = line[:61] + "%6.2f" % score + line[66:]
                 output.write(line + os.linesep)
 
     print("{} PDB file with WHISCY scores in B-factor column has been created".format(output_pdb_file_name))
