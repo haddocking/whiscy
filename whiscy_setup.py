@@ -119,6 +119,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='whiscy_setup')
     parser.add_argument("pdb_file_name", help="PDB file name (.pdb extension) or PDB code", metavar="pdb_file_name")
     parser.add_argument("chain_id", help="Chain ID to be predicted", metavar="chain_id")
+    parser.add_argument("--hssp", help="HSSP ID code", 
+                            dest="hssp", metavar="hssp", default=None)
     parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
@@ -184,10 +186,14 @@ if __name__ == "__main__":
     master_sequence = pdbutil.get_pdb_sequence(input_pdb_file, chain_id)
     write_to_fasta("{0}_{1}.fasta".format(filename, chain_id), master_sequence)
 
-    hssp_file = "{0}.hssp".format(pdb_code)
-    phylip_file = "{0}_{1}.phylseq".format(pdb_code, chain_id)
+    if args.hssp:
+        hssp_file = "{0}.hssp".format(args.hssp)
+        phylip_file = "{0}_{1}.phylseq".format(args.hssp, chain_id)
+    else:
+        hssp_file = "{0}.hssp".format(pdb_code)
+        phylip_file = "{0}_{1}.phylseq".format(pdb_code, chain_id)
 
-    if with_pdb_code:
+    if with_pdb_code or args.hssp:
         # Get the HSSP alignment from FTP if pdb code specified
         if not os.path.exists(hssp_file):
             logger.info("Downloading HSSP alignment...")
