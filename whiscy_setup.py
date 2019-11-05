@@ -121,6 +121,10 @@ if __name__ == "__main__":
     parser.add_argument("chain_id", help="Chain ID to be predicted", metavar="chain_id")
     parser.add_argument("--hssp", help="HSSP ID code", 
                             dest="hssp", metavar="hssp", default=None)
+    parser.add_argument("--alignment", help="Alignment file", 
+                            dest="alignment", metavar="alignment", default=None)
+    parser.add_argument("--alignment_format", help="Alignment format", 
+                            dest="alignment_format", metavar="alignment_format", default='fasta')
     parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
 
@@ -213,35 +217,50 @@ if __name__ == "__main__":
         logger.info("HSSP file converted to PHYLIP format")
 
     if not os.path.exists(hssp_file):
-        # Run BLASTP if needed
-        blast_output_file = "{0}_{1}_blast.xml".format(filename, chain_id)
-        input_sequence_file = "{0}_{1}.fasta".format(filename, chain_id)
-        if not os.path.exists(blast_output_file):
-            logger.info("Please wait while running BLASTP against NCBI servers...")
-            ncbi_blast(input_sequence_file, blast_output_file)
-            logger.info("Result stored in {0}".format(blast_output_file))
+        # if no alignment is provided, will do it automatically
+        if not args.alignment:
+            # Run BLASTP if needed
+            blast_output_file = "{0}_{1}_blast.xml".format(filename, chain_id)
+            input_sequence_file = "{0}_{1}.fasta".format(filename, chain_id)
+            if not os.path.exists(blast_output_file):
+                logger.info("Please wait while running BLASTP against NCBI servers...")
+                ncbi_blast(input_sequence_file, blast_output_file)
+                logger.info("Result stored in {0}".format(blast_output_file))
+            else:
+                logger.info("BLAST file found ({0}), nothing to do".format(blast_output_file))
+
+            # Convert file to FASTA format
+            blast_qresult = SearchIO.read(blast_output_file, 'blast-xml')
+            records = []
+            for hit in blast_qresult:
+                records.append(hit[0].hit)
+            blast_fasta_file = "{0}_{1}_blast.fasta".format(filename, chain_id)
+            SeqIO.write(records, blast_fasta_file, "fasta")
+
+            # Multiple sequence alignment
+            logger.info("MSA using MUSCLE...")
+            output_alignment_file = "{0}_{1}_msa.fasta".format(filename, chain_id)
+            msa = muscle_msa(config, blast_fasta_file, output_alignment_file)
+            logger.info("Done.")
+
+            # Convert MSA to Phylipseq
+            logger.info("Converting MSA file to Phylseq format...")
+            output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
+            msa_to_phylseq(msa, master_sequence, output_phylseq_file)
+            logger.info("{} file written".format(output_phylseq_file))
+
         else:
-            logger.info("BLAST file found ({0}), nothing to do".format(blast_output_file))
-
-        # Convert file to FASTA format
-        blast_qresult = SearchIO.read(blast_output_file, 'blast-xml')
-        records = []
-        for hit in blast_qresult:
-            records.append(hit[0].hit)
-        blast_fasta_file = "{0}_{1}_blast.fasta".format(filename, chain_id)
-        SeqIO.write(records, blast_fasta_file, "fasta")
-
-        # Multiple sequence alignment
-        logger.info("MSA using MUSCLE...")
-        output_alignment_file = "{0}_{1}_msa.fasta".format(filename, chain_id)
-        msa = muscle_msa(config, blast_fasta_file, output_alignment_file)
-        logger.info("Done.")
-
-        # Convert MSA to Phylipseq
-        logger.info("Converting MSA file to Phylseq format...")
-        output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
-        msa_to_phylseq(msa, master_sequence, output_phylseq_file)
-        logger.info("{} file written".format(output_phylseq_file))
+            # Alignment is provided, need to convert it to phylipseq
+            # which is the format WHISCY is expecting
+            alignment_file_name = args.alignment
+            alignment_format = args.alignment_format.lower()
+            phylip_file = "{0}_{1}.phylseq".format(pdb_code, chain_id)
+            if alignment_format == 'phylip':
+                # Nothing to convert, just rename file if needed
+                if os.path.basename(alignment_file_name) != phylip_file:
+                    shutil.copyfile(alignment_file_name, phylip_file)
+            else:
+                AlignIO.convert(alignment_file_name, alignment_format, phylip_file, "phylip")
 
     if not os.path.exists(phylip_file):
         logger.error("PHYLIP sequence file {0} not found".format(phylip_file))
