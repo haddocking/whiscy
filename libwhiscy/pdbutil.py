@@ -7,6 +7,7 @@ from Bio.PDB import PDBList
 from Bio.PDB.PDBParser import PDBParser
 from Bio.PDB.Polypeptide import is_aa, three_to_one
 from Bio.PDB.PDBIO import Select
+from Bio import AlignIO
 
 
 class NotAlternative(Select):
@@ -39,7 +40,8 @@ def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False):
     structure = pdb_parser.get_structure(input_pdb_file, input_pdb_file)
     model = structure[0]
     chain = model[chain_id]
-    for res in chain:
+    residues = list(chain)
+    for res in residues:
         # Remove alternative location residues
         if "CA" in res.child_dict and is_aa(res) and res.id[2] == ' ':
             try:
@@ -47,13 +49,20 @@ def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False):
             except KeyError:
                 # Ignore non standard residues such as HIC, MSE, etc.
                 pass
+    # Add missing gap residues by their residue number
+    res_numbers = sorted(mapping.keys())
+    start, end = res_numbers[0], res_numbers[-1]
+    missing = sorted(set(range(start, end + 1)).difference(res_numbers))
+    for m in missing:
+        mapping[m] = '-'
+
     if mapping_output:
         return mapping
     else:
         return ''.join([mapping[k] for k in sorted(mapping.keys())])
 
 
-def map_protein_to_sequence_alignment(pdb_file, chain_id, sequence, output_file_name):
+def map_protein_to_sequence_alignment(pdb_file, chain_id, sequence, phylip_file, output_file_name):
     """Creates a dictionary .conv file mapping protein residue numeration to aligment"""
     mapping = get_pdb_sequence(pdb_file, chain_id, mapping_output=True)
     # Check if sequence is the same
@@ -61,9 +70,20 @@ def map_protein_to_sequence_alignment(pdb_file, chain_id, sequence, output_file_
     if pdb_seq != sequence:
         raise SystemExit("ERROR: PDB sequence doest not match sequence alignment")
 
+    # Account for gaps in phylipseq file
+    #alignment = list(AlignIO.parse(phylip_file, format='phylip-sequential'))[0]
+    #master_phylip = alignment[0].seq
+    #if str(master_phylip.ungap('-')) != pdb_seq:
+    #    print(str(master_phylip))
+    #    print(pdb_seq)
+    #    raise SystemExit("ERROR: PDB sequence doest not match sequence alignment in phylip file")
+
     with open(output_file_name, 'w') as output_handle:
         output_handle.write("# Conversion table from {} and chain {} to sequence{}".format(pdb_file,
                                                                                            chain_id,
                                                                                            os.linesep))
-        for seq_res_id, pdb_res_id in enumerate(sorted(mapping.keys())):
-            output_handle.write("{0}     {1}{2}".format(pdb_res_id, seq_res_id+1, os.linesep))
+        seq_res_id = 1
+        for pdb_res_id in sorted(mapping.keys()):
+            if mapping[pdb_res_id] != '-':
+                output_handle.write("{0}     {1}{2}".format(pdb_res_id, seq_res_id, os.linesep))
+            seq_res_id += 1
