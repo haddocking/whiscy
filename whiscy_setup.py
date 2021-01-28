@@ -89,6 +89,18 @@ def msa_to_phylseq(msa, master_sequence, output_file):
                                                     alignment.seq,
                                                     os.linesep))
 
+def hsspconv(hssp_file, converted_hssp_file, config):
+    """Converts a HSSP in version 3 to original format"""
+    hsspconv_bin = config['ALIGN']['HSSPCONV_BIN']
+    if not os.path.exists(hsspconv_bin):
+        logger.critical("hsspconv cannot be found. Please check the installation instructions")
+        raise SystemExit
+    cmd = "{0} < {1} > {2}".format(hsspconv_bin, hssp_file, converted_hssp_file)
+    try:
+        subprocess.run(cmd, shell=True)
+    except:
+        subprocess.check_call(cmd, shell=True)
+
 
 def calculate_protdist(phylip_file, protdist_output_file):
     """Calculates the protdist of the given MSA"""
@@ -203,12 +215,24 @@ if __name__ == "__main__":
             logger.info("Downloading HSSP alignment...")
             try:
                 compressed_hssp_file = hssp.get_from_ftp(pdb_code)
+                if not compressed_hssp_file:
+                    compressed_hssp_file = hssp.get_from_url(pdb_code)
+            
+                if 'hssp3' in compressed_hssp_file:
+                    hssp_file = hssp_file.replace('hssp', 'hssp3')
                 hssp.decompress_bz2(compressed_hssp_file, hssp_file)
                 logger.info("HSSP alignment stored to {0}".format(hssp_file))
             except Exception as err:
                 logger.error("HSSP file could not be generated")
                 raise SystemExit("Error is: {0}".format(err))
         try:
+            if 'hssp3' in hssp_file:
+                # HSSP downloaded file is in new HSSP3 format, need to be
+                # converted back to original HSSP format using hsspconv
+                converted_hssp_file = hssp_file.replace('hssp3', 'hssp')
+                hsspconv(hssp_file, converted_hssp_file, config)
+                hssp_file = converted_hssp_file
+
             hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
         except Exception as err:
             logger.error(str(err))
@@ -273,7 +297,8 @@ if __name__ == "__main__":
 
     # Generate conversion table file
     conv_output_file = "{0}_{1}.conv".format(filename, chain_id)
-    pdbutil.map_protein_to_sequence_alignment(current_pdb_file, chain_id, master_sequence, conv_output_file)
+    pdbutil.map_protein_to_sequence_alignment(current_pdb_file, chain_id, master_sequence, phylip_file, 
+        conv_output_file)
     logger.info("Conversion table file generated")
 
     logger.info("Whiscy setup finished")

@@ -1,25 +1,41 @@
 from ftplib import FTP
 import os
 import bz2
+import urllib.request
+from Bio import AlignIO
 
 
 def get_from_ftp(pdb_code, path_to_store='.',
-                 ftp_server='ftp.cmbi.ru.nl', ftp_path='/pub/molbio/data/hssp/'):
+                 ftp_server='ftp.cmbi.umcn.nl', ftp_path='/pub/molbio/data/hssp/'):
     """Downloads using FTP protocol an HSSP alignment for the given pdb_code"""
     # Start connection
-    ftp = FTP(ftp_server)
-    # Anonymous login
-    ftp.login()
-    # Move to path where HSSP alignments are stored
-    ftp.cwd(ftp_path)
-    # File name format
-    file_name = '{}.hssp.bz2'.format(pdb_code.lower())
-    # Retrieve file
-    path_to_file = os.path.join(path_to_store, file_name)
-    ftp.retrbinary("RETR " + file_name, open(path_to_file, 'wb').write)
-    # Close connection
-    ftp.close()
+    try:
+        ftp = FTP(ftp_server)
+        # Anonymous login
+        ftp.login()
+        # Move to path where HSSP alignments are stored
+        ftp.cwd(ftp_path)
+        # File name format
+        file_name = '{}.hssp.bz2'.format(pdb_code.lower())
+        # Retrieve file
+        path_to_file = os.path.join(path_to_store, file_name)
+        ftp.retrbinary("RETR " + file_name, open(path_to_file, 'wb').write)
+        # Close connection
+        ftp.close()
 
+        return path_to_file
+    except:
+        if os.path.exists(path_to_file):
+            os.remove(path_to_file)
+        return None
+
+def get_from_url(pdb_code, path_to_store='.',
+                 url='ftp://ftp.cmbi.umcn.nl/pub/molbio/data/hssp3/'):
+    """Downloads from HSSP3 online db the HSSP file in stockholm format"""
+    file_name = '{}.hssp.bz2'.format(pdb_code.lower())
+    # Make sure we use hssp3 instead of simple hssp to help identifying them
+    path_to_file = os.path.join(path_to_store, file_name.replace('hssp', 'hssp3'))
+    urllib.request.urlretrieve(url + file_name, path_to_file)
     return path_to_file
 
 
@@ -74,7 +90,7 @@ def _parse_hssp_alignments(line_buffer, chain_id, num_alignments):
 
 def hssp_file_to_phylip(hssp_file_name, phylip_file_name, chain_id, master_sequence):
     """Parses an HSSP file and returns a list of the sequences"""
-    # We're only instered in the lenght of the sequence of our given chain_id, 
+    # We're only interested in the lenght of the sequence of our given chain_id, 
     # SEQLENGHT header gives us the sum of all.
     seqlength = len(master_sequence)
     num_alignments = 0
@@ -131,3 +147,16 @@ def hssp_file_to_phylip(hssp_file_name, phylip_file_name, chain_id, master_seque
             for k in sorted(proteins.keys()):
                 if k not in non_valid:
                     output_handle.write("{:10s}{}{}".format(proteins[k], alignments[k], os.linesep))
+
+
+def hssp3_file_to_phylip(hssp3_file_name, phylip_file_name, chain_id, master_sequence):
+    """Reads a HSSP file in stockholm format and writes a new msa file in phylip-sequential format
+    only containing the given chain"""
+    alignments = list(AlignIO.parse(hssp3_file_name, format='stockholm'))
+    for align in alignments:
+        if align[0].name[4] == '/':
+            chain = align[0].name[5].upper()
+            if chain == chain_id:
+                align[0].id = align[0].name = align[0].description = 'MASTER'
+                #align[0].seq = align[0].seq.ungap('-')
+                AlignIO.write(align, phylip_file_name, format='phylip-sequential')
