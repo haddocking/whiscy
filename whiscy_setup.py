@@ -89,6 +89,18 @@ def msa_to_phylseq(msa, master_sequence, output_file):
                                                     alignment.seq,
                                                     os.linesep))
 
+def hsspconv(hssp_file, converted_hssp_file, config):
+    """Converts a HSSP in version 3 to original format"""
+    hsspconv_bin = config['ALIGN']['HSSPCONV_BIN']
+    if not os.path.exists(hsspconv_bin):
+        logger.critical("hsspconv cannot be found. Please check the installation instructions")
+        raise SystemExit
+    cmd = "{0} < {1} > {2}".format(hsspconv_bin, hssp_file, converted_hssp_file)
+    try:
+        subprocess.run(cmd, shell=True)
+    except:
+        subprocess.check_call(cmd, shell=True)
+
 
 def calculate_protdist(phylip_file, protdist_output_file):
     """Calculates the protdist of the given MSA"""
@@ -215,9 +227,13 @@ if __name__ == "__main__":
                 raise SystemExit("Error is: {0}".format(err))
         try:
             if 'hssp3' in hssp_file:
-                hssp.hssp3_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
-            else:
-                hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
+                # HSSP downloaded file is in new HSSP3 format, need to be
+                # converted back to original HSSP format using hsspconv
+                converted_hssp_file = hssp_file.replace('hssp3', 'hssp')
+                hsspconv(hssp_file, converted_hssp_file, config)
+                hssp_file = converted_hssp_file
+
+            hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
         except Exception as err:
             logger.error(str(err))
             raise SystemExit

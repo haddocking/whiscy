@@ -1,6 +1,7 @@
 {
   "ALIGN": {
-    "MUSCLE_BIN": "/Users/bjimenez/bin/muscle/muscle3.8.31_i86darwin64"
+    "MUSCLE_BIN": "/Users/bjimenez/bin/muscle/muscle3.8.31_i86darwin64",
+    "HSSPCONV_BIN": "/Users/bjimenez/bin/hssp/hsspconv"
   },
   "CUTOFF": {
     "sa_pred_cutoff": 15.0,
