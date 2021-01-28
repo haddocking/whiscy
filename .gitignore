@@ -109,3 +109,4 @@ test/gold/whiscy
 test/gold/parasmooth
 test/gold/consadjust
 bin/protdist/protdist
+sandbox/

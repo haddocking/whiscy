@@ -284,7 +284,7 @@ if __name__ == "__main__":
                 if os.path.basename(alignment_file_name) != phylip_file:
                     shutil.copyfile(alignment_file_name, phylip_file)
             else:
-                AlignIO.convert(alignment_file_name, alignment_format, phylip_file, "phylip")
+                AlignIO.convert(alignment_file_name, alignment_format, phylip_file, "phylip-sequential")
 
     if not os.path.exists(phylip_file):
         logger.error("PHYLIP sequence file {0} not found".format(phylip_file))
