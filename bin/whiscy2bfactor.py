@@ -51,10 +51,10 @@ if __name__ == "__main__":
             for line in input:
                 line = line.rstrip(os.linesep)
                 if line and line.startswith("ATOM  "):
-                    res = STANDARD_TYPES[line[17:20].strip()]
-                    res_num = line[22:26].strip()
-                    res_id = "{}{}".format(res, res_num)
                     try:
+                        res = STANDARD_TYPES[line[17:20].strip()]
+                        res_num = line[22:26].strip()
+                        res_id = "{}{}".format(res, res_num)
                         score = scores[res_id]
                         if args.norm:
                             # Normalized Score = 100 * WHISCYSCORE + 50
