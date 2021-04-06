@@ -53,12 +53,8 @@ if __name__ == "__main__":
                 if line and line.startswith("ATOM  "):
                     try:
                         res = STANDARD_TYPES[line[17:20].strip()]
-                    except KeyError:
-                        # non standard residue
-                        continue
-                    res_num = line[22:26].strip()
-                    res_id = "{}{}".format(res, res_num)
-                    try:
+                        res_num = line[22:26].strip()
+                        res_id = "{}{}".format(res, res_num)
                         score = scores[res_id]
                         if args.norm:
                             # Normalized Score = 100 * WHISCYSCORE + 50
