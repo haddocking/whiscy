@@ -1,17 +1,41 @@
-from ftplib import FTP
-import os
 import bz2
+import logging
+import os
+import sys
 import urllib.request
+from ftplib import FTP
+from typing import Union
+
 from Bio import AlignIO
+
+# Set logging
+logger = logging.getLogger("hssp_log")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 def get_from_ftp(
-    pdb_code,
-    path_to_store=".",
-    ftp_server="ftp.cmbi.umcn.nl",
-    ftp_path="/pub/molbio/data/hssp/",
-):
-    """Downloads using FTP protocol an HSSP alignment for the given pdb_code"""
+    pdb_code: str,
+    path_to_store: str = ".",
+    ftp_server: str = "ftp.cmbi.umcn.nl",
+    ftp_path: str = "/pub/molbio/data/hssp/",
+) -> Union[str, None]:
+    """Downloads an HSSP alignment file for the given pdb_code using FTP protocol.
+
+    Args:
+        pdb_code (str): The PDB code for which to download the HSSP alignment file.
+        path_to_store (str, optional): The path where the downloaded file should be stored. Defaults to ".".
+        ftp_server (str, optional): The FTP server to connect to. Defaults to "ftp.cmbi.umcn.nl".
+        ftp_path (str, optional): The path on the FTP server where the HSSP alignments are stored. Defaults to "/pub/molbio/data/hssp/".
+
+    Returns:
+        Union[str, None]: The path to the downloaded file if successful, None otherwise.
+    """
+    path_to_file: str = ""
     # Start connection
     try:
         ftp = FTP(ftp_server)
@@ -28,8 +52,10 @@ def get_from_ftp(
         ftp.close()
 
         return path_to_file
-    except:
-        if os.path.exists(path_to_file):
+    except Exception as e:
+        logger.exception(e)
+        logger.error("There was an error downloading the file from the FTP server.")
+        if path_to_file != "" and os.path.exists(path_to_file):
             os.remove(path_to_file)
         return None
 
