@@ -1,3 +1,5 @@
+[![ci](https://github.com/haddocking/whiscy/actions/workflows/test.yml/badge.svg)](https://github.com/haddocking/whiscy/actions/workflows/test.yml)
+
 ![WHISCY](media/whiscy_logo.png)
 
 <hr>
