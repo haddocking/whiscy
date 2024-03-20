@@ -1,0 +1,15 @@
+{
+  "name": "whiscy-dev-container",
+  "build": {
+    "dockerfile": "../Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "ms-python.python",
+        "ms-python.black-formatter"
+      ]
+    }
+  }
+}
