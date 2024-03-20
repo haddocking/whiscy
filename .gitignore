@@ -110,3 +110,11 @@ test/gold/parasmooth
 test/gold/consadjust
 bin/protdist/protdist
 sandbox/
+
+
+# Project specific ignores
+bin/freesasa*
+bin/hssp*
+bin/muscle*
+
+.vscode
