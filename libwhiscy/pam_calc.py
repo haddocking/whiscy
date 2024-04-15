@@ -1,10 +1,12 @@
 import os
+
 try:
     from math import exp, isclose
 except:
     from math import exp
     from numpy import isclose
-from libwhiscy.pam_data import logpameigval, pameigvec, pameigvecinv, code
+
+from libwhiscy.pam_data import code, logpameigval, pameigvec, pameigvecinv
 
 
 class Distance():

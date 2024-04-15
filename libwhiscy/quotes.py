@@ -1,6 +1,5 @@
 import random
 
-
 _quotes = {"Mark Twain": "Too much of anything is bad, but too much good whiskey is barely enough.",
           "Raymond Chandler": "There is no bad whiskey. There are only some whiskeys that aren’t as good as others.",
           "Winston Churchill": "The water was not fit to drink. To make it palatable, we had to add whisky. By diligent effort, I learned to like it.",

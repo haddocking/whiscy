@@ -5,15 +5,16 @@
 __version__ = "1.0"
 
 import argparse
-import os
-import sys
-from libwhiscy.pam_calc import pam_load_sequences, pam_calc_similarity
-from libwhiscy.pam_data import code
-from libwhiscy.quotes import get_one
-from libwhiscy.whiscy_data import load_surface_list, load_conversion_table
-
 # Logging
 import logging
+import os
+import sys
+
+from libwhiscy.pam_calc import pam_calc_similarity, pam_load_sequences
+from libwhiscy.pam_data import code
+from libwhiscy.quotes import get_one
+from libwhiscy.whiscy_data import load_conversion_table, load_surface_list
+
 logger = logging.getLogger("whiscy")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)

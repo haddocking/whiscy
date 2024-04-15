@@ -9,14 +9,17 @@ to make such assumptions.
 
 __version__ = 1.0
 
-import os
-import sys
 import argparse
-from Bio.PDB.PDBParser import PDBParser
-from libwhiscy.whiscy_data import load_conversion_table
-from libwhiscy.pdbutil import is_hydrogen
 # Logging
 import logging
+import os
+import sys
+
+from Bio.PDB.PDBParser import PDBParser
+
+from libwhiscy.pdbutil import is_hydrogen
+from libwhiscy.whiscy_data import load_conversion_table
+
 logger = logging.getLogger("residue_distance")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)

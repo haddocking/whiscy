@@ -5,61 +5,69 @@
 __version__ = 1.0
 
 import argparse
-import os
-import sys
 import json
-import subprocess
-import warnings
+import os
 import shutil
-from Bio import AlignIO, SeqIO
-from Bio.Blast import NCBIWWW
-from Bio.Align.Applications import MuscleCommandline
-from Bio.PDB.PDBParser import PDBParser
-from Bio.PDB import PDBIO
+import subprocess
+import sys
+import warnings
+
 # Import SearchIO and suppress experimental warning
-from Bio import BiopythonExperimentalWarning, BiopythonWarning
-warnings.simplefilter('ignore', BiopythonWarning)
+from Bio import AlignIO, BiopythonExperimentalWarning, BiopythonWarning, SeqIO
+from Bio.Align.Applications import MuscleCommandline
+from Bio.Blast import NCBIWWW
+from Bio.PDB import PDBIO
+from Bio.PDB.PDBParser import PDBParser
+
+warnings.simplefilter("ignore", BiopythonWarning)
 with warnings.catch_warnings():
-    warnings.simplefilter('ignore', BiopythonExperimentalWarning)
+    warnings.simplefilter("ignore", BiopythonExperimentalWarning)
     from Bio import SearchIO
-from libwhiscy import hssp
-from libwhiscy import access
-from libwhiscy import pdbutil
 
 # Logging
 import logging
+
+from libwhiscy import access, hssp, pdbutil
+
 logger = logging.getLogger("whiscy_setup")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.INFO)
-formatter = logging.Formatter('%(name)s [%(levelname)s] %(message)s')
+formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-#Some extra checks...
-if 'WHISCY_PATH' not in os.environ:
-    logger.warning("WHISCY_PATH variable not defined in the environment. Assuming the path of the script...")
-    os.environ['WHISCY_PATH'] = os.path.abspath(os.path.dirname(__file__))+os.path.sep
+# Some extra checks...
+if "WHISCY_PATH" not in os.environ:
+    logger.warning(
+        "WHISCY_PATH variable not defined in the environment. Assuming the path of the script..."
+    )
+    os.environ["WHISCY_PATH"] = os.path.abspath(os.path.dirname(__file__)) + os.path.sep
 if shutil.which("freesasa") is None:
     logger.critical("FreeSASA not in PATH. Please set environment correctly.")
     raise SystemExit
 
-def load_config(config_file='etc/local.json'):
+
+def load_config(config_file="etc/local.json"):
     """Load Whiscy configuration"""
-    with open(os.path.join(os.environ['WHISCY_PATH'], config_file), 'r') as f:
+    with open(os.path.join(os.environ["WHISCY_PATH"], config_file), "r") as f:
         config = json.load(f)
         return config
 
 
 def muscle_msa(config, input_sequence_file, output_alignment_file):
     """Calculates a MSA using MUSCLE's Biopython wrapper"""
-    muscle_bin = config['ALIGN']['MUSCLE_BIN']
-    muscle_cline = MuscleCommandline(muscle_bin, input=input_sequence_file, out=output_alignment_file)
+    muscle_bin = config["ALIGN"]["MUSCLE_BIN"]
+    muscle_cline = MuscleCommandline(
+        muscle_bin, input=input_sequence_file, out=output_alignment_file
+    )
     if not os.path.exists(muscle_bin):
-        logger.critical("The path defined for the MUSCLE binary is not correct. Check the configuration file!")
+        logger.critical(
+            "The path defined for the MUSCLE binary is not correct. Check the configuration file!"
+        )
         raise SystemExit
     stdout, stderr = muscle_cline()
-    MultipleSeqAlignment = AlignIO.read(output_alignment_file, "fasta") 
+    MultipleSeqAlignment = AlignIO.read(output_alignment_file, "fasta")
     return MultipleSeqAlignment
 
 
@@ -74,26 +82,28 @@ def ncbi_blast(fasta_file, output_file):
 
 def msa_to_phylseq(msa, master_sequence, output_file):
     """Converts a MSA to a Phylip Seq file"""
-    with open(output_file, 'w') as output_handle:
+    with open(output_file, "w") as output_handle:
         # Write header
-        output_handle.write("{0}  {1}{2}".format(len(msa), 
-                                                 len(master_sequence),
-                                                 os.linesep))
+        output_handle.write(
+            "{0}  {1}{2}".format(len(msa), len(master_sequence), os.linesep)
+        )
 
         # Write master sequence
-        output_handle.write("MASTER    {0}{1}".format(master_sequence,
-                                                      os.linesep))
+        output_handle.write("MASTER    {0}{1}".format(master_sequence, os.linesep))
         # Write the rest of alignments
         for alignment in msa:
-            output_handle.write("{:10s}{}{}".format(alignment.id[:10],
-                                                    alignment.seq,
-                                                    os.linesep))
+            output_handle.write(
+                "{:10s}{}{}".format(alignment.id[:10], alignment.seq, os.linesep)
+            )
+
 
 def hsspconv(hssp_file, converted_hssp_file, config):
     """Converts a HSSP in version 3 to original format"""
-    hsspconv_bin = config['ALIGN']['HSSPCONV_BIN']
+    hsspconv_bin = config["ALIGN"]["HSSPCONV_BIN"]
     if not os.path.exists(hsspconv_bin):
-        logger.critical("hsspconv cannot be found. Please check the installation instructions")
+        logger.critical(
+            "hsspconv cannot be found. Please check the installation instructions"
+        )
         raise SystemExit
     cmd = "{0} < {1} > {2}".format(hsspconv_bin, hssp_file, converted_hssp_file)
     try:
@@ -104,11 +114,17 @@ def hsspconv(hssp_file, converted_hssp_file, config):
 
 def calculate_protdist(phylip_file, protdist_output_file):
     """Calculates the protdist of the given MSA"""
-    protdist_bin = os.path.join(os.path.dirname(os.path.realpath(__file__)), "bin", "protdist", "protdist")
+    protdist_bin = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "bin", "protdist", "protdist"
+    )
     if not os.path.exists(protdist_bin):
-        logger.critical("Protdist was not compiled. Please check the installation instructions")
+        logger.critical(
+            "Protdist was not compiled. Please check the installation instructions"
+        )
         raise SystemExit
-    cmd = "{0} {1} {2} > /dev/null 2>&1".format(protdist_bin, phylip_file, protdist_output_file)
+    cmd = "{0} {1} {2} > /dev/null 2>&1".format(
+        protdist_bin, phylip_file, protdist_output_file
+    )
     try:
         subprocess.run(cmd, shell=True)
     except:
@@ -117,10 +133,10 @@ def calculate_protdist(phylip_file, protdist_output_file):
 
 def write_to_fasta(output_fasta_file, sequence):
     """Writes a sequence to a FASTA format file"""
-    with open(output_fasta_file, 'w') as output_handle:
+    with open(output_fasta_file, "w") as output_handle:
         output_handle.write(">{0}{1}".format(output_fasta_file, os.linesep))
         n = 60
-        seq = [sequence[i:i+n] for i in range(0, len(sequence), n)]
+        seq = [sequence[i : i + n] for i in range(0, len(sequence), n)]
         for chunk in seq:
             output_handle.write("{0}{1}".format(chunk, os.linesep))
 
@@ -128,29 +144,46 @@ def write_to_fasta(output_fasta_file, sequence):
 if __name__ == "__main__":
 
     # Parse command line
-    parser = argparse.ArgumentParser(prog='whiscy_setup')
-    parser.add_argument("pdb_file_name", help="PDB file name (.pdb extension) or PDB code", metavar="pdb_file_name")
+    parser = argparse.ArgumentParser(prog="whiscy_setup")
+    parser.add_argument(
+        "pdb_file_name",
+        help="PDB file name (.pdb extension) or PDB code",
+        metavar="pdb_file_name",
+    )
     parser.add_argument("chain_id", help="Chain ID to be predicted", metavar="chain_id")
-    parser.add_argument("--hssp", help="HSSP ID code", 
-                            dest="hssp", metavar="hssp", default=None)
-    parser.add_argument("--alignment", help="Alignment file", 
-                            dest="alignment", metavar="alignment", default=None)
-    parser.add_argument("--alignment_format", help="Alignment format", 
-                            dest="alignment_format", metavar="alignment_format", default='fasta')
-    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
+    parser.add_argument(
+        "--hssp", help="HSSP ID code", dest="hssp", metavar="hssp", default=None
+    )
+    parser.add_argument(
+        "--alignment",
+        help="Alignment file",
+        dest="alignment",
+        metavar="alignment",
+        default=None,
+    )
+    parser.add_argument(
+        "--alignment_format",
+        help="Alignment format",
+        dest="alignment_format",
+        metavar="alignment_format",
+        default="fasta",
+    )
+    parser.add_argument(
+        "--version", action="version", version="%(prog)s {}".format(__version__)
+    )
     args = parser.parse_args()
 
     # Load configuration
     config = load_config()
 
     filename, file_extension = os.path.splitext(os.path.basename(args.pdb_file_name))
-    with_pdb_code = (file_extension == '')
+    with_pdb_code = file_extension == ""
     input_pdb_file = None
 
     if with_pdb_code:
         # PDB code has been specified instead of a PDB file name
         pdb_code = args.pdb_file_name
-        input_pdb_file = '{0}.pdb'.format(pdb_code)
+        input_pdb_file = "{0}.pdb".format(pdb_code)
         if not os.path.exists(input_pdb_file):
             try:
                 pdbutil.download_pdb_structure(pdb_code, input_pdb_file)
@@ -158,7 +191,11 @@ if __name__ == "__main__":
                 logger.error(str(err))
                 raise SystemExit
         else:
-            logger.warning("PDB structure already exists ({0}), no need to download it again".format(input_pdb_file))
+            logger.warning(
+                "PDB structure already exists ({0}), no need to download it again".format(
+                    input_pdb_file
+                )
+            )
     else:
         pdb_code = filename
         input_pdb_file = args.pdb_file_name
@@ -176,7 +213,11 @@ if __name__ == "__main__":
         logger.error("Wrong chain id {0}".format(chain_id))
         raise SystemExit
     if chain_id not in chain_ids:
-        logger.error("Chain {0} provided not in available chains: {1}".format(chain_id, str(chain_ids)))
+        logger.error(
+            "Chain {0} provided not in available chains: {1}".format(
+                chain_id, str(chain_ids)
+            )
+        )
         raise SystemExit
 
     # Save only the given chain and discard residues with alternative positions
@@ -186,7 +227,9 @@ if __name__ == "__main__":
         if chain.id == chain_id:
             io.set_structure(chain)
             io.save(current_pdb_file, select=pdbutil.NotAlternative())
-    logger.info("PDB structure with chain {0} saved to {1}".format(chain_id, current_pdb_file))
+    logger.info(
+        "PDB structure with chain {0} saved to {1}".format(chain_id, current_pdb_file)
+    )
 
     # Calculate SASA:
     rsa_output_file = "{0}_{1}.rsa".format(pdb_code, chain_id)
@@ -194,7 +237,7 @@ if __name__ == "__main__":
     logger.info("Atom accessibility calculated to {0}".format(rsa_output_file))
 
     # Calculate the different accessibility files according to the cutoffs:
-    cutoffs = config['CUTOFF']
+    cutoffs = config["CUTOFF"]
     access.create_cutoff_files(rsa_output_file, pdb_code, chain_id, cutoffs)
     logger.info("Surface and buried residues calculated")
 
@@ -217,19 +260,19 @@ if __name__ == "__main__":
                 compressed_hssp_file = hssp.get_from_ftp(pdb_code)
                 if not compressed_hssp_file:
                     compressed_hssp_file = hssp.get_from_url(pdb_code)
-            
-                if 'hssp3' in compressed_hssp_file:
-                    hssp_file = hssp_file.replace('hssp', 'hssp3')
+
+                if "hssp3" in compressed_hssp_file:
+                    hssp_file = hssp_file.replace("hssp", "hssp3")
                 hssp.decompress_bz2(compressed_hssp_file, hssp_file)
                 logger.info("HSSP alignment stored to {0}".format(hssp_file))
             except Exception as err:
                 logger.error("HSSP file could not be generated")
                 raise SystemExit("Error is: {0}".format(err))
         try:
-            if 'hssp3' in hssp_file:
+            if "hssp3" in hssp_file:
                 # HSSP downloaded file is in new HSSP3 format, need to be
                 # converted back to original HSSP format using hsspconv
-                converted_hssp_file = hssp_file.replace('hssp3', 'hssp')
+                converted_hssp_file = hssp_file.replace("hssp3", "hssp")
                 hsspconv(hssp_file, converted_hssp_file, config)
                 hssp_file = converted_hssp_file
 
@@ -237,7 +280,7 @@ if __name__ == "__main__":
         except Exception as err:
             logger.error(str(err))
             raise SystemExit
-        
+
         logger.info("HSSP file converted to PHYLIP format")
 
     if not os.path.exists(hssp_file):
@@ -251,10 +294,12 @@ if __name__ == "__main__":
                 ncbi_blast(input_sequence_file, blast_output_file)
                 logger.info("Result stored in {0}".format(blast_output_file))
             else:
-                logger.info("BLAST file found ({0}), nothing to do".format(blast_output_file))
+                logger.info(
+                    "BLAST file found ({0}), nothing to do".format(blast_output_file)
+                )
 
             # Convert file to FASTA format
-            blast_qresult = SearchIO.read(blast_output_file, 'blast-xml')
+            blast_qresult = SearchIO.read(blast_output_file, "blast-xml")
             records = []
             for hit in blast_qresult:
                 records.append(hit[0].hit)
@@ -279,12 +324,17 @@ if __name__ == "__main__":
             alignment_file_name = args.alignment
             alignment_format = args.alignment_format.lower()
             phylip_file = "{0}_{1}.phylseq".format(pdb_code, chain_id)
-            if alignment_format == 'phylip':
+            if alignment_format == "phylip":
                 # Nothing to convert, just rename file if needed
                 if os.path.basename(alignment_file_name) != phylip_file:
                     shutil.copyfile(alignment_file_name, phylip_file)
             else:
-                AlignIO.convert(alignment_file_name, alignment_format, phylip_file, "phylip-sequential")
+                AlignIO.convert(
+                    alignment_file_name,
+                    alignment_format,
+                    phylip_file,
+                    "phylip-sequential",
+                )
 
     if not os.path.exists(phylip_file):
         logger.error("PHYLIP sequence file {0} not found".format(phylip_file))
@@ -297,8 +347,9 @@ if __name__ == "__main__":
 
     # Generate conversion table file
     conv_output_file = "{0}_{1}.conv".format(filename, chain_id)
-    pdbutil.map_protein_to_sequence_alignment(current_pdb_file, chain_id, master_sequence, phylip_file, 
-        conv_output_file)
+    pdbutil.map_protein_to_sequence_alignment(
+        current_pdb_file, chain_id, master_sequence, phylip_file, conv_output_file
+    )
     logger.info("Conversion table file generated")
 
     logger.info("Whiscy setup finished")

@@ -8,11 +8,11 @@
 
 __version__ = 1.0
 
+import argparse
 import os
 import sys
-import argparse
-import Bio.PDB
 
+import Bio.PDB
 
 STANDARD_TYPES = {'ALA': 'A', 'ARG': 'R', 'ASN': 'N', 'ASP': 'D', 'CYS': 'C',
                   'GLU': 'E', 'GLN': 'Q', 'GLY': 'G', 'HIS': 'H', 'ILE': 'I',
