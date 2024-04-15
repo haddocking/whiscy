@@ -51,6 +51,13 @@ ENV WHISCY_PATH=/opt/software/whiscy
 ENV PYTHONPATH="${PYTHONPATH}:${WHISCY_PATH}"
 ENV WHISCY_BIN="${WHISCY_PATH}/whiscy.py"
 ENV PATH="${WHISCY_PATH}:${WHISCY_PATH}/bin/freesasa/bin:${PATH}"
+
+WORKDIR /data
+
+###############################################################################################
+# No entrypoint here because Whiscy runs multiple commands
+###############################################################################################
+
 #==============================================================================================
 
 FROM base AS test
