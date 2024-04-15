@@ -1,5 +1,5 @@
 import filecmp
-import os
+import sys
 import subprocess
 from pathlib import Path
 
@@ -52,7 +52,7 @@ def test_regression_2SNIE(
 ):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{parasmooth_bin} {acons_file} {lcons_file} {rd_file} {par_file} -o {test_prediction_output}"
+    cmd_line = f"{sys.executable} {parasmooth_bin} {acons_file} {lcons_file} {rd_file} {par_file} -o {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),

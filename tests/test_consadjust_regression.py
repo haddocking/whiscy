@@ -1,6 +1,7 @@
 import filecmp
 import subprocess
 from pathlib import Path
+import sys
 
 import pytest
 
@@ -40,7 +41,7 @@ def test_regression_consadjust2SNIE(
 ):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{consadjust_bin} {cons_file} {weight_ma_file} {ztable_file} -o {test_prediction_output}"
+    cmd_line = f"{sys.executable} {consadjust_bin} {cons_file} {weight_ma_file} {ztable_file} -o {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),
