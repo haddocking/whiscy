@@ -1,32 +1,65 @@
-import os
-import shutil
 import filecmp
+import os
+import subprocess
+from pathlib import Path
+
+import pytest
+
+from . import GOLDEN_DATA_PATH, WHISCY_PATH
 
 
-golden_data_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/golden_data/'
-scratch_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/scratch_regression_parasmooth'
+@pytest.fixture
+def acons_file():
+    return Path(GOLDEN_DATA_PATH, "regression_parasmooth", "2SNIE.acons")
 
-def test_regression_2SNIE():
-    acons_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.acons')
-    lcons_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.lcons')
-    rd_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.rd')
-    par_file = os.path.join(os.environ['WHISCY_PATH'], 'param', 'parasmooth.par')
-    prediction_file = os.path.join(golden_data_path, 'regression_parasmooth', '2SNIE.parasmooth')
 
-    parasmooth_bin =  os.path.join(os.environ['WHISCY_PATH'], 'bin', 'parasmooth.py')
-    if os.path.exists(scratch_path):
-        shutil.rmtree(scratch_path)
-    os.mkdir(scratch_path)
+@pytest.fixture
+def lcons_file():
+    return Path(GOLDEN_DATA_PATH, "regression_parasmooth", "2SNIE.lcons")
 
-    test_prediction_output = os.path.join(scratch_path, 'test.prediction')
-    cmd_line = "{0} {1} {2} {3} {4} -o {5} > /dev/null 2>&1".format(parasmooth_bin,
-                                                                    acons_file,
-                                                                    lcons_file,
-                                                                    rd_file,
-                                                                    par_file,
-                                                                    test_prediction_output)
-    os.system(cmd_line)
+
+@pytest.fixture
+def rd_file():
+    return Path(GOLDEN_DATA_PATH, "regression_parasmooth", "2SNIE.rd")
+
+
+@pytest.fixture
+def par_file():
+    return Path(WHISCY_PATH, "param", "parasmooth.par")
+
+
+@pytest.fixture
+def prediction_file():
+    return Path(GOLDEN_DATA_PATH, "regression_parasmooth", "2SNIE.parasmooth")
+
+
+@pytest.fixture
+def parasmooth_bin():
+    return Path(WHISCY_PATH, "bin", "parasmooth.py")
+
+
+@pytest.mark.parametrize(
+    "scratch_path", ["scratch_regression_parasmooth"], indirect=True
+)
+def test_regression_2SNIE(
+    scratch_path,
+    acons_file,
+    lcons_file,
+    rd_file,
+    par_file,
+    prediction_file,
+    parasmooth_bin,
+):
+
+    test_prediction_output = Path(scratch_path, "test.prediction")
+    cmd_line = f"{parasmooth_bin} {acons_file} {lcons_file} {rd_file} {par_file} -o {test_prediction_output}"
+
+    result = subprocess.run(
+        cmd_line.split(),
+        capture_output=True,
+        env={"PYTHONPATH": WHISCY_PATH},
+    )
+
+    assert result.returncode == 0
 
     assert filecmp.cmp(test_prediction_output, prediction_file)
-
-    shutil.rmtree(scratch_path)

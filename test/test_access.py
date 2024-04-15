@@ -1,46 +1,78 @@
+import filecmp
 import os
 import shutil
-import filecmp
+from pathlib import Path
+
+import pytest
+
 from libwhiscy import access
 
-
-golden_data_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/golden_data/'
-scratch_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/scratch_access'
+from . import GOLDEN_DATA_PATH
 
 
-def test_create_cutoff_files():
-    rsa_file = os.path.join(golden_data_path, 'access', '2sni_E.rsa')
-    sur_file = os.path.join(golden_data_path, 'access', '2sni_E.sur')
-    suract_file = os.path.join(golden_data_path, 'access', '2sni_E.suract')
-    lac_file = os.path.join(golden_data_path, 'access', '2sni_E.lac')
-    cutoffs = {"sa_pred_cutoff": 15.0, "sa_act_cutoff": 40.0}
-
-    if os.path.exists(scratch_path):
-        shutil.rmtree(scratch_path)
-    os.mkdir(scratch_path)
-
-    access.create_cutoff_files(rsa_file, '2sni', 'E', cutoffs, path=scratch_path)
-
-    assert filecmp.cmp(sur_file, os.path.join(scratch_path, '2sni_E.sur'))
-    assert filecmp.cmp(suract_file, os.path.join(scratch_path, '2sni_E.suract'))
-    assert filecmp.cmp(lac_file, os.path.join(scratch_path, '2sni_E.lac'))
-
-    shutil.rmtree(scratch_path)
+@pytest.fixture
+def rsa_file():
+    return Path(GOLDEN_DATA_PATH, "access", "2sni_E.rsa")
 
 
-def test_calculate_accessibility():
-    pdb_file = '2sni_E.pdb'
-    rsa_file = os.path.join(golden_data_path, 'access', '2sni_E.rsa')
+@pytest.fixture
+def sur_file():
+    return Path(GOLDEN_DATA_PATH, "access", "2sni_E.sur")
 
-    if os.path.exists(scratch_path):
-        shutil.rmtree(scratch_path)
-    os.mkdir(scratch_path)
+
+@pytest.fixture
+def suract_file():
+    return Path(GOLDEN_DATA_PATH, "access", "2sni_E.suract")
+
+
+@pytest.fixture
+def lac_file():
+    return Path(GOLDEN_DATA_PATH, "access", "2sni_E.lac")
+
+
+@pytest.fixture
+def pdb_file():
+    return Path(GOLDEN_DATA_PATH, "access", "2sni_E.pdb")
+
+
+@pytest.mark.parametrize("scratch_path", ["scratch_access"], indirect=True)
+def test_create_cutoff_files(scratch_path, sur_file, suract_file, lac_file, rsa_file):
+
+    access.create_cutoff_files(
+        rsa_file,
+        "2sni",
+        "E",
+        cutoffs={"sa_pred_cutoff": 15.0, "sa_act_cutoff": 40.0},
+        path=scratch_path,
+    )
+
+    expected_sur = Path(scratch_path, "2sni_E.sur")
+    expected_suract = Path(scratch_path, "2sni_E.suract")
+    expected_lac = Path(scratch_path, "2sni_E.lac")
+
+    assert filecmp.cmp(sur_file, expected_sur)
+    assert filecmp.cmp(suract_file, expected_suract)
+    assert filecmp.cmp(lac_file, expected_lac)
+
+
+@pytest.mark.parametrize("scratch_path", ["scratch_access"], indirect=True)
+def test_calculate_accessibility(scratch_path, pdb_file, rsa_file):
 
     # Move to this directory in order to the output of freesasa be the same
-    os.chdir(os.path.join(golden_data_path, 'access'))
+    ori_dir = os.getcwd()
+    os.chdir(scratch_path)
 
-    access.calculate_accessibility(pdb_file, os.path.join(scratch_path, '2sni_E.rsa'))
+    output_rsa = Path(scratch_path, "2sni_E.rsa")
 
-    assert filecmp.cmp(rsa_file, os.path.join(scratch_path, '2sni_E.rsa'))
+    # Copy the pdb to the scratch directory
+    src = pdb_file
+    dst = Path(scratch_path, pdb_file.name)
+    shutil.copy(src, dst)
 
-    shutil.rmtree(scratch_path)
+    access.calculate_accessibility(
+        pdb_file_name=pdb_file.name, output_file_name=output_rsa
+    )
+
+    os.chdir(ori_dir)
+
+    assert filecmp.cmp(rsa_file, output_rsa)

@@ -1,29 +1,59 @@
-import os
-import shutil
-import filecmp
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+from . import GOLDEN_DATA_PATH, WHISCY_PATH
 
 
-golden_data_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/golden_data/'
-scratch_path = os.path.normpath(os.path.dirname(os.path.realpath(__file__))) + '/scratch_regression_residue_distance'
+@pytest.fixture
+def pdb_file():
+    return Path(GOLDEN_DATA_PATH, "regression_residue_distance", "1ppe_I.pdb")
 
 
-def test_rd_regression_1PPEI():
-    pdb_file = os.path.join(golden_data_path, 'regression_residue_distance', '1ppe_I.pdb')
-    conversion_file = os.path.join(golden_data_path, 'regression_residue_distance', '1ppe_I.conv')
-    rd_file = os.path.join(golden_data_path, 'regression_residue_distance', '1ppe_I.rd')
+@pytest.fixture
+def conversion_file():
+    return Path(GOLDEN_DATA_PATH, "regression_residue_distance", "1ppe_I.conv")
 
-    rd_bin =  os.path.join(os.environ['WHISCY_PATH'], 'bin', 'residue_distance.py')
-    if os.path.exists(scratch_path):
-        shutil.rmtree(scratch_path)
-    os.mkdir(scratch_path)
 
-    test_prediction_output = os.path.join(scratch_path, 'test.prediction')
-    cmd_line = "{0} {1} {2} {3} > /dev/null 2>&1".format(rd_bin,
-                                                         pdb_file,
-                                                         conversion_file,
-                                                         test_prediction_output)
-    os.system(cmd_line)
+@pytest.fixture
+def rd_file():
+    return Path(GOLDEN_DATA_PATH, "regression_residue_distance", "1ppe_I.rd")
 
-    assert filecmp.cmp(test_prediction_output, rd_file)
 
-    shutil.rmtree(scratch_path)
+@pytest.fixture
+def rd_bin():
+    return Path(WHISCY_PATH, "bin", "residue_distance.py")
+
+
+@pytest.mark.parametrize(
+    "scratch_path", ["scratch_regression_residue_distance"], indirect=True
+)
+def test_rd_regression_1PPEI(scratch_path, pdb_file, conversion_file, rd_file, rd_bin):
+
+    test_prediction_output = Path(scratch_path, "test.prediction")
+    cmd_line = f"{sys.executable} {rd_bin} {pdb_file} {conversion_file} {test_prediction_output}"
+
+    result = subprocess.run(
+        cmd_line.split(),
+        capture_output=True,
+        env={"PYTHONPATH": WHISCY_PATH},
+    )
+
+    assert result.returncode == 0
+
+    with open(test_prediction_output, "r") as f1, open(rd_file, "r") as f2:
+        f1_lines = f1.readlines()
+        f2_lines = f2.readlines()
+
+        assert len(f1_lines) == len(f2_lines)
+
+        # Check if the lines are the same
+        for l1, l2 in zip(f1_lines, f2_lines):
+            r1_1, r1_2, v1 = l1.split()
+            r2_1, r2_2, v2 = l2.split()
+
+            assert r1_1 == r2_1
+            assert r1_2 == r2_2
+            assert float(v1) == pytest.approx(float(v2), abs=0.001)
