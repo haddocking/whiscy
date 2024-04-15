@@ -3,11 +3,12 @@
 
 import os
 import re
+
+from Bio import AlignIO
 from Bio.PDB import PDBList
+from Bio.PDB.PDBIO import Select
 from Bio.PDB.PDBParser import PDBParser
 from Bio.PDB.Polypeptide import is_aa, three_to_one
-from Bio.PDB.PDBIO import Select
-from Bio import AlignIO
 
 
 class NotAlternative(Select):

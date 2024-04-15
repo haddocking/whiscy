@@ -2,14 +2,18 @@
 
 __version__ = 1.0
 
+import argparse
+# Logging
+import logging
 import math
 import os
 import sys
-import argparse
+
 import numpy as np
-from libwhiscy.whiscy_data import load_residue_weights, load_cons_file, load_z_table
-# Logging
-import logging
+
+from libwhiscy.whiscy_data import (load_cons_file, load_residue_weights,
+                                   load_z_table)
+
 logger = logging.getLogger("consadjust")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)

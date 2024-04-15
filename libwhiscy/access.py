@@ -1,5 +1,5 @@
-import subprocess
 import os
+import subprocess
 
 
 def calculate_accessibility(pdb_file_name, output_file_name):
