@@ -1,0 +1,1555 @@
+<?xml version="1.0"?>
+<!DOCTYPE BlastOutput PUBLIC "-//NCBI//NCBI BlastOutput/EN" "http://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd">
+<BlastOutput>
+  <BlastOutput_program>blastp</BlastOutput_program>
+  <BlastOutput_version>BLASTP 2.15.0+</BlastOutput_version>
+  <BlastOutput_reference>Stephen F. Altschul, Thomas L. Madden, Alejandro A. Sch&amp;auml;ffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), &quot;Gapped BLAST and PSI-BLAST: a new generation of protein database search programs&quot;, Nucleic Acids Res. 25:3389-3402.</BlastOutput_reference>
+  <BlastOutput_db>nr</BlastOutput_db>
+  <BlastOutput_query-ID>Query_3726953</BlastOutput_query-ID>
+  <BlastOutput_query-def>1PPE_I.fasta</BlastOutput_query-def>
+  <BlastOutput_query-len>29</BlastOutput_query-len>
+  <BlastOutput_param>
+    <Parameters>
+      <Parameters_matrix>BLOSUM62</Parameters_matrix>
+      <Parameters_expect>10</Parameters_expect>
+      <Parameters_gap-open>11</Parameters_gap-open>
+      <Parameters_gap-extend>1</Parameters_gap-extend>
+      <Parameters_filter>F</Parameters_filter>
+    </Parameters>
+  </BlastOutput_param>
+<BlastOutput_iterations>
+<Iteration>
+  <Iteration_iter-num>1</Iteration_iter-num>
+  <Iteration_query-ID>Query_3726953</Iteration_query-ID>
+  <Iteration_query-def>1PPE_I.fasta</Iteration_query-def>
+  <Iteration_query-len>29</Iteration_query-len>
+<Iteration_hits>
+<Hit>
+  <Hit_num>1</Hit_num>
+  <Hit_id>gb|AHW57457.1|</Hit_id>
+  <Hit_def>GB1-CMTI-III [synthetic construct]</Hit_def>
+  <Hit_accession>AHW57457</Hit_accession>
+  <Hit_len>107</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>63.1586</Hsp_bit-score>
+      <Hsp_score>152</Hsp_score>
+      <Hsp_evalue>3.09456e-11</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>79</Hsp_hit-from>
+      <Hsp_hit-to>107</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>28</Hsp_identity>
+      <Hsp_positive>29</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPRILMKCKKDSDCLAECVCLEHGYCG</Hsp_hseq>
+      <Hsp_midline>RVCPRILM+CKKDSDCLAECVCLEHGYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>2</Hit_num>
+  <Hit_id>sp|P01074.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 1; AltName: Full=CMTI-I; AltName: Full=ITD-I; AltName: Full=Trypsin inhibitor I [Cucurbita maxima] &gt;pdb|1CTI|A Chain A, TRYPSIN INHIBITOR [Cucurbita maxima] &gt;pdb|1PPE|I Chain I, TRYPSIN INHIBITOR CMTI-I [unidentified] &gt;pdb|2CTI|A Chain A, TRYPSIN INHIBITOR [Cucurbita maxima] &gt;pdb|2STA|I Chain I, PROTEIN (TRYPSIN INHIBITOR) [Cucurbita maxima] &gt;pdb|3CTI|A Chain A, TRYPSIN INHIBITOR [Cucurbita maxima]</Hit_def>
+  <Hit_accession>P01074</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>60.8474</Hsp_bit-score>
+      <Hsp_score>146</Hsp_score>
+      <Hsp_evalue>3.18059e-11</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>29</Hsp_identity>
+      <Hsp_positive>29</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_hseq>
+      <Hsp_midline>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>3</Hit_num>
+  <Hit_id>gb|KAG7014944.1|</Hit_id>
+  <Hit_def>hypothetical protein SDJN02_22575, partial [Cucurbita argyrosperma subsp. argyrosperma]</Hit_def>
+  <Hit_accession>KAG7014944</Hit_accession>
+  <Hit_len>141</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>63.5438</Hsp_bit-score>
+      <Hsp_score>153</Hsp_score>
+      <Hsp_evalue>4.57372e-11</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>113</Hsp_hit-from>
+      <Hsp_hit-to>141</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>27</Hsp_identity>
+      <Hsp_positive>29</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPKILMECKKDSDCLAECICLEHGYCG</Hsp_hseq>
+      <Hsp_midline>RVCP+ILMECKKDSDCLAEC+CLEHGYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>4</Hit_num>
+  <Hit_id>gb|KAG6576919.1|</Hit_id>
+  <Hit_def>hypothetical protein SDJN03_24493, partial [Cucurbita argyrosperma subsp. sororia]</Hit_def>
+  <Hit_accession>KAG6576919</Hit_accession>
+  <Hit_len>141</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>63.5438</Hsp_bit-score>
+      <Hsp_score>153</Hsp_score>
+      <Hsp_evalue>4.72435e-11</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>113</Hsp_hit-from>
+      <Hsp_hit-to>141</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>27</Hsp_identity>
+      <Hsp_positive>29</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPKILMECKKDSDCLAECICLEHGYCG</Hsp_hseq>
+      <Hsp_midline>RVCP+ILMECKKDSDCLAEC+CLEHGYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>5</Hit_num>
+  <Hit_id>pdb|1LU0|A</Hit_id>
+  <Hit_def>Chain A, Trypsin inhibitor I [Cucurbita maxima] &gt;pdb|1LU0|B Chain B, Trypsin inhibitor I [Cucurbita maxima] &gt;pdb|2V1V|A Chain A, TRYPSIN INHIBITOR 1 [Cucurbita maxima]</Hit_def>
+  <Hit_accession>1LU0_A</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>59.6918</Hsp_bit-score>
+      <Hsp_score>143</Hsp_score>
+      <Hsp_evalue>9.75587e-11</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>28</Hsp_identity>
+      <Hsp_positive>29</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPRILLECKKDSDCLAECVCLEHGYCG</Hsp_hseq>
+      <Hsp_midline>RVCPRIL+ECKKDSDCLAECVCLEHGYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>6</Hit_num>
+  <Hit_id>sp|P07853.2|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 4; AltName: Full=CMTI-IV; AltName: Full=Trypsin inhibitor IV; Contains: RecName: Full=Trypsin inhibitor 3; AltName: Full=CMTI-III; AltName: Full=ITD-III; AltName: Full=Trypsin inhibitor III [Cucurbita maxima]</Hit_def>
+  <Hit_accession>P07853</Hit_accession>
+  <Hit_len>32</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>59.6918</Hsp_bit-score>
+      <Hsp_score>143</Hsp_score>
+      <Hsp_evalue>1.23531e-10</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>4</Hsp_hit-from>
+      <Hsp_hit-to>32</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>28</Hsp_identity>
+      <Hsp_positive>29</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPRILMKCKKDSDCLAECVCLEHGYCG</Hsp_hseq>
+      <Hsp_midline>RVCPRILM+CKKDSDCLAECVCLEHGYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>7</Hit_num>
+  <Hit_id>pdb|2BTC|I</Hit_id>
+  <Hit_def>Chain I, PROTEIN (TRYPSIN INHIBITOR) [Cucurbita pepo] &gt;pdb|2STB|I Chain I, PROTEIN (TRYPSIN INHIBITOR) [Cucurbita pepo]</Hit_def>
+  <Hit_accession>2BTC_I</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>59.3066</Hsp_bit-score>
+      <Hsp_score>142</Hsp_score>
+      <Hsp_evalue>1.2982e-10</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>27</Hsp_identity>
+      <Hsp_positive>29</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPKILMECKKDSDCLAECICLEHGYCG</Hsp_hseq>
+      <Hsp_midline>RVCP+ILMECKKDSDCLAEC+CLEHGYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>8</Hit_num>
+  <Hit_id>sp|P10293.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 3; AltName: Full=CPTI-III; AltName: Full=Trypsin inhibitor III; Contains: RecName: Full=Trypsin inhibitor 2; AltName: Full=CPTI-II; AltName: Full=Trypsin inhibitor II [Cucurbita pepo]</Hit_def>
+  <Hit_accession>P10293</Hit_accession>
+  <Hit_len>32</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>59.6918</Hsp_bit-score>
+      <Hsp_score>143</Hsp_score>
+      <Hsp_evalue>1.30508e-10</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>4</Hsp_hit-from>
+      <Hsp_hit-to>32</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>27</Hsp_identity>
+      <Hsp_positive>29</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPKILMECKKDSDCLAECICLEHGYCG</Hsp_hseq>
+      <Hsp_midline>RVCP+ILMECKKDSDCLAEC+CLEHGYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>9</Hit_num>
+  <Hit_id>sp|P83398.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 7; AltName: Full=CyPTI-VII; AltName: Full=Trypsin inhibitor VII [Cyclanthera pedata]</Hit_def>
+  <Hit_accession>P83398</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>56.225</Hsp_bit-score>
+      <Hsp_score>134</Hsp_score>
+      <Hsp_evalue>2.97683e-09</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>24</Hsp_identity>
+      <Hsp_positive>28</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRILMKCKKDSDCLAECICQEHGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRILM+CKKDSDCLAEC+C EHG+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>10</Hit_num>
+  <Hit_id>sp|P83397.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 6; AltName: Full=CyPTI-VI; AltName: Full=Trypsin inhibitor VI [Cyclanthera pedata]</Hit_def>
+  <Hit_accession>P83397</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>55.4546</Hsp_bit-score>
+      <Hsp_score>132</Hsp_score>
+      <Hsp_evalue>5.21342e-09</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>24</Hsp_identity>
+      <Hsp_positive>28</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRILMKCKKDSDCLAECICEEHGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRILM+CKKDSDCLAEC+C EHG+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>11</Hit_num>
+  <Hit_id>sp|Q9S8I2.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 3; AltName: Full=LCTI-III; AltName: Full=Trypsin inhibitor III [Luffa aegyptiaca] &gt;gb|AAB33860.1| LCTI-III=serine protease inhibitor [Luffa cylindrica=smooth loofahs, Peptide Partial, 29 aa] [Luffa aegyptiaca]</Hit_def>
+  <Hit_accession>Q9S8I2</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>54.299</Hsp_bit-score>
+      <Hsp_score>129</Hsp_score>
+      <Hsp_evalue>1.35472e-08</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>23</Hsp_identity>
+      <Hsp_positive>27</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRILMECSSDSDCLAECICLENGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRILMEC  DSDCLAEC+CLE+G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>12</Hit_num>
+  <Hit_id>sp|P25849.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 1; AltName: Full=LCTI-I; AltName: Full=Trypsin inhibitor I [Luffa aegyptiaca] &gt;gb|AAB21348.1| trypsin inhibitor type III isoform 1, LCTI-1 [Luffa cylindrica=sponge gourds, Peptide, 29 aa] [Luffa aegyptiaca]</Hit_def>
+  <Hit_accession>P25849</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>54.299</Hsp_bit-score>
+      <Hsp_score>129</Hsp_score>
+      <Hsp_evalue>1.61509e-08</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>23</Hsp_identity>
+      <Hsp_positive>26</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRILMECSSDSDCLAECICLEQGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRILMEC  DSDCLAEC+CLE G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>13</Hit_num>
+  <Hit_id>sp|P83395.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 4; AltName: Full=CyPTI-IV; AltName: Full=Trypsin inhibitor IV [Cyclanthera pedata]</Hit_def>
+  <Hit_accession>P83395</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>52.7582</Hsp_bit-score>
+      <Hsp_score>125</Hsp_score>
+      <Hsp_evalue>5.71387e-08</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>27</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRILMECKADSDCLAQCICQENGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRILMECK DSDCLA+C+C E+G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>14</Hit_num>
+  <Hit_id>sp|P83396.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 5; AltName: Full=CyPTI-V; AltName: Full=Trypsin inhibitor V; Contains: RecName: Full=Trypsin inhibitor 2; AltName: Full=CyPTI-II; AltName: Full=Trypsin inhibitor II [Cyclanthera pedata]</Hit_def>
+  <Hit_accession>P83396</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>52.373</Hsp_bit-score>
+      <Hsp_score>124</Hsp_score>
+      <Hsp_evalue>1.00064e-07</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>26</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRILMECKADSDCLAQCICQESGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRILMECK DSDCLA+C+C E G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>15</Hit_num>
+  <Hit_id>sp|P83394.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 3; AltName: Full=CyPTI-III; AltName: Full=Trypsin inhibitor III; Contains: RecName: Full=Trypsin inhibitor 1; AltName: Full=CyPTI-I; AltName: Full=Trypsin inhibitor I [Cyclanthera pedata]</Hit_def>
+  <Hit_accession>P83394</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>51.6026</Hsp_bit-score>
+      <Hsp_score>122</Hsp_score>
+      <Hsp_evalue>1.7332e-07</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>26</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRILMECKADSDCLAQCICEESGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRILMECK DSDCLA+C+C E G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>16</Hit_num>
+  <Hit_id>sp|P26771.2|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 1; AltName: Full=LLDTI-I; Short=LLTI-I; AltName: Full=Trypsin inhibitor I; Contains: RecName: Full=Trypsin inhibitor 2; AltName: Full=LLDTI-II; Short=LLTI-II; AltName: Full=Trypsin inhibitor II [Lagenaria siceraria]</Hit_def>
+  <Hit_accession>P26771</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>51.2174</Hsp_bit-score>
+      <Hsp_score>121</Hsp_score>
+      <Hsp_evalue>2.81355e-07</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>24</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RRCPRIYMECKHDSDCLADCVCLEHGICG</Hsp_hseq>
+      <Hsp_midline>R CPRI MECK DSDCLA+CVCLEHG CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>17</Hit_num>
+  <Hit_id>gb|AAB22436.1|</Hit_id>
+  <Hit_def>serine proteinase inhibitor I, trypsin inhibitor I, LLTI-I [Lagenaria leucantha=gourd, Rusby, var. Gourda Makino, seeds, Peptide, 31 aa] [Lagenaria siceraria]</Hit_def>
+  <Hit_accession>AAB22436</Hit_accession>
+  <Hit_len>31</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>50.8322</Hsp_bit-score>
+      <Hsp_score>120</Hsp_score>
+      <Hsp_evalue>3.39804e-07</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>24</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RRCPRIYMECKHDSDCLADCVCLEHGICG</Hsp_hseq>
+      <Hsp_midline>R CPRI MECK DSDCLA+CVCLEHG CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>18</Hit_num>
+  <Hit_id>gb|AAB22069.1|</Hit_id>
+  <Hit_def>trypsin isoinhibitor II, LLDTI-II [Lagenaria leucantha=bottle gourd, Rusby var. Depressa Makino, seeds, Peptide, 29 aa] [Lagenaria siceraria] &gt;gb|AAB22437.1| serine proteinase inhibitor II, trypsin inhibitor II, LLTI-II [Lagenaria leucantha=gourd, Rusby, var. Gourda Makino, seeds, Peptide, 29 aa] [Lagenaria siceraria]</Hit_def>
+  <Hit_accession>AAB22069</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>50.8322</Hsp_bit-score>
+      <Hsp_score>120</Hsp_score>
+      <Hsp_evalue>3.46293e-07</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>24</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RRCPRIYMECKHDSDCLADCVCLEHGICG</Hsp_hseq>
+      <Hsp_midline>R CPRI MECK DSDCLA+CVCLEHG CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>19</Hit_num>
+  <Hit_id>gb|AAB22068.1|</Hit_id>
+  <Hit_def>trypsin isoinhibitor I, LLDTI-I [Lagenaria leucantha=bottle gourd, Rusby var. Depressa Makino, seeds, Peptide, 30 aa] [Lagenaria siceraria] &gt;gb|AAB22438.1| serine proteinase inhibitor III, trypsin inhibitor III, LLTI-III [Lagenaria leucantha=gourd, Rusby, var. Gourda Makino, seeds, Peptide, 30 aa] [Lagenaria siceraria]</Hit_def>
+  <Hit_accession>AAB22068</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>50.8322</Hsp_bit-score>
+      <Hsp_score>120</Hsp_score>
+      <Hsp_evalue>3.50497e-07</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>24</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RRCPRIYMECKHDSDCLADCVCLEHGICG</Hsp_hseq>
+      <Hsp_midline>R CPRI MECK DSDCLA+CVCLEHG CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>20</Hit_num>
+  <Hit_id>sp|P17680.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 1; AltName: Full=MRTI-I; AltName: Full=Trypsin inhibitor I [Momordica repens]</Hit_def>
+  <Hit_accession>P17680</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>50.8322</Hsp_bit-score>
+      <Hsp_score>120</Hsp_score>
+      <Hsp_evalue>3.6185e-07</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ICPRILMECKRDSDCLAQCVCKRQGYCG</Hsp_hseq>
+      <Hsp_midline>+CPRILMECK+DSDCLA+CVC   GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>21</Hit_num>
+  <Hit_id>sp|P35628.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 4; AltName: Full=TGTI-I; AltName: Full=Trypsin inhibitor I [Luffa aegyptiaca]</Hit_def>
+  <Hit_accession>P35628</Hit_accession>
+  <Hit_len>28</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>50.447</Hsp_bit-score>
+      <Hsp_score>119</Hsp_score>
+      <Hsp_evalue>5.25651e-07</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>21</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ICPRILMPCSSDSDCLAECICLENGFCG</Hsp_hseq>
+      <Hsp_midline>+CPRILM C  DSDCLAEC+CLE+G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>22</Hit_num>
+  <Hit_id>sp|P11969.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 1; AltName: Full=CVTI-I; AltName: Full=Trypsin inhibitor I [Citrullus lanatus]</Hit_def>
+  <Hit_accession>P11969</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>50.0618</Hsp_bit-score>
+      <Hsp_score>118</Hsp_score>
+      <Hsp_evalue>6.70191e-07</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>26</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RRCPRIYMECKRDADCLADCVCLQHGICG</Hsp_hseq>
+      <Hsp_midline>R CPRI MECK+D+DCLA+CVCL+HG CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>23</Hit_num>
+  <Hit_id>sp|P25850.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 2; AltName: Full=LCTI-II; AltName: Full=Trypsin inhibitor II [Luffa aegyptiaca] &gt;gb|AAB21347.1| trypsin inhibitor type III isoform 2, LCTI-2 [Luffa cylindrica=sponge gourds, Peptide, 30 aa] [Luffa aegyptiaca]</Hit_def>
+  <Hit_accession>P25850</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>49.6766</Hsp_bit-score>
+      <Hsp_score>117</Hsp_score>
+      <Hsp_evalue>1.17365e-06</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>23</Hsp_identity>
+      <Hsp_positive>26</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>30</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEH-GYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRILMECSSDSDCLAECICLEQDGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRILMEC  DSDCLAEC+CLE  G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>24</Hit_num>
+  <Hit_id>gb|KAA0044339.1|</Hit_id>
+  <Hit_def>trypsin inhibitor 1-like [Cucumis melo var. makuwa] &gt;gb|TYK29468.1| trypsin inhibitor 1-like [Cucumis melo var. makuwa]</Hit_def>
+  <Hit_accession>KAA0044339</Hit_accession>
+  <Hit_len>92</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>50.447</Hsp_bit-score>
+      <Hsp_score>119</Hsp_score>
+      <Hsp_evalue>1.85323e-06</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>64</Hsp_hit-from>
+      <Hsp_hit-to>92</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>20</Hsp_identity>
+      <Hsp_positive>27</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RMCPKILMKCKQDSDCLLDCVCLKEGFCG</Hsp_hseq>
+      <Hsp_midline>R+CP+ILM+CK+DSDCL +CVCL+ G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>25</Hit_num>
+  <Hit_id>sp|P11968.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 2; AltName: Full=BDTI-II; AltName: Full=Trypsin inhibitor II [Bryonia dioica]</Hit_def>
+  <Hit_accession>P11968</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>48.521</Hsp_bit-score>
+      <Hsp_score>114</Hsp_score>
+      <Hsp_evalue>2.58563e-06</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RGCPRILMRCKRDSDCLAGCVCQKNGYCG</Hsp_hseq>
+      <Hsp_midline>R CPRILM CK+DSDCLA CVC ++GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>26</Hit_num>
+  <Hit_id>sp|P32041.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 3; AltName: Full=CMCTI-III; AltName: Full=Trypsin inhibitor III; Contains: RecName: Full=Trypsin inhibitor 2; AltName: Full=CMCT-II; AltName: Full=CMeTI-A; AltName: Full=Trypsin inhibitor II; Contains: RecName: Full=Trypsin inhibitor 1; AltName: Full=CMCTI-I; AltName: Full=Trypsin inhibitor I [Cucumis melo var. conomon]</Hit_def>
+  <Hit_accession>P32041</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>48.521</Hsp_bit-score>
+      <Hsp_score>114</Hsp_score>
+      <Hsp_evalue>3.48249e-06</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>20</Hsp_identity>
+      <Hsp_positive>27</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RMCPKILMKCKQDSDCLLDCVCLKEGFCG</Hsp_hseq>
+      <Hsp_midline>R+CP+ILM+CK+DSDCL +CVCL+ G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>27</Hit_num>
+  <Hit_id>gb|AAB23578.1|</Hit_id>
+  <Hit_def>CMCTI-II=trypsin inhibitor [Cucumis melo=oriental pickling melon, var. Conomon Makino, seeds, Peptide, 29 aa] [Cucumis melo] &gt;gb|AAB35851.1| CMeTI-A=trypsin inhibitor [Cucumis melo=melons, seeds, Peptide, 29 aa] [Cucumis melo] &gt;prf||2116324A trypsin inhibitor CMeTI-A [Cucumis melo]</Hit_def>
+  <Hit_accession>AAB23578</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>48.1358</Hsp_bit-score>
+      <Hsp_score>113</Hsp_score>
+      <Hsp_evalue>3.83992e-06</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>20</Hsp_identity>
+      <Hsp_positive>27</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RMCPKILMKCKQDSDCLLDCVCLKEGFCG</Hsp_hseq>
+      <Hsp_midline>R+CP+ILM+CK+DSDCL +CVCL+ G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>28</Hit_num>
+  <Hit_id>gb|AAB23579.1|</Hit_id>
+  <Hit_def>CMCTI-III=trypsin inhibitor [Cucumis melo=oriental pickling melon, var. Conomon Makino, seeds, Peptide, 30 aa] [Cucumis melo]</Hit_def>
+  <Hit_accession>AAB23579</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>48.1358</Hsp_bit-score>
+      <Hsp_score>113</Hsp_score>
+      <Hsp_evalue>3.97323e-06</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>20</Hsp_identity>
+      <Hsp_positive>27</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RMCPKILMKCKQDSDCLLDCVCLKEGFCG</Hsp_hseq>
+      <Hsp_midline>R+CP+ILM+CK+DSDCL +CVCL+ G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>29</Hit_num>
+  <Hit_id>gb|AAB47210.1|</Hit_id>
+  <Hit_def>LA-1=trypsin inhibitor [Luffa acutangula=ridged gourds, seeds, Peptide, 28 aa] [Luffa acutangula] &gt;prf||2211387A trypsin inhibitor:ISOTYPE=1 [Luffa acutangula]</Hit_def>
+  <Hit_accession>AAB47210</Hit_accession>
+  <Hit_len>28</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>48.1358</Hsp_bit-score>
+      <Hsp_score>113</Hsp_score>
+      <Hsp_evalue>4.3322e-06</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>20</Hsp_identity>
+      <Hsp_positive>22</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ICPRILMECSHDSDCFGECICLSSGYCG</Hsp_hseq>
+      <Hsp_midline>+CPRILMEC  DSDC  EC+CL  GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>30</Hit_num>
+  <Hit_id>sp|P84451.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 2b; AltName: Full=SETI-IIb; AltName: Full=Trypsin inhibitor IIb; Contains: RecName: Full=Trypsin inhibitor 2a; AltName: Full=SETI-IIa; AltName: Full=Trypsin inhibitor IIa [Sicyos edulis]</Hit_def>
+  <Hit_accession>P84451</Hit_accession>
+  <Hit_len>32</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>48.1358</Hsp_bit-score>
+      <Hsp_score>113</Hsp_score>
+      <Hsp_evalue>4.4078e-06</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>4</Hsp_hit-from>
+      <Hsp_hit-to>32</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>21</Hsp_identity>
+      <Hsp_positive>24</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RKCPKILMRCKRDSDCLAKCTCQESGYCG</Hsp_hseq>
+      <Hsp_midline>R CP+ILM CK+DSDCLA+C C E GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>31</Hit_num>
+  <Hit_id>gb|AAB47211.1|</Hit_id>
+  <Hit_def>LA-2=trypsin inhibitor [Luffa acutangula=ridged gourds, seeds, Peptide, 29 aa] [Luffa acutangula] &gt;prf||2211387B trypsin inhibitor:ISOTYPE=2 [Luffa acutangula]</Hit_def>
+  <Hit_accession>AAB47211</Hit_accession>
+  <Hit_len>29</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>47.7506</Hsp_bit-score>
+      <Hsp_score>112</Hsp_score>
+      <Hsp_evalue>5.57871e-06</Hsp_evalue>
+      <Hsp_query-from>3</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>3</Hsp_hit-from>
+      <Hsp_hit-to>29</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>21</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>27</Hsp_align-len>
+      <Hsp_qseq>CPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>CPRIYMECKHDSDCLGECICLESGFCG</Hsp_hseq>
+      <Hsp_midline>CPRI MECK DSDCL EC+CLE G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>32</Hit_num>
+  <Hit_id>sp|P10294.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 1; AltName: Full=MCTI-I; AltName: Full=Trypsin inhibitor I [Momordica charantia] &gt;prf||1503172A Ser protease inhibitor MCTI-I [Momordica charantia]</Hit_def>
+  <Hit_accession>P10294</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>46.9802</Hsp_bit-score>
+      <Hsp_score>110</Hsp_score>
+      <Hsp_evalue>1.2184e-05</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>24</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RRCPRILKQCKRDSDCPGECICMAHGFCG</Hsp_hseq>
+      <Hsp_midline>R CPRIL +CK+DSDC  EC+C+ HG+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>33</Hit_num>
+  <Hit_id>sp|Q9S747.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 3; AltName: Full=MCTI-III; AltName: Full=Trypsin inhibitor III [Momordica charantia] &gt;gb|AAB33859.1| MCTI-III=serine protease inhibitor [Momordica charantia=balsam pears, Peptide Partial, 30 aa] [Momordica charantia] &gt;gb|AAB34878.1| trypsin inhibitor III, MCTI-III=serine proteinase inhibitor [Momordica charantia=bitter gourds, LINN, Peptide, 30 aa] [Momordica charantia] &gt;prf||2105265A trypsin inhibitor MCTI-III [Momordica charantia]</Hit_def>
+  <Hit_accession>Q9S747</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>46.595</Hsp_bit-score>
+      <Hsp_score>109</Hsp_score>
+      <Hsp_evalue>1.45254e-05</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>24</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RGCPRILKQCKQDSDCPGECICMAHGFCG</Hsp_hseq>
+      <Hsp_midline>R CPRIL +CK+DSDC  EC+C+ HG+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>34</Hit_num>
+  <Hit_id>sp|P82410.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 3; AltName: Full=MCoTI-III; AltName: Full=Trypsin inhibitor III [Momordica cochinchinensis]</Hit_def>
+  <Hit_accession>P82410</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>46.2098</Hsp_bit-score>
+      <Hsp_score>108</Hsp_score>
+      <Hsp_evalue>2.38131e-05</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>24</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RACPRILKKCRRDSDCPGECICKENGYCG</Hsp_hseq>
+      <Hsp_midline>R CPRIL +C++DSDC  EC+C E+GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>35</Hit_num>
+  <Hit_id>gb|AAB23577.1|</Hit_id>
+  <Hit_def>CMCTI-I=trypsin inhibitor [Cucumis melo=oriental pickling melon, var. Conomon Makino, seeds, Peptide, 28 aa] [Cucumis melo]</Hit_def>
+  <Hit_accession>AAB23577</Hit_accession>
+  <Hit_len>28</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>46.2098</Hsp_bit-score>
+      <Hsp_score>108</Hsp_score>
+      <Hsp_evalue>2.59603e-05</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>26</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>MCPKILMKCKQDSDCLLDCVCLKEGFCG</Hsp_hseq>
+      <Hsp_midline>+CP+ILM+CK+DSDCL +CVCL+ G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>36</Hit_num>
+  <Hit_id>pdb|2C4B|A</Hit_id>
+  <Hit_def>Chain A, BARNASE MCOEETI FUSION [synthetic construct] &gt;pdb|2C4B|B Chain B, BARNASE MCOEETI FUSION [synthetic construct]</Hit_def>
+  <Hit_accession>2C4B_A</Hit_accession>
+  <Hit_len>143</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>48.1358</Hsp_bit-score>
+      <Hsp_score>113</Hsp_score>
+      <Hsp_evalue>4.01152e-05</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>115</Hsp_hit-from>
+      <Hsp_hit-to>142</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>18</Hsp_identity>
+      <Hsp_positive>24</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>VCPKILKKCRRDSDCLAGCVCGPNGFCG</Hsp_hseq>
+      <Hsp_midline>VCP+IL +C++DSDCLA CVC  +G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>37</Hit_num>
+  <Hit_id>ref|XP_022922566.1|</Hit_id>
+  <Hit_def>probable polygalacturonase At3g15720 [Cucurbita moschata]</Hit_def>
+  <Hit_accession>XP_022922566</Hit_accession>
+  <Hit_len>382</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>49.2914</Hsp_bit-score>
+      <Hsp_score>116</Hsp_score>
+      <Hsp_evalue>4.55384e-05</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>21</Hsp_query-to>
+      <Hsp_hit-from>60</Hsp_hit-from>
+      <Hsp_hit-to>80</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>21</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>21</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECV</Hsp_qseq>
+      <Hsp_hseq>RVCPKILMECKKDSDCLAECL</Hsp_hseq>
+      <Hsp_midline>RVCP+ILMECKKDSDCLAEC+</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>38</Hit_num>
+  <Hit_id>sp|P12071.2|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 2; AltName: Full=EETI-II; AltName: Full=Trypsin inhibitor II [Ecballium elaterium]</Hit_def>
+  <Hit_accession>P12071</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>45.4394</Hsp_bit-score>
+      <Hsp_score>106</Hsp_score>
+      <Hsp_evalue>5.19448e-05</Hsp_evalue>
+      <Hsp_query-from>3</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>20</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>27</Hsp_align-len>
+      <Hsp_qseq>CPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>CPRILMRCKQDSDCLAGCVCGPNGFCG</Hsp_hseq>
+      <Hsp_midline>CPRILM CK+DSDCLA CVC  +G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>39</Hit_num>
+  <Hit_id>pdb|2ETI|A</Hit_id>
+  <Hit_def>Chain A, TRYPSIN INHIBITOR II [Ecballium elaterium] &gt;pdb|2IT7|A Chain A, Trypsin inhibitor 2 [synthetic construct] &gt;prf||1702179A trypsin inhibitor [Ecballium elaterium]</Hit_def>
+  <Hit_accession>2ETI_A</Hit_accession>
+  <Hit_len>28</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>45.0542</Hsp_bit-score>
+      <Hsp_score>105</Hsp_score>
+      <Hsp_evalue>6.31979e-05</Hsp_evalue>
+      <Hsp_query-from>3</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>20</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>27</Hsp_align-len>
+      <Hsp_qseq>CPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>CPRILMRCKQDSDCLAGCVCGPNGFCG</Hsp_hseq>
+      <Hsp_midline>CPRILM CK+DSDCLA CVC  +G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>40</Hit_num>
+  <Hit_id>sp|P10295.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 2; AltName: Full=MCTI-A; AltName: Full=MCTI-II; AltName: Full=Trypsin inhibitor II [Momordica charantia] &gt;gb|ABR10394.1| trypsin inhibitor 2, partial [Momordica charantia] &gt;prf||1503172B Ser protease inhibitor MCTI-II [Momordica charantia]</Hit_def>
+  <Hit_accession>P10295</Hit_accession>
+  <Hit_len>28</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>45.0542</Hsp_bit-score>
+      <Hsp_score>105</Hsp_score>
+      <Hsp_evalue>7.05349e-05</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>27</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRIWMECKRDSDCMAQCICVD-GHCG</Hsp_hseq>
+      <Hsp_midline>R+CPRI MECK+DSDC+A+C+C++ G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>41</Hit_num>
+  <Hit_id>pdb|1F2S|I</Hit_id>
+  <Hit_def>Chain I, TRYPSIN INHIBITOR A [Momordica charantia]</Hit_def>
+  <Hit_accession>1F2S_I</Hit_accession>
+  <Hit_len>28</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>44.669</Hsp_bit-score>
+      <Hsp_score>104</Hsp_score>
+      <Hsp_evalue>9.18095e-05</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>1</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>20</Hsp_identity>
+      <Hsp_positive>26</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RICPRIWMECKRDSDCMAECICV-MGHCG</Hsp_hseq>
+      <Hsp_midline>R+CPRI MECK+DSDC+AEC+C+  G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>42</Hit_num>
+  <Hit_id>pdb|2LET|A</Hit_id>
+  <Hit_def>Chain A, TRYPSIN INHIBITOR II [Ecballium elaterium]</Hit_def>
+  <Hit_accession>2LET_A</Hit_accession>
+  <Hit_len>28</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>44.2838</Hsp_bit-score>
+      <Hsp_score>103</Hsp_score>
+      <Hsp_evalue>0.000157261</Hsp_evalue>
+      <Hsp_query-from>3</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>27</Hsp_align-len>
+      <Hsp_qseq>CPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>CPRLLMRCKQDSDCLAGCVCGPNGFCG</Hsp_hseq>
+      <Hsp_midline>CPR+LM CK+DSDCLA CVC  +G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>43</Hit_num>
+  <Hit_id>pdb|1W7Z|A</Hit_id>
+  <Hit_def>Chain A, TRYPSIN INHIBITOR II [Ecballium elaterium] &gt;pdb|1W7Z|B Chain B, TRYPSIN INHIBITOR II [Ecballium elaterium] &gt;pdb|1W7Z|C Chain C, TRYPSIN INHIBITOR II [Ecballium elaterium] &gt;pdb|1W7Z|D Chain D, TRYPSIN INHIBITOR II [Ecballium elaterium] &gt;pdb|1W7Z|E Chain E, TRYPSIN INHIBITOR II [Ecballium elaterium] &gt;pdb|1W7Z|F Chain F, TRYPSIN INHIBITOR II [Ecballium elaterium] &gt;pdb|1W7Z|G Chain G, TRYPSIN INHIBITOR II [Ecballium elaterium] &gt;pdb|1W7Z|H Chain H, TRYPSIN INHIBITOR II [Ecballium elaterium]</Hit_def>
+  <Hit_accession>1W7Z_A</Hit_accession>
+  <Hit_len>31</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>43.8986</Hsp_bit-score>
+      <Hsp_score>102</Hsp_score>
+      <Hsp_evalue>0.000176209</Hsp_evalue>
+      <Hsp_query-from>3</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>27</Hsp_align-len>
+      <Hsp_qseq>CPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>CPRILIRCKQDSDCLAGCVCGPNGFCG</Hsp_hseq>
+      <Hsp_midline>CPRIL+ CK+DSDCLA CVC  +G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>44</Hit_num>
+  <Hit_id>sp|P10291.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 2b; AltName: Full=CSTI-IIB; AltName: Full=Trypsin inhibitor IIB [Cucumis sativus]</Hit_def>
+  <Hit_accession>P10291</Hit_accession>
+  <Hit_len>32</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>43.8986</Hsp_bit-score>
+      <Hsp_score>102</Hsp_score>
+      <Hsp_evalue>0.000201636</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>22</Hsp_identity>
+      <Hsp_positive>25</Hsp_positive>
+      <Hsp_gaps>1</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEH-GYCG</Hsp_qseq>
+      <Hsp_hseq>VCPKILMKCKHDSDCLLDCVCLEDIGYCG</Hsp_hseq>
+      <Hsp_midline>VCP+ILM+CK DSDCL +CVCLE  GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>45</Hit_num>
+  <Hit_id>pdb|1H9H|I</Hit_id>
+  <Hit_def>Chain I, TRYPSIN INHIBITOR II [Ecballium elaterium]</Hit_def>
+  <Hit_accession>1H9H_I</Hit_accession>
+  <Hit_len>36</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>43.8986</Hsp_bit-score>
+      <Hsp_score>102</Hsp_score>
+      <Hsp_evalue>0.000217008</Hsp_evalue>
+      <Hsp_query-from>3</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>28</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>27</Hsp_align-len>
+      <Hsp_qseq>CPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>CPRILIRCKQDSDCLAGCVCGPNGFCG</Hsp_hseq>
+      <Hsp_midline>CPRIL+ CK+DSDCLA CVC  +G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>46</Hit_num>
+  <Hit_id>pdb|2LJS|A</Hit_id>
+  <Hit_def>Chain A, Trypsin inhibitor 3 [Momordica cochinchinensis]</Hit_def>
+  <Hit_accession>2LJS_A</Hit_accession>
+  <Hit_len>30</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>43.8986</Hsp_bit-score>
+      <Hsp_score>102</Hsp_score>
+      <Hsp_evalue>0.000219021</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>2</Hsp_hit-from>
+      <Hsp_hit-to>30</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>18</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RACPRILKKCRRDSDCPGECICKGNGYCG</Hsp_hseq>
+      <Hsp_midline>R CPRIL +C++DSDC  EC+C  +GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>47</Hit_num>
+  <Hit_id>sp|P34950.1|</Hit_id>
+  <Hit_def>RecName: Full=Trypsin inhibitor 5; AltName: Full=TGT-II; AltName: Full=Trypsin inhibitor II; Flags: Precursor [Luffa aegyptiaca] &gt;gb|AAA33407.1| trypsin inhibitor [Luffa aegyptiaca]</Hit_def>
+  <Hit_accession>P34950</Hit_accession>
+  <Hit_len>63</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>44.2838</Hsp_bit-score>
+      <Hsp_score>103</Hsp_score>
+      <Hsp_evalue>0.000256522</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>36</Hsp_hit-from>
+      <Hsp_hit-to>63</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>18</Hsp_identity>
+      <Hsp_positive>22</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ICPRILMPCKTDDDCMLDCRCLSNGYCG</Hsp_hseq>
+      <Hsp_midline>+CPRILM CK D DC+ +C CL +GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>48</Hit_num>
+  <Hit_id>gb|KGN52760.1|</Hit_id>
+  <Hit_def>hypothetical protein Csa_014741 [Cucumis sativus]</Hit_def>
+  <Hit_accession>KGN52760</Hit_accession>
+  <Hit_len>79</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>44.669</Hsp_bit-score>
+      <Hsp_score>104</Hsp_score>
+      <Hsp_evalue>0.000295172</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>51</Hsp_hit-from>
+      <Hsp_hit-to>79</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>17</Hsp_identity>
+      <Hsp_positive>23</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RMCPRILEECTTDDDCMNDCICLSNGFCG</Hsp_hseq>
+      <Hsp_midline>R+CPRIL EC  D DC+ +C+CL +G+CG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>49</Hit_num>
+  <Hit_id>gb|QAV57572.1|</Hit_id>
+  <Hit_def>two inhibitor peptide topologies precursor 1 [Momordica dioica]</Hit_def>
+  <Hit_accession>QAV57572</Hit_accession>
+  <Hit_len>376</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>46.595</Hsp_bit-score>
+      <Hsp_score>109</Hsp_score>
+      <Hsp_evalue>0.000355826</Hsp_evalue>
+      <Hsp_query-from>1</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>348</Hsp_hit-from>
+      <Hsp_hit-to>376</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>24</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>29</Hsp_align-len>
+      <Hsp_qseq>RVCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>RVCPRILKKCRRDSDCPGECICQGNGYCG</Hsp_hseq>
+      <Hsp_midline>RVCPRIL +C++DSDC  EC+C  +GYCG</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>2</Hsp_num>
+      <Hsp_bit-score>41.5874</Hsp_bit-score>
+      <Hsp_score>96</Hsp_score>
+      <Hsp_evalue>0.0222271</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>241</Hsp_hit-from>
+      <Hsp_hit-to>268</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>17</Hsp_identity>
+      <Hsp_positive>21</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ACPRILKKCRRDSDCPGACVCRGNGYCG</Hsp_hseq>
+      <Hsp_midline> CPRIL +C++DSDC   CVC  +GYCG</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>3</Hsp_num>
+      <Hsp_bit-score>41.2022</Hsp_bit-score>
+      <Hsp_score>95</Hsp_score>
+      <Hsp_evalue>0.0265179</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>290</Hsp_hit-from>
+      <Hsp_hit-to>317</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>16</Hsp_identity>
+      <Hsp_positive>22</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ACPRILKKCRRDSDCPSACICQGNGYCG</Hsp_hseq>
+      <Hsp_midline> CPRIL +C++DSDC + C+C  +GYCG</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>4</Hsp_num>
+      <Hsp_bit-score>40.817</Hsp_bit-score>
+      <Hsp_score>94</Hsp_score>
+      <Hsp_evalue>0.0404288</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>94</Hsp_hit-from>
+      <Hsp_hit-to>121</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>16</Hsp_identity>
+      <Hsp_positive>21</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ACPKILQKCRRDSDCPGACVCQGNGYCG</Hsp_hseq>
+      <Hsp_midline> CP+IL +C++DSDC   CVC  +GYCG</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>5</Hsp_num>
+      <Hsp_bit-score>40.817</Hsp_bit-score>
+      <Hsp_score>94</Hsp_score>
+      <Hsp_evalue>0.0404288</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>143</Hsp_hit-from>
+      <Hsp_hit-to>170</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>16</Hsp_identity>
+      <Hsp_positive>21</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ACPKILQKCRRDSDCPGACVCQGNGYCG</Hsp_hseq>
+      <Hsp_midline> CP+IL +C++DSDC   CVC  +GYCG</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>6</Hsp_num>
+      <Hsp_bit-score>40.4318</Hsp_bit-score>
+      <Hsp_score>93</Hsp_score>
+      <Hsp_evalue>0.0463798</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>192</Hsp_hit-from>
+      <Hsp_hit-to>219</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>16</Hsp_identity>
+      <Hsp_positive>22</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ACPRILQKCRRNSDCPSACVCQGNGYCG</Hsp_hseq>
+      <Hsp_midline> CPRIL +C+++SDC + CVC  +GYCG</Hsp_midline>
+    </Hsp>
+    <Hsp>
+      <Hsp_num>7</Hsp_num>
+      <Hsp_bit-score>40.0466</Hsp_bit-score>
+      <Hsp_score>92</Hsp_score>
+      <Hsp_evalue>0.0860499</Hsp_evalue>
+      <Hsp_query-from>2</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>45</Hsp_hit-from>
+      <Hsp_hit-to>72</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>15</Hsp_identity>
+      <Hsp_positive>20</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>28</Hsp_align-len>
+      <Hsp_qseq>VCPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>ACPKILQRCRRDSDCPGACICRGNGYCG</Hsp_hseq>
+      <Hsp_midline> CP+IL  C++DSDC   C+C  +GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+<Hit>
+  <Hit_num>50</Hit_num>
+  <Hit_id>gb|KAA0044335.1|</Hit_id>
+  <Hit_def>Trypsin inhibitor 1 [Cucumis melo var. makuwa] &gt;gb|TYK29464.1| Trypsin inhibitor 1 [Cucumis melo var. makuwa]</Hit_def>
+  <Hit_accession>KAA0044335</Hit_accession>
+  <Hit_len>75</Hit_len>
+  <Hit_hsps>
+    <Hsp>
+      <Hsp_num>1</Hsp_num>
+      <Hsp_bit-score>44.2838</Hsp_bit-score>
+      <Hsp_score>103</Hsp_score>
+      <Hsp_evalue>0.000396952</Hsp_evalue>
+      <Hsp_query-from>3</Hsp_query-from>
+      <Hsp_query-to>29</Hsp_query-to>
+      <Hsp_hit-from>49</Hsp_hit-from>
+      <Hsp_hit-to>75</Hsp_hit-to>
+      <Hsp_query-frame>0</Hsp_query-frame>
+      <Hsp_hit-frame>0</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>21</Hsp_positive>
+      <Hsp_gaps>0</Hsp_gaps>
+      <Hsp_align-len>27</Hsp_align-len>
+      <Hsp_qseq>CPRILMECKKDSDCLAECVCLEHGYCG</Hsp_qseq>
+      <Hsp_hseq>CPRILMKCKTDRDCLAGCTCKRNGYCG</Hsp_hseq>
+      <Hsp_midline>CPRILM+CK D DCLA C C  +GYCG</Hsp_midline>
+    </Hsp>
+  </Hit_hsps>
+</Hit>
+</Iteration_hits>
+  <Iteration_stat>
+    <Statistics>
+      <Statistics_db-num>721436858</Statistics_db-num>
+      <Statistics_db-len>278668789149</Statistics_db-len>
+      <Statistics_hsp-len>0</Statistics_hsp-len>
+      <Statistics_eff-space>0</Statistics_eff-space>
+      <Statistics_kappa>0.041</Statistics_kappa>
+      <Statistics_lambda>0.267</Statistics_lambda>
+      <Statistics_entropy>0.14</Statistics_entropy>
+    </Statistics>
+  </Iteration_stat>
+</Iteration>
+</BlastOutput_iterations>
+</BlastOutput>

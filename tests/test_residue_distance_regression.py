@@ -27,6 +27,7 @@ def rd_bin():
     return Path(WHISCY_PATH, "bin", "residue_distance.py")
 
 
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_residue_distance"], indirect=True
 )

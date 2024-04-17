@@ -14,6 +14,7 @@ import warnings
 
 # Import SearchIO and suppress experimental warning
 from Bio import AlignIO, BiopythonExperimentalWarning, BiopythonWarning, SeqIO
+from Bio.Align import MultipleSeqAlignment
 from Bio.Align.Applications import MuscleCommandline
 from Bio.Blast import NCBIWWW
 from Bio.PDB import PDBIO
@@ -30,10 +31,12 @@ import logging
 from libwhiscy import access, hssp, pdbutil
 
 logger = logging.getLogger("whiscy_setup")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.INFO)
-formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
+formatter = logging.Formatter(
+    "%(asctime)s %(module)s:%(lineno)d %(levelname)s - %(message)s"
+)
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
@@ -55,23 +58,40 @@ def load_config(config_file="etc/local.json"):
         return config
 
 
-def muscle_msa(config, input_sequence_file, output_alignment_file):
+def muscle_msa(
+    config: dict, input_sequence_file: str, output_alignment_file: str
+) -> MultipleSeqAlignment:
     """Calculates a MSA using MUSCLE's Biopython wrapper"""
+
+    # Check if the muscle binary is available
     muscle_bin = config["ALIGN"]["MUSCLE_BIN"]
+
+    if shutil.which(muscle_bin) is None:
+        # Fallback and look for a system variable `MUSCLE_BIN`
+        muscle_bin = os.environ.get("MUSCLE_BIN")
+        if muscle_bin is not None:
+            if shutil.which(muscle_bin) is None:
+                logger.critical(
+                    f"The path defined for the MUSCLE binary {muscle_bin} is not correct. Check the configuration file!"
+                )
+                raise SystemExit(1)
+
+    assert muscle_bin is not None, "MUSCLE binary not found"
+
     muscle_cline = MuscleCommandline(
         muscle_bin, input=input_sequence_file, out=output_alignment_file
     )
     if not os.path.exists(muscle_bin):
         logger.critical(
-            "The path defined for the MUSCLE binary is not correct. Check the configuration file!"
+            f"The path defined for the MUSCLE binary {muscle_bin} is not correct. Check the configuration file!"
         )
-        raise SystemExit
-    stdout, stderr = muscle_cline()
-    MultipleSeqAlignment = AlignIO.read(output_alignment_file, "fasta")
-    return MultipleSeqAlignment
+        raise SystemExit(1)
+    _, _ = muscle_cline()
+    msa = AlignIO.read(output_alignment_file, "fasta")
+    return msa
 
 
-def ncbi_blast(fasta_file, output_file):
+def ncbi_blast(fasta_file: str, output_file: str) -> None:
     """Performs a remote BLAST against the NCBI server"""
     record = SeqIO.read(fasta_file, format="fasta")
     result_handle = NCBIWWW.qblast("blastp", "nr", record.format("fasta"))
@@ -80,21 +100,18 @@ def ncbi_blast(fasta_file, output_file):
     result_handle.close()
 
 
-def msa_to_phylseq(msa, master_sequence, output_file):
+def msa_to_phylseq(
+    msa: MultipleSeqAlignment, master_sequence: str, output_file: str
+) -> None:
     """Converts a MSA to a Phylip Seq file"""
     with open(output_file, "w") as output_handle:
         # Write header
-        output_handle.write(
-            "{0}  {1}{2}".format(len(msa), len(master_sequence), os.linesep)
-        )
-
+        output_handle.write(f"{len(msa)}  {len(master_sequence)}{os.linesep}")
         # Write master sequence
-        output_handle.write("MASTER    {0}{1}".format(master_sequence, os.linesep))
+        output_handle.write(f"MASTER    {master_sequence}{os.linesep}")
         # Write the rest of alignments
         for alignment in msa:
-            output_handle.write(
-                "{:10s}{}{}".format(alignment.id[:10], alignment.seq, os.linesep)
-            )
+            output_handle.write(f"{alignment.id[:10]:10s}{alignment.seq}{os.linesep}")
 
 
 def hsspconv(hssp_file, converted_hssp_file, config):
@@ -266,8 +283,7 @@ if __name__ == "__main__":
                 hssp.decompress_bz2(compressed_hssp_file, hssp_file)
                 logger.info("HSSP alignment stored to {0}".format(hssp_file))
             except Exception as err:
-                logger.error("HSSP file could not be generated")
-                raise SystemExit("Error is: {0}".format(err))
+                logger.warning("HSSP file could not be downloaded")
         try:
             if "hssp3" in hssp_file:
                 # HSSP downloaded file is in new HSSP3 format, need to be
@@ -277,26 +293,24 @@ if __name__ == "__main__":
                 hssp_file = converted_hssp_file
 
             hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
-        except Exception as err:
-            logger.error(str(err))
-            raise SystemExit
+            logger.info("HSSP file converted to PHYLIP format")
 
-        logger.info("HSSP file converted to PHYLIP format")
+        except Exception as e:
+            logger.debug(e)
 
     if not os.path.exists(hssp_file):
+        logger.info("HSSP file not found, fallback to generating MSA with blastp")
         # if no alignment is provided, will do it automatically
         if not args.alignment:
             # Run BLASTP if needed
             blast_output_file = "{0}_{1}_blast.xml".format(filename, chain_id)
             input_sequence_file = "{0}_{1}.fasta".format(filename, chain_id)
             if not os.path.exists(blast_output_file):
-                logger.info("Please wait while running BLASTP against NCBI servers...")
+                logger.info("Running blastp via NCBI")
                 ncbi_blast(input_sequence_file, blast_output_file)
                 logger.info("Result stored in {0}".format(blast_output_file))
-            else:
-                logger.info(
-                    "BLAST file found ({0}), nothing to do".format(blast_output_file)
-                )
+
+            assert os.path.exists(blast_output_file), "BLAST file not found"
 
             # Convert file to FASTA format
             blast_qresult = SearchIO.read(blast_output_file, "blast-xml")
@@ -307,7 +321,7 @@ if __name__ == "__main__":
             SeqIO.write(records, blast_fasta_file, "fasta")
 
             # Multiple sequence alignment
-            logger.info("MSA using MUSCLE...")
+            logger.info("Generating MSA using MUSCLE...")
             output_alignment_file = "{0}_{1}_msa.fasta".format(filename, chain_id)
             msa = muscle_msa(config, blast_fasta_file, output_alignment_file)
             logger.info("Done.")
@@ -315,8 +329,14 @@ if __name__ == "__main__":
             # Convert MSA to Phylipseq
             logger.info("Converting MSA file to Phylseq format...")
             output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
-            msa_to_phylseq(msa, master_sequence, output_phylseq_file)
-            logger.info("{} file written".format(output_phylseq_file))
+            msa_to_phylseq(
+                msa=msa,
+                master_sequence=str(master_sequence),
+                output_file=output_phylseq_file,
+            )
+
+            assert os.path.exists(output_phylseq_file), "PHYLIP file not found"
+            logger.info(f"{output_phylseq_file} file written")
 
         else:
             # Alignment is provided, need to convert it to phylipseq

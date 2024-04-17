@@ -18,6 +18,8 @@ else:
     # Fail the tests, we need it to run the tests
     raise FileNotFoundError(f"{FREESASA_EXEC} not found")
 
+MUSCLE_BIN = Path(WHISCY_PATH, "bin", "muscle3.8.1551")
+
 
 PAM_EXPECTED_SCORES = [
     0.001239810431396115,

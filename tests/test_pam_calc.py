@@ -4,8 +4,12 @@ import pytest
 
 from libwhiscy.pam_calc import pam_calc_similarity, pam_load_sequences
 
-from . import (GOLDEN_DATA_PATH, PAM_EXPECTED_DISTANCES, PAM_EXPECTED_SCORES,
-               PAM_EXPECTED_SEQTODIS)
+from . import (
+    GOLDEN_DATA_PATH,
+    PAM_EXPECTED_DISTANCES,
+    PAM_EXPECTED_SCORES,
+    PAM_EXPECTED_SEQTODIS,
+)
 
 
 @pytest.fixture
@@ -27,6 +31,7 @@ def reference_sequence():
     )
 
 
+@pytest.mark.unit
 def test_pam_load_sequences(reference_sequence, alignment_file, distance_file):
 
     seqnr, seqlen, refseq, _, _, seqtodis = pam_load_sequences(
@@ -43,6 +48,7 @@ def test_pam_load_sequences(reference_sequence, alignment_file, distance_file):
         assert i == j
 
 
+@pytest.mark.unit
 def test_pam_calc_similarity(reference_sequence, alignment_file, distance_file):
 
     seqnr, seqlen, refseq, seq_distances, sequences, seqtodis = pam_load_sequences(

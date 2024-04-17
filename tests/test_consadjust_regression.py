@@ -33,6 +33,7 @@ def consadjust_bin():
     return Path(WHISCY_PATH, "bin", "consadjust.py")
 
 
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_consadjust"], indirect=True
 )
