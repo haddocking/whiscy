@@ -25,17 +25,9 @@ jobs:
       - name: Run unit tests
         id: unit-tests
         run: >
-          docker run
-          -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report
-          --rm
-          whiscy:test
-          pytest -m unit --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
+          docker run -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report --rm whiscy:test pytest -m unit --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
 
       - name: Run regression tests
         if: steps.unit-tests.outcome == 'success'
         run: >
-          docker run
-          -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report
-          --rm
-          whiscy:test
-          pytest -m regression --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
+          docker run -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report --rm whiscy:test pytest -m regression --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
