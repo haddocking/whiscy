@@ -18,6 +18,7 @@ KEYWDS    ENZYME-INHIBITOR COMPLEX, BSGC, BETA-PROPELLER, BETA-LACTAMASE,
 KEYWDS   2 PROTEIN:PROTEIN INTERACTION, HYDROLASE INHIBITOR                     
 EXPDTA    X-RAY DIFFRACTION                                                     
 AUTHOR    N.G.BROWN,D.C.CHOW,B.SANKARAN,P.ZWART,B.V.V.PRASAD,T.PALZKILL         
+REVDAT   3   21-FEB-24 3QI0    1       REMARK SEQADV                            
 REVDAT   2   29-FEB-12 3QI0    1       JRNL                                     
 REVDAT   1   20-JUL-11 3QI0    0                                                
 JRNL        AUTH   N.G.BROWN,D.C.CHOW,B.SANKARAN,P.ZWART,B.V.PRASAD,T.PALZKILL  
@@ -33,7 +34,8 @@ REMARK   2 RESOLUTION.    2.80 ANGSTROMS.
 REMARK   3                                                                      
 REMARK   3 REFINEMENT.                                                          
 REMARK   3   PROGRAM     : REFMAC 5.5.0102                                      
-REMARK   3   AUTHORS     : MURSHUDOV,VAGIN,DODSON                               
+REMARK   3   AUTHORS     : MURSHUDOV,SKUBAK,LEBEDEV,PANNU,STEINER,              
+REMARK   3               : NICHOLLS,WINN,LONG,VAGIN                             
 REMARK   3                                                                      
 REMARK   3    REFINEMENT TARGET : MAXIMUM LIKELIHOOD                            
 REMARK   3                                                                      
@@ -121,8 +123,13 @@ REMARK   3  ISOTROPIC THERMAL FACTOR RESTRAINTS.     COUNT   RMS    WEIGHT
 REMARK   3   MAIN-CHAIN BOND REFINED ATOMS  (A**2):  7851 ; 0.825 ; 1.500       
 REMARK   3   MAIN-CHAIN BOND OTHER ATOMS    (A**2):  NULL ;  NULL ;  NULL       
 REMARK   3   MAIN-CHAIN ANGLE REFINED ATOMS (A**2): 12310 ; 1.711 ; 2.000       
+REMARK   3   MAIN-CHAIN ANGLE OTHER ATOMS   (A**2):  NULL ;  NULL ;  NULL       
 REMARK   3   SIDE-CHAIN BOND REFINED ATOMS  (A**2):  3978 ; 3.058 ; 3.000       
+REMARK   3   SIDE-CHAIN BOND OTHER ATOMS    (A**2):  NULL ;  NULL ;  NULL       
 REMARK   3   SIDE-CHAIN ANGLE REFINED ATOMS (A**2):  3865 ; 5.465 ; 4.500       
+REMARK   3   SIDE-CHAIN ANGLE OTHER ATOMS   (A**2):  NULL ;  NULL ;  NULL       
+REMARK   3   LONG RANGE B REFINED ATOMS     (A**2):  NULL ;  NULL ;  NULL       
+REMARK   3   LONG RANGE B OTHER ATOMS       (A**2):  NULL ;  NULL ;  NULL       
 REMARK   3                                                                      
 REMARK   3 ANISOTROPIC THERMAL FACTOR RESTRAINTS.    COUNT   RMS   WEIGHT       
 REMARK   3   RIGID-BOND RESTRAINTS          (A**2):  NULL ;  NULL ;  NULL       
@@ -2332,7 +2339,7 @@ REMARK   4
 REMARK   4 3QI0 COMPLIES WITH FORMAT V. 3.30, 13-JUL-11                         
 REMARK 100                                                                      
 REMARK 100 THIS ENTRY HAS BEEN PROCESSED BY RCSB ON 27-JAN-11.                  
-REMARK 100 THE RCSB ID CODE IS RCSB063669.                                      
+REMARK 100 THE DEPOSITION ID IS D_1000063669.                                   
 REMARK 200                                                                      
 REMARK 200 EXPERIMENTAL DETAILS                                                 
 REMARK 200  EXPERIMENT TYPE                : X-RAY DIFFRACTION                  
@@ -26713,5 +26720,5 @@ CONECT1162111620
 CONECT1162211620                                                                
 CONECT1162311620                                                                
 CONECT1162411620                                                                
-MASTER     2791    0   35   42  126    0   36    611817    6  175  132          
+MASTER     2797    0   35   42  126    0   36    611817    6  175  132          
 END                                                                             
