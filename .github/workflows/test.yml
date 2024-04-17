@@ -2,8 +2,7 @@ name: ci
 
 on:
   pull_request:
-  schedule:
-    - cron: '0 0 * * 0'
+
 
 jobs:
   test:
@@ -18,20 +17,33 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v2
         with:
-          load: true # Important: this allows you to load the built image into Docker's local image store
+          load: true # This allows you to load the built image into Docker's local image store
           context: .
           target: test
           tags: whiscy:test
 
-      - name: Run tests
+      - name: Run unit tests
         run: >
           docker run
           -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report
           --rm
           whiscy:test
-          pytest --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
+          pytest -m unit --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
 
-      # - uses: codacy/codacy-coverage-reporter-action@v1
-      #   with:
-      #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      #     coverage-reports: ./coverage-report/coverage.xml
+  regression-test:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Load Docker image
+        run: docker load -i whiscy.tar
+
+      - name: Run regression tests
+        run: >
+          docker run
+          -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report
+          --rm
+          whiscy:test
+          pytest -m regression --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
