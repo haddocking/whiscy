@@ -65,7 +65,7 @@ def whiscy_bin():
     return Path(WHISCY_BIN)
 
 
-@pytest.fixture
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_whiscy_2snie"], indirect=True
 )
@@ -93,6 +93,7 @@ def test_regression_2SNIE(
     assert filecmp.cmp(test_prediction_output, prediction_file_2snie)
 
 
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_whiscy_3qio_c"], indirect=True
 )

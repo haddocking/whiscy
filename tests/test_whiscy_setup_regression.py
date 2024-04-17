@@ -129,7 +129,7 @@ def whiscy_setup_bin():
     return Path(WHISCY_PATH, "whiscy_setup.py")
 
 
-@pytest.mark.skip(reason="HSSP BROKEN")
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_whiscy_setup_1ppe"], indirect=True
 )
@@ -186,7 +186,7 @@ def test_regression_1PPEI(
     assert filecmp.cmp(suract_file_1ppe, pred_suract_file)
 
 
-@pytest.mark.skip(reason="HSSP BROKEN")
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_whiscy_setup_3qi0"], indirect=True
 )

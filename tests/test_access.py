@@ -35,6 +35,7 @@ def pdb_file():
     return Path(GOLDEN_DATA_PATH, "access", "2sni_E.pdb")
 
 
+@pytest.mark.unit
 @pytest.mark.parametrize("scratch_path", ["scratch_access"], indirect=True)
 def test_create_cutoff_files(scratch_path, sur_file, suract_file, lac_file, rsa_file):
 
@@ -55,6 +56,7 @@ def test_create_cutoff_files(scratch_path, sur_file, suract_file, lac_file, rsa_
     assert filecmp.cmp(lac_file, expected_lac)
 
 
+@pytest.mark.unit
 @pytest.mark.parametrize("scratch_path", ["scratch_access"], indirect=True)
 def test_calculate_accessibility(scratch_path, pdb_file, rsa_file):
 

@@ -38,6 +38,7 @@ def parasmooth_bin():
     return Path(WHISCY_PATH, "bin", "parasmooth.py")
 
 
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_parasmooth"], indirect=True
 )
