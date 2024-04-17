@@ -30,20 +30,11 @@ jobs:
           whiscy:test
           pytest -m unit --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
 
-  regression-test:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Load Docker image
-        run: docker load -i whiscy.tar
-
-      - name: Run regression tests
-        run: >
-          docker run
-          -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report
-          --rm
-          whiscy:test
-          pytest -m regression --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
+    - name: Run regression tests
+      if: success() && steps.unit-tests.outcome == 'success'
+      run: >
+        docker run
+        -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report
+        --rm
+        whiscy:test
+        pytest -m regression --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
