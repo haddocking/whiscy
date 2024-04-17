@@ -62,7 +62,22 @@ def muscle_msa(
     config: dict, input_sequence_file: str, output_alignment_file: str
 ) -> MultipleSeqAlignment:
     """Calculates a MSA using MUSCLE's Biopython wrapper"""
+
+    # Check if the muscle binary is available
     muscle_bin = config["ALIGN"]["MUSCLE_BIN"]
+
+    if shutil.which(muscle_bin) is None:
+        # Fallback and look for a system variable `MUSCLE_BIN`
+        muscle_bin = os.environ.get("MUSCLE_BIN")
+        if muscle_bin is not None:
+            if shutil.which(muscle_bin) is None:
+                logger.critical(
+                    f"The path defined for the MUSCLE binary {muscle_bin} is not correct. Check the configuration file!"
+                )
+                raise SystemExit(1)
+
+    assert muscle_bin is not None, "MUSCLE binary not found"
+
     muscle_cline = MuscleCommandline(
         muscle_bin, input=input_sequence_file, out=output_alignment_file
     )
@@ -70,7 +85,7 @@ def muscle_msa(
         logger.critical(
             f"The path defined for the MUSCLE binary {muscle_bin} is not correct. Check the configuration file!"
         )
-        raise SystemExit
+        raise SystemExit(1)
     _, _ = muscle_cline()
     msa = AlignIO.read(output_alignment_file, "fasta")
     return msa
