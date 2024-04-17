@@ -8,14 +8,7 @@ from typing import Union
 
 from Bio import AlignIO
 
-# Set logging
-logger = logging.getLogger("hssp_log")
-logger.setLevel(logging.INFO)
-ch = logging.StreamHandler(sys.stdout)
-ch.setLevel(logging.INFO)
-formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
-ch.setFormatter(formatter)
-logger.addHandler(ch)
+logger = logging.getLogger("whiscy_setup")
 
 
 def get_from_ftp(
@@ -53,8 +46,7 @@ def get_from_ftp(
 
         return path_to_file
     except Exception as e:
-        logger.exception(e)
-        logger.error("There was an error downloading the file from the FTP server.")
+        logger.debug(e)
         if path_to_file != "" and os.path.exists(path_to_file):
             os.remove(path_to_file)
         return None
@@ -200,9 +192,9 @@ def hssp3_file_to_phylip(hssp3_file_name, phylip_file_name, chain_id, master_seq
     only containing the given chain"""
     alignments = list(AlignIO.parse(hssp3_file_name, format="stockholm"))
     for align in alignments:
-        if align[0].name[4] == "/":
-            chain = align[0].name[5].upper()
+        if align[0].name[4] == "/":  # type: ignore
+            chain = align[0].name[5].upper()  # type: ignore
             if chain == chain_id:
-                align[0].id = align[0].name = align[0].description = "MASTER"
+                align[0].id = align[0].name = align[0].description = "MASTER"  # type: ignore
                 # align[0].seq = align[0].seq.ungap('-')
                 AlignIO.write(align, phylip_file_name, format="phylip-sequential")
