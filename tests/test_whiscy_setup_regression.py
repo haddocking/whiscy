@@ -7,11 +7,12 @@ from pathlib import Path
 
 import pytest
 
-from . import FREESASA_PATH, GOLDEN_DATA_PATH, WHISCY_PATH
+from . import FREESASA_PATH, GOLDEN_DATA_PATH, MUSCLE_BIN, WHISCY_PATH
 
 env = os.environ.copy()
 env["PATH"] += os.pathsep + str(FREESASA_PATH)
 env["WHISCY_PATH"] = str(WHISCY_PATH)
+env["MUSCLE_BIN"] = str(MUSCLE_BIN)
 
 
 @pytest.fixture
@@ -69,9 +70,9 @@ def suract_file_1ppe():
     return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "1ppe_I.suract")
 
 
-# @pytest.fixture
-# def blast_file_1ppe():
-#     return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "1ppe_I_blast.xml")
+@pytest.fixture
+def blast_file_1ppe():
+    return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "1ppe_I_blast.xml")
 
 
 @pytest.fixture
@@ -129,9 +130,9 @@ def suract_file_3qi0():
     return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "3qi0_C.suract")
 
 
-# @pytest.fixture
-# def blast_file_3qi0():
-#     return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "3qi0_C_blast.xml")
+@pytest.fixture
+def blast_file_3qi0():
+    return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "3qi0_C_blast.xml")
 
 
 @pytest.fixture
@@ -145,7 +146,6 @@ def whiscy_setup_bin():
 )
 def test_regression_1PPEI(
     scratch_path,
-    # hssp_file_1ppe,
     pdb_file_1ppe,
     conversion_file_1ppe,
     fasta_file_1ppe,
@@ -163,7 +163,6 @@ def test_regression_1PPEI(
     # 1ppe.hssp      1ppe.pdb       1ppe_I.conv    1ppe_I.fasta   1ppe_I.lac
     # 1ppe_I.out     1ppe_I.pdb     1ppe_I.phylseq 1ppe_I.rsa     1ppe_I.sur     1ppe_I.suract
 
-    # pred_hssp_file = Path(scratch_path, "1ppe.hssp")
     pred_pdb_file = Path(scratch_path, "1ppe.pdb")
     pred_conversion_file = Path(scratch_path, "1ppe_I.conv")
     pred_fasta_file = Path(scratch_path, "1ppe_I.fasta")
@@ -175,14 +174,15 @@ def test_regression_1PPEI(
     pred_surface_file = Path(scratch_path, "1ppe_I.sur")
     pred_suract_file = Path(scratch_path, "1ppe_I.suract")
 
-    # # Put the blast file in the scratch path to skip blasting it via ncbi
-    # shutil.copy(blast_file_1ppe, scratch_path)
+    # Put the blast file in the scratch path to skip blasting it via ncbi
+    shutil.copy(blast_file_1ppe, scratch_path)
 
     cmd_line = f"{sys.executable} {whiscy_setup_bin} 1ppe i"
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
         env=env,
+        cwd=scratch_path,
     )
 
     assert result.returncode == 0, "whiscy_setup failed."
@@ -206,7 +206,6 @@ def test_regression_1PPEI(
 )
 def test_regression_3QI0(
     scratch_path,
-    # hssp_file_3qi0,
     pdb_file_3qi0,
     conversion_file_3qi0,
     fasta_file_3qi0,
@@ -218,10 +217,9 @@ def test_regression_3QI0(
     surface_file_3qi0,
     suract_file_3qi0,
     whiscy_setup_bin,
-    # blast_file_3qi0,
+    blast_file_3qi0,
 ):
 
-    # pred_hssp_file = Path(scratch_path, "3qi0.hssp")
     pred_pdb_file = Path(scratch_path, "3qi0.pdb")
     pred_conversion_file = Path(scratch_path, "3qi0_C.conv")
     pred_fasta_file = Path(scratch_path, "3qi0_C.fasta")
@@ -233,19 +231,19 @@ def test_regression_3QI0(
     pred_surface_file = Path(scratch_path, "3qi0_C.sur")
     pred_suract_file = Path(scratch_path, "3qi0_C.suract")
 
-    # # Put the blast file in the scratch path to skip blasting it via ncbi
-    # shutil.copy(blast_file_3qi0, scratch_path)
+    # Put the blast file in the scratch path to skip blasting it via ncbi
+    shutil.copy(blast_file_3qi0, scratch_path)
 
     cmd_line = f"{sys.executable} {whiscy_setup_bin} 3qi0 C"
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
         env=env,
+        cwd=scratch_path,
     )
 
     assert result.returncode == 0, "whiscy_setup failed."
 
-    # assert filecmp.cmp(hssp_file_3qi0, pred_hssp_file)
     assert filecmp.cmp(pdb_file_3qi0, pred_pdb_file)
     assert filecmp.cmp(conversion_file_3qi0, pred_conversion_file)
     assert filecmp.cmp(fasta_file_3qi0, pred_fasta_file)
