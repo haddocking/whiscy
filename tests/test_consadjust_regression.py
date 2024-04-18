@@ -2,10 +2,17 @@ import filecmp
 import subprocess
 from pathlib import Path
 import sys
+import os
 
 import pytest
 
-from . import GOLDEN_DATA_PATH, WHISCY_PATH
+from . import GOLDEN_DATA_PATH
+from libwhiscy import PARAM_PATH
+
+env = os.environ.copy()
+env["PYTHONPATH"] = str(Path(__file__).parent.parent)
+
+CONSADJUST_BIN = Path(Path(__file__).parent.parent, "bin", "consadjust.py")
 
 
 @pytest.fixture
@@ -15,12 +22,12 @@ def cons_file():
 
 @pytest.fixture
 def weight_ma_file():
-    return Path(WHISCY_PATH, "param", "weight_ma.txt")
+    return Path(PARAM_PATH, "weight_ma.txt")
 
 
 @pytest.fixture
 def ztable_file():
-    return Path(WHISCY_PATH, "param", "ztable.txt")
+    return Path(PARAM_PATH, "ztable.txt")
 
 
 @pytest.fixture
@@ -28,9 +35,9 @@ def acons_file():
     return Path(GOLDEN_DATA_PATH, "regression_consadjust", "2SNIE.acons")
 
 
-@pytest.fixture
-def consadjust_bin():
-    return Path(WHISCY_PATH, "bin", "consadjust.py")
+# @pytest.fixture
+# def consadjust_bin():
+#     return Path(WHISCY_PATH, "bin", "consadjust.py")
 
 
 @pytest.mark.regression
@@ -38,16 +45,16 @@ def consadjust_bin():
     "scratch_path", ["scratch_regression_consadjust"], indirect=True
 )
 def test_regression_consadjust2SNIE(
-    scratch_path, consadjust_bin, cons_file, weight_ma_file, ztable_file, acons_file
+    scratch_path, cons_file, weight_ma_file, ztable_file, acons_file
 ):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{sys.executable} {consadjust_bin} {cons_file} {weight_ma_file} {ztable_file} -o {test_prediction_output}"
+    cmd_line = f"{sys.executable} {CONSADJUST_BIN} {cons_file} {weight_ma_file} {ztable_file} -o {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
-        env={"PYTHONPATH": WHISCY_PATH},
+        env=env,
     )
 
     assert result.returncode == 0

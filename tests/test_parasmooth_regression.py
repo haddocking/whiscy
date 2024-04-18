@@ -2,10 +2,17 @@ import filecmp
 import sys
 import subprocess
 from pathlib import Path
+import os
 
 import pytest
 
-from . import GOLDEN_DATA_PATH, WHISCY_PATH
+from . import GOLDEN_DATA_PATH
+from libwhiscy import PARAM_PATH
+
+PARASMOOTH_BIN = Path(Path(__file__).parent.parent, "bin", "parasmooth.py")
+
+env = os.environ.copy()
+env["PYTHONPATH"] = str(Path(__file__).parent.parent)
 
 
 @pytest.fixture
@@ -25,17 +32,12 @@ def rd_file():
 
 @pytest.fixture
 def par_file():
-    return Path(WHISCY_PATH, "param", "parasmooth.par")
+    return Path(PARAM_PATH, "parasmooth.par")
 
 
 @pytest.fixture
 def prediction_file():
     return Path(GOLDEN_DATA_PATH, "regression_parasmooth", "2SNIE.parasmooth")
-
-
-@pytest.fixture
-def parasmooth_bin():
-    return Path(WHISCY_PATH, "bin", "parasmooth.py")
 
 
 @pytest.mark.regression
@@ -49,16 +51,15 @@ def test_regression_2SNIE(
     rd_file,
     par_file,
     prediction_file,
-    parasmooth_bin,
 ):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{sys.executable} {parasmooth_bin} {acons_file} {lcons_file} {rd_file} {par_file} -o {test_prediction_output}"
+    cmd_line = f"{sys.executable} {PARASMOOTH_BIN} {acons_file} {lcons_file} {rd_file} {par_file} -o {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
-        env={"PYTHONPATH": WHISCY_PATH},
+        env=env,
     )
 
     assert result.returncode == 0

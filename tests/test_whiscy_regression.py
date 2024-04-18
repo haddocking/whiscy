@@ -2,12 +2,18 @@ import filecmp
 import os
 import shutil
 import subprocess
+import os
 import sys
 from pathlib import Path
 
 import pytest
 
-from . import GOLDEN_DATA_PATH, WHISCY_BIN, WHISCY_PATH
+from . import GOLDEN_DATA_PATH
+
+env = os.environ.copy()
+env["PYTHONPATH"] = str(Path(__file__).parent.parent)
+
+WHISCY_BIN = Path(Path(__file__).parent.parent, "whiscy.py")
 
 
 @pytest.fixture
@@ -60,18 +66,12 @@ def prediction_file_3qi0_c():
     return Path(GOLDEN_DATA_PATH, "regression_whiscy", "3qi0_C.cons")
 
 
-@pytest.fixture
-def whiscy_bin():
-    return Path(WHISCY_BIN)
-
-
 @pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_whiscy_2snie"], indirect=True
 )
 def test_regression_2SNIE(
     scratch_path,
-    whiscy_bin,
     surface_file_2snie,
     conversion_file_2snie,
     alignment_file_2snie,
@@ -80,12 +80,12 @@ def test_regression_2SNIE(
 ):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{sys.executable} {whiscy_bin} {surface_file_2snie} {conversion_file_2snie} {alignment_file_2snie} {distance_file_2snie} -o {test_prediction_output}"
+    cmd_line = f"{sys.executable} {WHISCY_BIN} {surface_file_2snie} {conversion_file_2snie} {alignment_file_2snie} {distance_file_2snie} -o {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
-        env={"PYTHONPATH": WHISCY_PATH},
+        env=env,
     )
 
     assert result.returncode == 0
@@ -104,16 +104,15 @@ def test_regression_3QI0C(
     alignment_file_3qi0_c,
     distance_file_3qi0_c,
     prediction_file_3qi0_c,
-    whiscy_bin,
 ):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{sys.executable} {whiscy_bin} {surface_file_3qi0_c} {conversion_file_3qi0_c} {alignment_file_3qi0_c} {distance_file_3qi0_c} -o {test_prediction_output}"
+    cmd_line = f"{sys.executable} {WHISCY_BIN} {surface_file_3qi0_c} {conversion_file_3qi0_c} {alignment_file_3qi0_c} {distance_file_3qi0_c} -o {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
-        env={"PYTHONPATH": WHISCY_PATH},
+        env=env,
     )
 
     assert result.returncode == 0
