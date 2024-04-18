@@ -13,7 +13,23 @@ from Bio.Blast import NCBIWWW
 from Bio.PDB.PDBIO import PDBIO
 from Bio.PDB.PDBParser import PDBParser
 
-from whiscy.modules import access, hssp, pdbutil
+from whiscy.modules import access, hssp
+from whiscy.modules.pdbutil import (
+    get_pdb_sequence,
+    download_pdb_structure,
+    NotAlternative,
+    map_protein_to_sequence_alignment,
+)
+
+from whiscy import (
+    FREESASA_BIN,
+    MUSCLE_BIN,
+    HSSPCONV_BIN,
+    CUTOFF,
+    AIR,
+    MUSCLE_BIN,
+    PROTDIST_BIN,
+)
 
 logger = logging.getLogger("whiscy_setup")
 logger.setLevel(logging.DEBUG)
@@ -25,52 +41,22 @@ formatter = logging.Formatter(
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-# Some extra checks...
-if "WHISCY_PATH" not in os.environ:
-    logger.warning(
-        "WHISCY_PATH variable not defined in the environment. Assuming the path of the script..."
-    )
-    os.environ["WHISCY_PATH"] = os.path.abspath(os.path.dirname(__file__)) + os.path.sep
-if shutil.which("freesasa") is None:
-    logger.critical("FreeSASA not in PATH. Please set environment correctly.")
-    raise SystemExit
-
-
-def load_config(config_file="etc/local.json"):
-    """Load Whiscy configuration"""
-    with open(os.path.join(os.environ["WHISCY_PATH"], config_file), "r") as f:
-        config = json.load(f)
-        return config
-
 
 def muscle_msa(
-    config: dict, input_sequence_file: str, output_alignment_file: str
+    input_sequence_file: str, output_alignment_file: str
 ) -> MultipleSeqAlignment:
     """Calculates a MSA using MUSCLE's Biopython wrapper"""
 
-    # Check if the muscle binary is available
-    muscle_bin = config["ALIGN"]["MUSCLE_BIN"]
-
-    if shutil.which(muscle_bin) is None:
-        # Fallback and look for a system variable `MUSCLE_BIN`
-        muscle_bin = os.environ.get("MUSCLE_BIN")
-        if muscle_bin is not None:
-            if shutil.which(muscle_bin) is None:
-                logger.critical(
-                    f"The path defined for the MUSCLE binary {muscle_bin} is not correct. Check the configuration file!"
-                )
-                raise SystemExit(1)
-
-    assert muscle_bin is not None, "MUSCLE binary not found"
+    assert MUSCLE_BIN is not None, "MUSCLE_BIN not defined"
 
     muscle_cline = MuscleCommandline(
-        muscle_bin, input=input_sequence_file, out=output_alignment_file
+        MUSCLE_BIN, input=input_sequence_file, out=output_alignment_file
     )
-    if not os.path.exists(muscle_bin):
-        logger.critical(
-            f"The path defined for the MUSCLE binary {muscle_bin} is not correct. Check the configuration file!"
-        )
-        raise SystemExit(1)
+    # if not os.path.exists(muscle_bin):
+    #     logger.critical(
+    #         f"The path defined for the MUSCLE binary {muscle_bin} is not correct. Check the configuration file!"
+    #     )
+    #     raise SystemExit(1)
     _, _ = muscle_cline()
     msa = AlignIO.read(output_alignment_file, "fasta")
     return msa
@@ -99,15 +85,9 @@ def msa_to_phylseq(
             output_handle.write(f"{alignment.id[:10]:10s}{alignment.seq}{os.linesep}")
 
 
-def hsspconv(hssp_file, converted_hssp_file, config):
+def hsspconv(hssp_file, converted_hssp_file):
     """Converts a HSSP in version 3 to original format"""
-    hsspconv_bin = config["ALIGN"]["HSSPCONV_BIN"]
-    if not os.path.exists(hsspconv_bin):
-        logger.critical(
-            "hsspconv cannot be found. Please check the installation instructions"
-        )
-        raise SystemExit
-    cmd = "{0} < {1} > {2}".format(hsspconv_bin, hssp_file, converted_hssp_file)
+    cmd = "{0} < {1} > {2}".format(HSSPCONV_BIN, hssp_file, converted_hssp_file)
     try:
         subprocess.run(cmd, shell=True)
     except:
@@ -116,17 +96,7 @@ def hsspconv(hssp_file, converted_hssp_file, config):
 
 def calculate_protdist(phylip_file, protdist_output_file):
     """Calculates the protdist of the given MSA"""
-    protdist_bin = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), "bin", "protdist", "protdist"
-    )
-    if not os.path.exists(protdist_bin):
-        logger.critical(
-            "Protdist was not compiled. Please check the installation instructions"
-        )
-        raise SystemExit
-    cmd = "{0} {1} {2} > /dev/null 2>&1".format(
-        protdist_bin, phylip_file, protdist_output_file
-    )
+    cmd = f"{PROTDIST_BIN} {phylip_file} {protdist_output_file} > /dev/null 2>&1"
     try:
         subprocess.run(cmd, shell=True)
     except:
@@ -174,9 +144,6 @@ def main():
     # )
     args = parser.parse_args()
 
-    # Load configuration
-    config = load_config()
-
     filename, file_extension = os.path.splitext(os.path.basename(args.pdb_file_name))
     with_pdb_code = file_extension == ""
     input_pdb_file = None
@@ -187,7 +154,7 @@ def main():
         input_pdb_file = "{0}.pdb".format(pdb_code)
         if not os.path.exists(input_pdb_file):
             try:
-                pdbutil.download_pdb_structure(pdb_code, input_pdb_file)
+                download_pdb_structure(pdb_code, input_pdb_file)
             except Exception as err:
                 logger.error(str(err))
                 raise SystemExit
@@ -227,7 +194,7 @@ def main():
     for chain in structure.get_chains():
         if chain.id == chain_id:
             io.set_structure(chain)
-            io.save(current_pdb_file, select=pdbutil.NotAlternative())
+            io.save(current_pdb_file, select=NotAlternative())
     logger.info(
         "PDB structure with chain {0} saved to {1}".format(chain_id, current_pdb_file)
     )
@@ -238,12 +205,12 @@ def main():
     logger.info("Atom accessibility calculated to {0}".format(rsa_output_file))
 
     # Calculate the different accessibility files according to the cutoffs:
-    cutoffs = config["CUTOFF"]
-    access.create_cutoff_files(rsa_output_file, pdb_code, chain_id, cutoffs)
+    # cutoffs = config["CUTOFF"]
+    access.create_cutoff_files(rsa_output_file, pdb_code, chain_id, CUTOFF)
     logger.info("Surface and buried residues calculated")
 
     # Get structure sequence
-    master_sequence = pdbutil.get_pdb_sequence(input_pdb_file, chain_id)
+    master_sequence = get_pdb_sequence(input_pdb_file, chain_id)
     write_to_fasta("{0}_{1}.fasta".format(filename, chain_id), master_sequence)
 
     if args.hssp:
@@ -273,7 +240,7 @@ def main():
                 # HSSP downloaded file is in new HSSP3 format, need to be
                 # converted back to original HSSP format using hsspconv
                 converted_hssp_file = hssp_file.replace("hssp3", "hssp")
-                hsspconv(hssp_file, converted_hssp_file, config)
+                hsspconv(hssp_file, converted_hssp_file)
                 hssp_file = converted_hssp_file
 
             hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
@@ -307,7 +274,7 @@ def main():
             # Multiple sequence alignment
             logger.info("Generating MSA using MUSCLE...")
             output_alignment_file = "{0}_{1}_msa.fasta".format(filename, chain_id)
-            msa = muscle_msa(config, blast_fasta_file, output_alignment_file)
+            msa = muscle_msa(blast_fasta_file, output_alignment_file)
             logger.info("Done.")
 
             # Convert MSA to Phylipseq
@@ -351,13 +318,12 @@ def main():
 
     # Generate conversion table file
     conv_output_file = "{0}_{1}.conv".format(filename, chain_id)
-    pdbutil.map_protein_to_sequence_alignment(
+    map_protein_to_sequence_alignment(
         current_pdb_file, chain_id, master_sequence, phylip_file, conv_output_file
     )
     logger.info("Conversion table file generated")
 
     logger.info("Whiscy setup finished")
-
 
 
 if __name__ == "__main__":
