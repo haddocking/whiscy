@@ -10,10 +10,10 @@ import logging
 import os
 import sys
 
-from libwhiscy.pam_calc import pam_calc_similarity, pam_load_sequences
-from libwhiscy.pam_data import code
-from libwhiscy.quotes import get_one
-from libwhiscy.whiscy_data import load_conversion_table, load_surface_list
+from whiscy.modules.pam_calc import pam_calc_similarity, pam_load_sequences
+from whiscy.modules.pam_data import code
+from whiscy.modules.quotes import get_one
+from whiscy.modules.whiscy_data import load_conversion_table, load_surface_list
 
 logger = logging.getLogger("whiscy")
 logger.setLevel(logging.INFO)
@@ -31,15 +31,15 @@ class Residue():
         self.score = score
 
 
-if __name__ == "__main__":
 
+def main():
     # Parse command line
     parser = argparse.ArgumentParser(prog='whiscy')
     parser.add_argument("surface_list", help="Surface list", metavar="surface_list")
     parser.add_argument("conversion_table", help="Conversion table", metavar="conversion_table")
     parser.add_argument("alignment_file", help="Alignment file", metavar="alignment_file")
     parser.add_argument("distance_file", help="Distance file", metavar="distance_file")
-    parser.add_argument("-o", "--output", help="If set, output prediction to this file", 
+    parser.add_argument("-o", "--output", help="If set, output prediction to this file",
                         dest="output_file", metavar="output_file")
     parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
     args = parser.parse_args()
@@ -53,12 +53,12 @@ if __name__ == "__main__":
     logger.info("Converting...")
     converted_surface = []
     for n in range(len(surface_list)):
-        if not surface_list[n] in conversion_table or conversion_table[surface_list[n]] < 1: 
+        if not surface_list[n] in conversion_table or conversion_table[surface_list[n]] < 1:
             logger.warning("Surface residue number {0} cannot be converted".format(surface_list[n]))
             logger.info("Continuing program...")
         else:
             converted_surface.append(conversion_table[surface_list[n]])
-    
+
     if not len(converted_surface):
         logger.error("No surface residues")
         raise SystemExit
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     scoresum = 0.0
     for n in range(realsum):
         scoresum += totlist[n].score
-  
+
     scoreaverage = scoresum / realsum
     for n in range(realsum):
         totlist[n].score -= scoreaverage
@@ -120,3 +120,7 @@ if __name__ == "__main__":
     # Ending with a quote
     print()
     print(get_one())
+
+
+if __name__ == "__main__":
+    main()

@@ -1,12 +1,12 @@
 import os
 
-try:
-    from math import exp, isclose
-except:
-    from math import exp
-    from numpy import isclose
+# try:
+#     from math import exp, isclose
+# except:
+from math import exp
+from numpy import isclose
 
-from libwhiscy.pam_data import code, logpameigval, pameigvec, pameigvecinv
+from whiscy.modules.pam_data import code, logpameigval, pameigvec, pameigvecinv
 
 
 class Distance():
@@ -83,11 +83,11 @@ def pam_load_sequences(alignment_file, distance_file):
             expect = [0 for i in range(20)]
             for i in range(20):
                 for ii in range(20):
-                    expect[i] += m[i][ii] * m[i][ii]
+                    expect[i] += m[i][ii] * m[i][ii] # type: ignore
 
             d = Distance(seq, dist, m, expect)
             distances.append(d)
-    
+
     seqlen = 0
     sequences = [[] for _ in range(seqnr)]
     with open(alignment_file, "rU") as input_alignment:
@@ -145,7 +145,7 @@ def pam_calc_similarity(pos, seqnr, seq, dis):
             nextnr = n
             nextdist = dis[n].dist
             break
-    if n == seqnr: 
+    if n == seqnr:
         return 0, distances, scores
 
     sim = 0.
@@ -167,16 +167,16 @@ def pam_calc_similarity(pos, seqnr, seq, dis):
                 break
         if n == (seqnr - 1):
             break
-        if isclose(currdist, lastdist): 
+        if isclose(currdist, lastdist):
             continue
-        
+
         m = dis[currnr].mat
         vcomp = seq[dis[currnr].seq][pos]
         weight = .5 * (nextdist - lastdist)
-        # This scaling factor of 2.4 is totally arbitrary, but gives a nice range of scores. 
+        # This scaling factor of 2.4 is totally arbitrary, but gives a nice range of scores.
         # Scaling does not affect the final ranking of scores whatsoever
         sim = 2.4 * (m[vref][vcomp] - dis[currnr].expect[vref])
-        
+
         totsim += weight * sim
         distances[counter] = currdist
         scores[counter] = totsim

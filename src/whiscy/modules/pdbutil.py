@@ -5,10 +5,10 @@ import os
 import re
 
 from Bio import AlignIO
-from Bio.PDB import PDBList
+from Bio.PDB.PDBList import PDBList
 from Bio.PDB.PDBIO import Select
 from Bio.PDB.PDBParser import PDBParser
-from Bio.PDB.Polypeptide import is_aa, three_to_one
+from Bio.PDB.Polypeptide import is_aa, three_to_index
 
 
 class NotAlternative(Select):
@@ -20,7 +20,7 @@ class NotAlternative(Select):
 _hydrogen = re.compile("[123 ]*H.*")
 def is_hydrogen(atom):
     """Checks if atom is an hydrogen"""
-    name = atom.get_id() 
+    name = atom.get_id()
     return _hydrogen.match(name)
 
 
@@ -46,7 +46,7 @@ def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False, with_gaps=F
         # Remove alternative location residues
         if "CA" in res.child_dict and is_aa(res) and res.id[2] == ' ':
             try:
-                mapping[res.id[1]] = three_to_one(res.get_resname())
+                mapping[res.id[1]] = three_to_index(res.get_resname())
             except KeyError:
                 # Ignore non standard residues such as HIC, MSE, etc.
                 pass
@@ -69,7 +69,7 @@ def map_protein_to_sequence_alignment(pdb_file, chain_id, sequence, phylip_file,
     """Creates a dictionary .conv file mapping protein residue numeration to aligment"""
     mapping = get_pdb_sequence(pdb_file, chain_id, mapping_output=True)
     # Check if sequence is the same
-    pdb_seq = ''.join([mapping[k] for k in sorted(mapping.keys())])
+    pdb_seq = ''.join([mapping[k] for k in sorted(mapping.keys())]) # type: ignore
     if pdb_seq != sequence:
         raise SystemExit("ERROR: PDB sequence doest not match sequence alignment")
 
@@ -84,7 +84,7 @@ def map_protein_to_sequence_alignment(pdb_file, chain_id, sequence, phylip_file,
                                                                                            chain_id,
                                                                                            os.linesep))
         seq_res_id = 1
-        for pdb_res_id in sorted(mapping.keys()):
+        for pdb_res_id in sorted(mapping.keys()): # type: ignore
             # Do not map gaps if any
             if mapping[pdb_res_id] != '-':
                 output_handle.write("{0}     {1}{2}".format(pdb_res_id, seq_res_id, os.linesep))

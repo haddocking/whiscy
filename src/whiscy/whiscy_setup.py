@@ -1,34 +1,19 @@
-#!/usr/bin/env python3
-
-"""Whiscy predictor setup"""
-
-__version__ = 1.0
-
 import argparse
 import json
+import logging
 import os
 import shutil
 import subprocess
 import sys
-import warnings
 
-# Import SearchIO and suppress experimental warning
-from Bio import AlignIO, BiopythonExperimentalWarning, BiopythonWarning, SeqIO
+from Bio import AlignIO, SearchIO, SeqIO
 from Bio.Align import MultipleSeqAlignment
 from Bio.Align.Applications import MuscleCommandline
 from Bio.Blast import NCBIWWW
-from Bio.PDB import PDBIO
+from Bio.PDB.PDBIO import PDBIO
 from Bio.PDB.PDBParser import PDBParser
 
-warnings.simplefilter("ignore", BiopythonWarning)
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", BiopythonExperimentalWarning)
-    from Bio import SearchIO
-
-# Logging
-import logging
-
-from libwhiscy import access, hssp, pdbutil
+from whiscy.modules import access, hssp, pdbutil
 
 logger = logging.getLogger("whiscy_setup")
 logger.setLevel(logging.DEBUG)
@@ -158,8 +143,7 @@ def write_to_fasta(output_fasta_file, sequence):
             output_handle.write("{0}{1}".format(chunk, os.linesep))
 
 
-if __name__ == "__main__":
-
+def main():
     # Parse command line
     parser = argparse.ArgumentParser(prog="whiscy_setup")
     parser.add_argument(
@@ -185,9 +169,9 @@ if __name__ == "__main__":
         metavar="alignment_format",
         default="fasta",
     )
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s {}".format(__version__)
-    )
+    # parser.add_argument(
+    #     "--version", action="version", version="%(prog)s {}".format(__version__)
+    # )
     args = parser.parse_args()
 
     # Load configuration
@@ -373,3 +357,8 @@ if __name__ == "__main__":
     logger.info("Conversion table file generated")
 
     logger.info("Whiscy setup finished")
+
+
+
+if __name__ == "__main__":
+    main()
