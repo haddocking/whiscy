@@ -2,24 +2,6 @@ from pathlib import Path
 
 GOLDEN_DATA_PATH = Path(Path(__file__).parent, "golden_data")
 
-WHISCY_PATH = Path(__file__).parent.parent
-
-WHISCY_BIN = Path(WHISCY_PATH, "whiscy.py")
-
-FREESASA_PATH = Path(WHISCY_PATH, "bin", "freesasa", "bin")
-FREESASA_EXEC = Path(FREESASA_PATH, "freesasa")
-
-# If `FREESASA_EXEC` is found, add it to the PATH
-if FREESASA_EXEC.exists():
-    import os
-
-    os.environ["PATH"] += os.pathsep + str(FREESASA_PATH)
-else:
-    # Fail the tests, we need it to run the tests
-    raise FileNotFoundError(f"{FREESASA_EXEC} not found")
-
-MUSCLE_BIN = Path(WHISCY_PATH, "bin", "muscle3.8.1551")
-
 
 PAM_EXPECTED_SCORES = [
     0.001239810431396115,
