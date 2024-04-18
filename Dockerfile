@@ -44,13 +44,14 @@ RUN  wget https://github.com/mittinatten/freesasa/releases/download/2.0.3/freesa
 ENV FREESASA_BIN=${SOFTWARE_PATH}/freesasa-2.0.3/bin/freesasa
 
 #------------------------------------------------------------------------------------------
+# Install Poetry
+RUN pip install --no-cache-dir poetry==1.8.2 \
+  && poetry config virtualenvs.create false
+
 # Install Whiscy
 WORKDIR ${SOFTWARE_PATH}/whiscy
 COPY . .
-
-#------------------------------------------------------------------------------------------
-# install BioPython
-RUN pip install biopython==1.79
+RUN poetry install --no-dev
 
 #------------------------------------------------------------------------------------------
 # Build protdist
@@ -71,9 +72,9 @@ WORKDIR /data
 
 FROM base AS test
 
-RUN pip install pytest coverage pytest pytest-cov hypothesis
-
-WORKDIR /opt/software/whiscy
+# RUN pip install pytest coverage pytest pytest-cov hypothesis
+WORKDIR ${SOFTWARE_PATH}/whiscy
+RUN poetry install
 
 
 #==============================================================================================
