@@ -14,7 +14,7 @@ pytest = "^8.1.1"
 coverage = "^7.4.4"
 
 [tool.poetry.scripts]
-whiscy = "whiscy.whiscy:main"
+whiscy = "whiscy.predict:main"
 whiscy_setup = "whiscy.whiscy_setup:main"
 
 [build-system]
