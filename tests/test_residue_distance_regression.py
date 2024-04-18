@@ -1,10 +1,17 @@
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 import pytest
 
-from . import GOLDEN_DATA_PATH, WHISCY_PATH
+from . import GOLDEN_DATA_PATH
+
+
+env = os.environ.copy()
+env["PYTHONPATH"] = str(Path(__file__).parent.parent)
+
+RESIDUE_DISTANCE_BIN = Path(Path(__file__).parent.parent, "bin", "residue_distance.py")
 
 
 @pytest.fixture
@@ -22,24 +29,19 @@ def rd_file():
     return Path(GOLDEN_DATA_PATH, "regression_residue_distance", "1ppe_I.rd")
 
 
-@pytest.fixture
-def rd_bin():
-    return Path(WHISCY_PATH, "bin", "residue_distance.py")
-
-
 @pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_residue_distance"], indirect=True
 )
-def test_rd_regression_1PPEI(scratch_path, pdb_file, conversion_file, rd_file, rd_bin):
+def test_rd_regression_1PPEI(scratch_path, pdb_file, conversion_file, rd_file):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{sys.executable} {rd_bin} {pdb_file} {conversion_file} {test_prediction_output}"
+    cmd_line = f"{sys.executable} {RESIDUE_DISTANCE_BIN} {pdb_file} {conversion_file} {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
-        env={"PYTHONPATH": WHISCY_PATH},
+        env=env,
     )
 
     assert result.returncode == 0

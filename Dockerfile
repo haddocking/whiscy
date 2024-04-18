@@ -1,8 +1,12 @@
 #==============================================================================================
-FROM python:3.11 as base
+FROM python:3.11 AS base
 
 LABEL author="Rodrigo V. Honorato <r.vargashonorato@uu.nl>"
 
+ARG SOFTWARE_PATH=/opt/software
+
+#------------------------------------------------------------------------------------------
+# System dependencies
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
   build-essential \
@@ -10,47 +14,52 @@ RUN apt-get update && \
   && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy Whiscy
-WORKDIR /opt/software/whiscy
-COPY . .
-
-# install BioPython
-RUN pip install biopython==1.79
-
-# Build protdist
-WORKDIR /opt/software/whiscy/bin/protdist
-RUN sh compile.sh
-
+#------------------------------------------------------------------------------------------
 # Build Muscle
-WORKDIR /opt/software/whiscy/muscle3.8.1551
+WORKDIR ${SOFTWARE_PATH}/muscle3.8.1551
 RUN curl https://drive5.com/muscle/muscle_src_3.8.1551.tar.gz | tar xzv && \
-  make && \
-  mv muscle /opt/software/whiscy/bin/muscle3.8.1551 && \
-  sed -i "s/\/Users\/bjimenez\/bin\/muscle\/muscle3.8.31_i86darwin64/\/opt\/software\/whiscy\/bin\/muscle3.8.1551/g" /opt/software/whiscy/etc/local.json
+  make
+ENV MUSCLE_BIN=${SOFTWARE_PATH}/muscle3.8.1551/muscle
 
+#------------------------------------------------------------------------------------------
 # Build hsspconv
+WORKDIR ${SOFTWARE_PATH}
 RUN wget https://github.com/cmbi/hssp/archive/3.1.5.tar.gz && \
   tar -zxvf 3.1.5.tar.gz && \
   cd hssp-3.1.5 && \
   ./autogen.sh && \
   ./configure && \
-  make hsspconv && \
-  mv hsspconv ../ && \
-  sed -i "s/\/Users\/bjimenez\/bin\/hssp\/hsspconv/\/opt\/software\/whiscy\/bin\/hsspconv/g" /opt/software/whiscy/etc/local.json
+  make hsspconv
+ENV HSSPCONV_BIN=${SOFTWARE_PATH}/hssp-3.1.5/hsspconv
 
-
+#------------------------------------------------------------------------------------------
 # Build freesasa
+WORKDIR ${SOFTWARE_PATH}
 RUN  wget https://github.com/mittinatten/freesasa/releases/download/2.0.3/freesasa-2.0.3.tar.gz  && \
   tar -zxvf freesasa-2.0.3.tar.gz && \
   cd freesasa-2.0.3 && \
-  ./configure --disable-json --prefix=/opt/software/whiscy/bin/freesasa && \
-  make && make install
+  ./configure --disable-json --prefix=`pwd` && \
+  make && \
+  make install
+ENV FREESASA_BIN=${SOFTWARE_PATH}/freesasa-2.0.3/bin/freesasa
 
-# WHISCY exports
-ENV WHISCY_PATH=/opt/software/whiscy
-ENV PYTHONPATH="${PYTHONPATH}:${WHISCY_PATH}"
-ENV WHISCY_BIN="${WHISCY_PATH}/whiscy.py"
-ENV PATH="${WHISCY_PATH}:${WHISCY_PATH}/bin/freesasa/bin:${PATH}"
+#------------------------------------------------------------------------------------------
+# Install Whiscy
+WORKDIR ${SOFTWARE_PATH}/whiscy
+COPY . .
+
+#------------------------------------------------------------------------------------------
+# install BioPython
+RUN pip install biopython==1.79
+
+#------------------------------------------------------------------------------------------
+# Build protdist
+WORKDIR ${SOFTWARE_PATH}/whiscy/bin/protdist
+RUN sh compile.sh
+ENV PROTDIST_BIN=${SOFTWARE_PATH}/whiscy/bin/protdist/protdist
+
+#------------------------------------------------------------------------------------------
+# Set data directory
 
 WORKDIR /data
 

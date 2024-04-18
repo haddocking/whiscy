@@ -7,12 +7,12 @@ from pathlib import Path
 
 import pytest
 
-from . import FREESASA_PATH, GOLDEN_DATA_PATH, MUSCLE_BIN, WHISCY_PATH
+from . import GOLDEN_DATA_PATH
 
 env = os.environ.copy()
-env["PATH"] += os.pathsep + str(FREESASA_PATH)
-env["WHISCY_PATH"] = str(WHISCY_PATH)
-env["MUSCLE_BIN"] = str(MUSCLE_BIN)
+env["PYTHONPATH"] = str(Path(__file__).parent.parent)
+
+WHISCY_SETUP_BIN = Path(Path(__file__).parent.parent, "whiscy_setup.py")
 
 
 @pytest.fixture
@@ -135,11 +135,6 @@ def blast_file_3qi0():
     return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "3qi0_C_blast.xml")
 
 
-@pytest.fixture
-def whiscy_setup_bin():
-    return Path(WHISCY_PATH, "whiscy_setup.py")
-
-
 @pytest.mark.regression
 @pytest.mark.parametrize(
     "scratch_path", ["scratch_regression_whiscy_setup_1ppe"], indirect=True
@@ -156,7 +151,6 @@ def test_regression_1PPEI(
     rsa_file_1ppe,
     surface_file_1ppe,
     suract_file_1ppe,
-    whiscy_setup_bin,
     blast_file_1ppe,
 ):
     # All the files produced by the whiscy_setup protocol:
@@ -177,7 +171,7 @@ def test_regression_1PPEI(
     # Put the blast file in the scratch path to skip blasting it via ncbi
     shutil.copy(blast_file_1ppe, scratch_path)
 
-    cmd_line = f"{sys.executable} {whiscy_setup_bin} 1ppe i"
+    cmd_line = f"{sys.executable} {WHISCY_SETUP_BIN} 1ppe i"
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
@@ -216,7 +210,6 @@ def test_regression_3QI0(
     rsa_file_3qi0,
     surface_file_3qi0,
     suract_file_3qi0,
-    whiscy_setup_bin,
     blast_file_3qi0,
 ):
 
@@ -234,7 +227,7 @@ def test_regression_3QI0(
     # Put the blast file in the scratch path to skip blasting it via ncbi
     shutil.copy(blast_file_3qi0, scratch_path)
 
-    cmd_line = f"{sys.executable} {whiscy_setup_bin} 3qi0 C"
+    cmd_line = f"{sys.executable} {WHISCY_SETUP_BIN} 3qi0 C"
     result = subprocess.run(
         cmd_line.split(),
         capture_output=True,
