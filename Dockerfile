@@ -1,5 +1,5 @@
 #==============================================================================================
-FROM python:3.8 as base
+FROM python:3.11 as base
 
 LABEL author="Rodrigo V. Honorato <r.vargashonorato@uu.nl>"
 

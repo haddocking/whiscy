@@ -9,8 +9,8 @@ except:
 from libwhiscy.pam_data import code, logpameigval, pameigvec, pameigvecinv
 
 
-class Distance():
-    def __init__(self, seq=0, dist=0., mat=None, expect=None):
+class Distance:
+    def __init__(self, seq=0, dist=0.0, mat=None, expect=None):
         self.seq = seq
         self.dist = dist
         if mat is None:
@@ -18,13 +18,13 @@ class Distance():
         else:
             self.mat = mat
         if expect is None:
-            self.expect = [0. for x in range(20)]
+            self.expect = [0.0 for x in range(20)]
         else:
             self.expect = expect
 
 
 def get_pam_assemble(distance):
-    m = [[0. for x in range(20)] for y in range(20)]
+    m = [[0.0 for x in range(20)] for y in range(20)]
     disteigval = [0.0 for x in range(20)]
 
     for n in range(20):
@@ -47,12 +47,12 @@ def pam_load_sequences(alignment_file, distance_file):
     if not os.path.exists(alignment_file):
         raise Exception("Sequence file {0} does not exist".format(alignment_file))
 
-    refseq = ''
+    refseq = ""
     seqtodis = []
 
     seqnr = 0
     distances = []
-    with open(distance_file, "rU") as input_distances:
+    with open(distance_file, "r") as input_distances:
         first_line = input_distances.readline().rstrip(os.linesep)
         fields = first_line.split()
         try:
@@ -76,7 +76,9 @@ def pam_load_sequences(alignment_file, distance_file):
                     raise ValueError()
                 dist = val
             except ValueError:
-                raise Exception("Reading error in distance file {0}".format(distance_file))
+                raise Exception(
+                    "Reading error in distance file {0}".format(distance_file)
+                )
 
             m = get_pam_assemble(100 * dist)
 
@@ -87,10 +89,10 @@ def pam_load_sequences(alignment_file, distance_file):
 
             d = Distance(seq, dist, m, expect)
             distances.append(d)
-    
+
     seqlen = 0
     sequences = [[] for _ in range(seqnr)]
-    with open(alignment_file, "rU") as input_alignment:
+    with open(alignment_file, "r") as input_alignment:
         first_line = input_alignment.readline().rstrip(os.linesep)
         fields = first_line.split()
         seqlen = int(fields[1])
@@ -108,7 +110,9 @@ def pam_load_sequences(alignment_file, distance_file):
                     sequences[n].append(code[ord(c)])
 
     # Sorted in ascending order as the C++ qsort
-    sorted_distances = sorted(distances, key=lambda distance: distance.dist, reverse=False)
+    sorted_distances = sorted(
+        distances, key=lambda distance: distance.dist, reverse=False
+    )
     seqtodis = [0 for _ in range(seqnr)]
     for n in range(seqnr):
         seqtodis[sorted_distances[n].seq] = n
@@ -135,21 +139,21 @@ def pam_load_sequences(alignment_file, distance_file):
 def pam_calc_similarity(pos, seqnr, seq, dis):
     nextnr = 0
     currnr = 0
-    nextdist = 0.
-    currdist = 0.
-    lastdist = 0.
-    scores = [0. for _ in range(seqnr)]
-    distances = [0. for _ in range(seqnr)]
+    nextdist = 0.0
+    currdist = 0.0
+    lastdist = 0.0
+    scores = [0.0 for _ in range(seqnr)]
+    distances = [0.0 for _ in range(seqnr)]
     for n in range(1, seqnr):
         if seq[dis[n].seq][pos] >= 0:
             nextnr = n
             nextdist = dis[n].dist
             break
-    if n == seqnr: 
+    if n == seqnr:
         return 0, distances, scores
 
-    sim = 0.
-    totsim = 0.
+    sim = 0.0
+    totsim = 0.0
     weight = 0.5 * nextdist
     totweight = weight
 
@@ -167,20 +171,19 @@ def pam_calc_similarity(pos, seqnr, seq, dis):
                 break
         if n == (seqnr - 1):
             break
-        if isclose(currdist, lastdist): 
+        if isclose(currdist, lastdist):
             continue
-        
+
         m = dis[currnr].mat
         vcomp = seq[dis[currnr].seq][pos]
-        weight = .5 * (nextdist - lastdist)
-        # This scaling factor of 2.4 is totally arbitrary, but gives a nice range of scores. 
+        weight = 0.5 * (nextdist - lastdist)
+        # This scaling factor of 2.4 is totally arbitrary, but gives a nice range of scores.
         # Scaling does not affect the final ranking of scores whatsoever
         sim = 2.4 * (m[vref][vcomp] - dis[currnr].expect[vref])
-        
+
         totsim += weight * sim
         distances[counter] = currdist
         scores[counter] = totsim
         counter += 1
 
     return counter, distances, scores
-
