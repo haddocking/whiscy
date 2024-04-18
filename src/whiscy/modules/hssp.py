@@ -126,7 +126,7 @@ def hssp_file_to_phylip(hssp_file_name, phylip_file_name, chain_id, master_seque
     line_buffer = []
     parsing_proteins = False
     prot_line_buffer = []
-    with open(hssp_file_name, "rU") as handle:
+    with open(hssp_file_name, "r") as handle:
         for line in handle:
             line = line.rstrip(os.linesep)
             if line.startswith("NCHAIN"):

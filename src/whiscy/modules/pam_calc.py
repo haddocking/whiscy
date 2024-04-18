@@ -52,7 +52,7 @@ def pam_load_sequences(alignment_file, distance_file):
 
     seqnr = 0
     distances = []
-    with open(distance_file, "rU") as input_distances:
+    with open(distance_file, "r") as input_distances:
         first_line = input_distances.readline().rstrip(os.linesep)
         fields = first_line.split()
         try:
@@ -90,7 +90,7 @@ def pam_load_sequences(alignment_file, distance_file):
 
     seqlen = 0
     sequences = [[] for _ in range(seqnr)]
-    with open(alignment_file, "rU") as input_alignment:
+    with open(alignment_file, "r") as input_alignment:
         first_line = input_alignment.readline().rstrip(os.linesep)
         fields = first_line.split()
         seqlen = int(fields[1])

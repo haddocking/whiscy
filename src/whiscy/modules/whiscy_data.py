@@ -26,19 +26,19 @@ class Distance:
         return "{} - {}: {}".format(self.nr1, self.nr2, self.dis)
 
 
-_accepted_residue_codes = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 
+_accepted_residue_codes = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L',
                            'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 
 
 def load_surface_list(file_name):
     """Loads the data from a surface list file.
 
-    Tipically, this file has extension .sur and its content is a 
+    Tipically, this file has extension .sur and its content is a
     simple column containing the index of the residue which has been
     marked as surface.
     """
     surface_list = []
-    with open(file_name, "rU") as handle:
+    with open(file_name, "r") as handle:
         for line in handle:
             if line:
                 try:
@@ -52,12 +52,12 @@ def load_conversion_table(file_name):
     """Loads the data from a conversion dictionary file.
 
     Tipically, this file has extension .conv and its content is two columns.
-    Left column is the id of the position of the residue in the original PDB 
+    Left column is the id of the position of the residue in the original PDB
     structure. Right Column is the id of the position of the residue in Phylseq
     aligment file.
     """
     conversion_table = {}
-    with open(file_name, "rU") as handle:
+    with open(file_name, "r") as handle:
         for line in handle:
             if line:
                 fields = line.rstrip(os.linesep).split()
@@ -72,7 +72,7 @@ def load_conversion_table(file_name):
 def load_cons_file(file_name):
     """Reads and parses a .acons file"""
     residues = []
-    with open(file_name, 'rU') as handle:
+    with open(file_name, 'r') as handle:
         for line in handle:
             if line:
                 fields = line.rstrip(os.linesep).split()
@@ -89,7 +89,7 @@ def load_cons_file(file_name):
 def load_residue_distance_matrix(file_name):
     """Reads and parses the residue distance matrix"""
     distances = []
-    with open(file_name, 'rU') as handle:
+    with open(file_name, 'r') as handle:
         for line in handle:
             if line:
                 fields = line.rstrip(os.linesep).split()
@@ -106,7 +106,7 @@ def load_residue_distance_matrix(file_name):
 def load_smoothing_parameter_file(file_name):
     """Reads and parses the smoothing parameter file"""
     par = {}
-    with open(file_name, 'rU') as handle:
+    with open(file_name, 'r') as handle:
         for line in handle:
             if line:
                 fields = line.rstrip(os.linesep).split()
@@ -126,7 +126,7 @@ def load_residue_weights(file_name):
     and only if it belongs to standard list of residues.
     """
     resweight = {}
-    with open(file_name, 'rU') as handle:
+    with open(file_name, 'r') as handle:
         for line in handle:
             line = line.rstrip(os.linesep)
             if line[0] != '#':
@@ -144,7 +144,7 @@ def load_residue_weights(file_name):
 def load_z_table(file_name):
     """Loads the Z-table, 25000 rows"""
     z_values = []
-    with open(file_name, 'rU') as handle:
+    with open(file_name, 'r') as handle:
         for line in handle:
             try:
                 line = line.rstrip(os.linesep)
