@@ -1,5 +1,5 @@
 #==============================================================================================
-FROM python:3.8 as base
+FROM python:3.12 as base
 
 LABEL author="Rodrigo V. Honorato <r.vargashonorato@uu.nl>"
 
@@ -15,10 +15,10 @@ WORKDIR /opt/software/whiscy
 COPY . .
 
 # install BioPython
-RUN pip install biopython==1.79
+RUN pip install .
 
 # Build protdist
-WORKDIR /opt/software/whiscy/bin/protdist
+WORKDIR /opt/software/whiscy/src/protdist
 RUN sh compile.sh
 
 # Build Muscle
