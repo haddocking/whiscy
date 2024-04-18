@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "whiscy"
+version = "0.1.0"
+description = ""
+authors = ["Rodrigo V. Honorato <r.vargashonorato@uu.nl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+biopython = "^1.83"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+coverage = "^7.4.4"
+
+[tool.poetry.scripts]
+whiscy = "whiscy.whiscy:main"
+whiscy_setup = "whiscy.whiscy_setup:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
