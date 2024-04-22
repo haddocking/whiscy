@@ -12,7 +12,9 @@ from libwhiscy import PARAM_PATH
 env = os.environ.copy()
 env["PYTHONPATH"] = str(Path(__file__).parent.parent)
 
-CONSADJUST_BIN = Path(Path(__file__).parent.parent, "bin", "consadjust.py")
+CONSADJUST_BIN = Path(
+    Path(__file__).parent.parent, "src", "whiscy", "cli_consadjust.py"
+)
 
 
 @pytest.fixture

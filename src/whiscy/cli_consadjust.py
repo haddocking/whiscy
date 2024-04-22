@@ -3,6 +3,7 @@
 __version__ = 1.0
 
 import argparse
+
 # Logging
 import logging
 import math
@@ -11,28 +12,36 @@ import sys
 
 import numpy as np
 
-from libwhiscy.whiscy_data import (load_cons_file, load_residue_weights,
-                                   load_z_table)
+from libwhiscy.whiscy_data import load_cons_file, load_residue_weights, load_z_table
 
 logger = logging.getLogger("consadjust")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.INFO)
-formatter = logging.Formatter('%(name)s [%(levelname)s] %(message)s')
+formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-if __name__ == "__main__":
+def main():
 
     # Parse command line
-    parser = argparse.ArgumentParser(prog='consadjust')
+    parser = argparse.ArgumentParser(prog="consadjust")
     parser.add_argument("cons_file", help="Conservation file", metavar="cons_file")
-    parser.add_argument("residue_weight_file", help="Residue weight file", metavar="residue_weight_file")
+    parser.add_argument(
+        "residue_weight_file", help="Residue weight file", metavar="residue_weight_file"
+    )
     parser.add_argument("z_table_file", help="Z-table file", metavar="z_table_file")
-    parser.add_argument("-o", "--output", help="If set, output prediction to this file", 
-                        dest="output_file", metavar="output_file")
-    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="If set, output prediction to this file",
+        dest="output_file",
+        metavar="output_file",
+    )
+    parser.add_argument(
+        "--version", action="version", version="%(prog)s {}".format(__version__)
+    )
     args = parser.parse_args()
 
     if not os.path.exists(args.cons_file):
@@ -41,11 +50,11 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.residue_weight_file):
         logger.error("Weight file {} does not exist".format(args.residue_weight_file))
-        raise SystemExit    
+        raise SystemExit
 
     if not os.path.exists(args.z_table_file):
         logger.error("Z-table {} does not exist".format(args.z_table_file))
-        raise SystemExit 
+        raise SystemExit
 
     logger.info("Reading input files")
 
@@ -63,8 +72,10 @@ if __name__ == "__main__":
     stddev = math.sqrt((square_sum_scores - sum_scores * sum_scores / consnr) / consnr)
     mean = sum_scores / consnr
 
-    if stddev <= 0.:
-        logger.error("All identical values in conservation file {}".format(args.cons_file))
+    if stddev <= 0.0:
+        logger.error(
+            "All identical values in conservation file {}".format(args.cons_file)
+        )
         raise SystemExit
 
     zcalc = [(res.score - mean) / stddev for res in residues]
@@ -82,16 +93,18 @@ if __name__ == "__main__":
         if currz < 0:
             currz *= -1
             neg = True
-    
-        index = np.argmax(z_values<currz)
+
+        index = np.argmax(z_values < currz)
         upperz = z_values[index]
 
         if index >= 24999:
             pscore = 0.5
         if index <= 0:
             pscore = 0.0
-        else: 
-            pscore = index - (currz - z_values[index]) / (z_values[index-1] - z_values[index])
+        else:
+            pscore = index - (currz - z_values[index]) / (
+                z_values[index - 1] - z_values[index]
+            )
 
         newneg = False
         pscore0 = pscore
@@ -106,14 +119,14 @@ if __name__ == "__main__":
         if padj > 25000:
             padj = 50000 - padj
             newneg = True
-    
+
         if padj < 0:
             padj = 0
-    
+
         pmin = int(math.floor(padj))
         pmax = int(math.ceil(padj))
         fac = padj - pmin
-        znorm = fac * z_values[pmin] + (1-fac) * z_values[pmax];
+        znorm = fac * z_values[pmin] + (1 - fac) * z_values[pmax]
 
         residues[n].score = mean + znorm * (1.0 - 2.0 * newneg) * stddev
 
@@ -131,10 +144,18 @@ if __name__ == "__main__":
     logger.info("Writing scores...")
     # If output to file
     if args.output_file:
-        with open(args.output_file, 'w') as output_handle:
+        with open(args.output_file, "w") as output_handle:
             for res in residues_sorted:
-                output_handle.write("{0:7.5f}  {1}{2}{3}".format(res.score, res.code, res.nr, os.linesep))
+                output_handle.write(
+                    "{0:7.5f}  {1}{2}{3}".format(
+                        res.score, res.code, res.nr, os.linesep
+                    )
+                )
 
     else:
         for res in residues_sorted:
             print("{0:7.5f}  {1}{2}".format(res.score, res.code, res.nr))
+
+
+if __name__ == "__main__":
+    main()
