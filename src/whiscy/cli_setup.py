@@ -115,7 +115,7 @@ def write_to_fasta(output_fasta_file, sequence):
             output_handle.write("{0}{1}".format(chunk, os.linesep))
 
 
-if __name__ == "__main__":
+def main():
 
     # Parse command line
     parser = argparse.ArgumentParser(prog="whiscy_setup")
@@ -326,3 +326,7 @@ if __name__ == "__main__":
     logger.info("Conversion table file generated")
 
     logger.info("Whiscy setup finished")
+
+
+if __name__ == "__main__":
+    main()
