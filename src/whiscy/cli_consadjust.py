@@ -12,7 +12,7 @@ import sys
 
 import numpy as np
 
-from libwhiscy.whiscy_data import load_cons_file, load_residue_weights, load_z_table
+from modules.whiscy_data import load_cons_file, load_residue_weights, load_z_table
 
 logger = logging.getLogger("consadjust")
 logger.setLevel(logging.INFO)

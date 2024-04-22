@@ -18,8 +18,8 @@ import sys
 
 from Bio.PDB.PDBParser import PDBParser
 
-from libwhiscy.pdbutil import is_hydrogen
-from libwhiscy.whiscy_data import load_conversion_table
+from modules.pdbutil import is_hydrogen
+from modules.whiscy_data import load_conversion_table
 
 logger = logging.getLogger("residue_distance")
 logger.setLevel(logging.INFO)

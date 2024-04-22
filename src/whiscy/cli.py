@@ -11,10 +11,10 @@ import logging
 import os
 import sys
 
-from libwhiscy.pam_calc import pam_calc_similarity, pam_load_sequences
-from libwhiscy.pam_data import code
-from libwhiscy.quotes import get_one
-from libwhiscy.whiscy_data import load_conversion_table, load_surface_list
+from whiscy.modules.pam_calc import pam_calc_similarity, pam_load_sequences
+from whiscy.modules.pam_data import code
+from whiscy.modules.quotes import get_one
+from whiscy.modules.whiscy_data import load_conversion_table, load_surface_list
 
 logger = logging.getLogger("whiscy")
 logger.setLevel(logging.INFO)

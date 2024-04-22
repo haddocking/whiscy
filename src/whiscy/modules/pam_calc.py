@@ -6,7 +6,7 @@ except:
     from math import exp
     from numpy import isclose
 
-from libwhiscy.pam_data import code, logpameigval, pameigvec, pameigvecinv
+from whiscy.modules.pam_data import code, logpameigval, pameigvec, pameigvecinv
 
 
 class Distance:

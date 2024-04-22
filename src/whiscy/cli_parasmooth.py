@@ -17,7 +17,7 @@ ch.setLevel(logging.INFO)
 formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
-from libwhiscy.whiscy_data import (
+from modules.whiscy_data import (
     load_cons_file,
     load_residue_distance_matrix,
     load_smoothing_parameter_file,
