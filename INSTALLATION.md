@@ -15,41 +15,31 @@ The installation of these dependencies is described in the [THIRDPARTY.md](THIRD
 
 ## Whiscy
 
-To install Whiscy, follow these steps:
+It can be easily installed from `pip`
 
-- Clone the repository:
+```bash
+pip install whiscy
+```
 
-  ```bash
-  git clone https://github.com/haddocking/whiscy && cd whiscy
-  ```
+Check the installation
 
-- Install the scripts
+```text
+$ whiscy -h
+usage: whiscy [-h] [-o output_file] [--version]
+              surface_list conversion_table alignment_file distance_file
 
-  Make sure you are using an environment with Python3.11+
+positional arguments:
+  surface_list          Surface list
+  conversion_table      Conversion table
+  alignment_file        Alignment file
+  distance_file         Distance file
 
-  ```bash
-  pip install .
-  ```
-
-- Check the installation
-
-  ```text
-  $ whiscy -h
-  usage: whiscy [-h] [-o output_file] [--version]
-                surface_list conversion_table alignment_file distance_file
-
-  positional arguments:
-    surface_list          Surface list
-    conversion_table      Conversion table
-    alignment_file        Alignment file
-    distance_file         Distance file
-
-  options:
-    -h, --help            show this help message and exit
-    -o output_file, --output output_file
-                          If set, output prediction to this file
-    --version             show program's version number and exit
-  ```
+options:
+  -h, --help            show this help message and exit
+  -o output_file, --output output_file
+                        If set, output prediction to this file
+  --version             show program's version number and exit
+```
 
 ### Troubleshooting
 
