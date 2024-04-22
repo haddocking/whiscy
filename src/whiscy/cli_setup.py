@@ -226,7 +226,7 @@ def main():
                     hssp_file = hssp_file.replace("hssp", "hssp3")
                 hssp.decompress_bz2(compressed_hssp_file, hssp_file)
                 logger.info("HSSP alignment stored to {0}".format(hssp_file))
-            except Exception as err:
+            except Exception:
                 logger.warning("HSSP file could not be downloaded")
         try:
             if "hssp3" in hssp_file:

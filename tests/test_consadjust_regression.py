@@ -1,8 +1,8 @@
 import filecmp
-import subprocess
-from pathlib import Path
-import sys
 import os
+import subprocess
+import sys
+from pathlib import Path
 
 import pytest
 

@@ -84,7 +84,7 @@ def main():
             neg = True
 
         index = np.argmax(z_values < currz)
-        upperz = z_values[index]
+        z_values[index]
 
         if index >= 24999:
             pscore = 0.5

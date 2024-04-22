@@ -10,9 +10,9 @@ Below we will give an example of how to use WHISCY to predict the binding site o
 
 Download the PDB file of the protein 1PPE from the [RCSB PDB](https://www.rcsb.org/structure/1PPE) website.
 
-  ```bash
-  wget https://files.rcsb.org/download/1PPE.pdb
-  ```
+```bash
+wget https://files.rcsb.org/download/1PPE.pdb
+```
 
 ### Setup the prediction
 
@@ -32,26 +32,26 @@ $ whiscy_setup 1PPE.pdb E
   2024-04-22 11:44:44,046 cli_setup:319 INFO - Protdist calculated
   2024-04-22 11:44:44,054 cli_setup:326 INFO - Conversion table file generated
   2024-04-22 11:44:44,054 cli_setup:328 INFO - Whiscy setup finished
-  ```
+```
 
 This script will generate a set of files needed for the prediction step with `whiscy`. Here it is a list of the generated files in our 1PPE complex.
 
 > Follow the links to see a set of pre-generated files for the 1PPE protein.
 
-| File name                                 |    Explanation                                                 |
-| ----------------------------------------- |----------------------------------------------------------------|
-| [1ppe.hssp](example/1ppe.hssp)           | Multiple sequence alignment download from the HSSP database     |
-| [1ppe.hssp.bz2](example/1ppe.hssp.bz2)   | HSSP MSA file compressed                                        |
-| [1ppe.pdb](example/1ppe.pdb)             | PDB file download from the Protein Data Bank                    |
-| [1ppe_E.pdb](example/1ppe_E.pdb)         | 1ppe.pdb parsed to select only the given `chain_id`             |
-| [1ppe_E.rsa](example/1ppe_E.rsa)         | SASA output of `freesasa` in `NACCESS` format of `1ppe_E.pdb` file|
-| [1ppe_E.fasta](example/1ppe_E.fasta)     | Sequence of 1ppe_E.pdb. Alternative residues have been removed  |
-| [1ppe_E.phylseq](example/1ppe_E.phylseq) | MSA file translated from HSSP to PHYLIP format                  |
-| [1ppe_E.conv](example/1ppe_E.conv)       | PDB residue numeration to FASTA sequence numeration             |
-| [1ppe_E.out](example/1ppe_E.out)         | Output of the `protdist` software on 1ppe_E.pdb                 |
-| [1ppe_E.sur](example/1ppe_E.sur)         | >15 % surface residue list according to `sa_pred_cutoff` cutoff |
-| [1ppe_E.suract](example/1ppe_E.suract)   | >40 % surface residue list according to `sa_act_cutoff` cutoff  |
-| [1ppe_E.lac](example/1ppe_E.lac)         | 0-15 % accessible residue list                                  |
+| File name                                | Explanation                                                        |
+| ---------------------------------------- | ------------------------------------------------------------------ |
+| [1ppe.hssp](example/1ppe.hssp)           | Multiple sequence alignment download from the HSSP database        |
+| [1ppe.hssp.bz2](example/1ppe.hssp.bz2)   | HSSP MSA file compressed                                           |
+| [1ppe.pdb](example/1ppe.pdb)             | PDB file download from the Protein Data Bank                       |
+| [1ppe_E.pdb](example/1ppe_E.pdb)         | 1ppe.pdb parsed to select only the given `chain_id`                |
+| [1ppe_E.rsa](example/1ppe_E.rsa)         | SASA output of `freesasa` in `NACCESS` format of `1ppe_E.pdb` file |
+| [1ppe_E.fasta](example/1ppe_E.fasta)     | Sequence of 1ppe_E.pdb. Alternative residues have been removed     |
+| [1ppe_E.phylseq](example/1ppe_E.phylseq) | MSA file translated from HSSP to PHYLIP format                     |
+| [1ppe_E.conv](example/1ppe_E.conv)       | PDB residue numeration to FASTA sequence numeration                |
+| [1ppe_E.out](example/1ppe_E.out)         | Output of the `protdist` software on 1ppe_E.pdb                    |
+| [1ppe_E.sur](example/1ppe_E.sur)         | >15 % surface residue list according to `sa_pred_cutoff` cutoff    |
+| [1ppe_E.suract](example/1ppe_E.suract)   | >40 % surface residue list according to `sa_act_cutoff` cutoff     |
+| [1ppe_E.lac](example/1ppe_E.lac)         | 0-15 % accessible residue list                                     |
 
 ### Make the interface prediction
 
