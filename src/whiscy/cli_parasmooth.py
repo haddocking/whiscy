@@ -1,10 +1,4 @@
-#!/usr/bin/env python3
-
-__version__ = 1.0
-
 import argparse
-
-# Logging
 import logging
 import math
 import os
@@ -133,9 +127,6 @@ def main():
         help="If set, output prediction to this file",
         dest="output_file",
         metavar="output_file",
-    )
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s {}".format(__version__)
     )
     args = parser.parse_args()
 

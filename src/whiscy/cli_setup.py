@@ -1,11 +1,4 @@
-#!/usr/bin/env python3
-
-"""Whiscy predictor setup"""
-
-__version__ = 1.0
-
 import argparse
-import json
 import os
 import shutil
 import subprocess
@@ -29,13 +22,13 @@ with warnings.catch_warnings():
 import logging
 
 from whiscy.modules import (
+    CUTOFF,
+    HSSPCONV_BIN,
+    MUSCLE_BIN,
     PROTDIST_BIN,
     access,
     hssp,
     pdbutil,
-    CUTOFF,
-    HSSPCONV_BIN,
-    MUSCLE_BIN,
 )
 
 logger = logging.getLogger("whiscy_setup")
@@ -142,9 +135,7 @@ def main():
         metavar="alignment_format",
         default="fasta",
     )
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s {}".format(__version__)
-    )
+
     args = parser.parse_args()
 
     filename, file_extension = os.path.splitext(os.path.basename(args.pdb_file_name))
