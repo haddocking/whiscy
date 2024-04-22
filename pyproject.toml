@@ -20,6 +20,7 @@ whiscy = "whiscy.cli:main"
 whiscy_setup = "whiscy.cli_setup:main"
 whiscy_consadjust = "whiscy.cli_consadjust:main"
 whiscy_parasmooth = "whiscy.cli_parasmooth:main"
+whiscy_resdist = "whiscy.cli_resdist:main"
 
 [tool.setuptools]
 include-package-data = true

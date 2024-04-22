@@ -10,6 +10,7 @@ to make such assumptions.
 __version__ = 1.0
 
 import argparse
+
 # Logging
 import logging
 import os
@@ -24,19 +25,21 @@ logger = logging.getLogger("residue_distance")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.INFO)
-formatter = logging.Formatter('%(name)s [%(levelname)s] %(message)s')
+formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-if __name__ == "__main__":
+def main():
 
     # Parse command line
-    parser = argparse.ArgumentParser(prog='residue_distance')
+    parser = argparse.ArgumentParser(prog="residue_distance")
     parser.add_argument("pdb_file", help="PDB file", metavar="pdb_file")
     parser.add_argument("conv_file", help="Conversion table file", metavar="conv_file")
     parser.add_argument("output_file", help="Output file name", metavar="output_file")
-    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
+    parser.add_argument(
+        "--version", action="version", version="%(prog)s {}".format(__version__)
+    )
     args = parser.parse_args()
 
     # Read conversion table file
@@ -52,11 +55,11 @@ if __name__ == "__main__":
 
     # Calculate minimum distance between residues
     keys = conversion_table.keys()
-    with open(args.output_file, 'w') as output_handle:
+    with open(args.output_file, "w") as output_handle:
         for i in range(len(residues)):
             res1 = residues[i]
             if res1.id[1] in keys:
-                for j in range(i+1, len(residues)):
+                for j in range(i + 1, len(residues)):
                     min_distance = float("inf")
                     res2 = residues[j]
                     if res2.id[1] in keys:
@@ -67,7 +70,14 @@ if __name__ == "__main__":
                                         d = a1 - a2
                                         if d < min_distance:
                                             min_distance = d
-                        output_handle.write("{0} {1} {2:.6f}{3}".format(res1.id[1], res2.id[1], 
-                                                                        min_distance, os.linesep))
+                        output_handle.write(
+                            "{0} {1} {2:.6f}{3}".format(
+                                res1.id[1], res2.id[1], min_distance, os.linesep
+                            )
+                        )
 
     logger.info("Residue distances written to {}".format(args.output_file))
+
+
+if __name__ == "__main__":
+    main()

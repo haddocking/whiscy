@@ -11,7 +11,7 @@ from . import GOLDEN_DATA_PATH
 env = os.environ.copy()
 env["PYTHONPATH"] = str(Path(__file__).parent.parent)
 
-RESIDUE_DISTANCE_BIN = Path(Path(__file__).parent.parent, "bin", "residue_distance.py")
+RESDIST_BIN = Path(Path(__file__).parent.parent, "src", "whiscy", "cli_resdist.py")
 
 
 @pytest.fixture
@@ -36,7 +36,7 @@ def rd_file():
 def test_rd_regression_1PPEI(scratch_path, pdb_file, conversion_file, rd_file):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{sys.executable} {RESIDUE_DISTANCE_BIN} {pdb_file} {conversion_file} {test_prediction_output}"
+    cmd_line = f"{sys.executable} {RESDIST_BIN} {pdb_file} {conversion_file} {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),
