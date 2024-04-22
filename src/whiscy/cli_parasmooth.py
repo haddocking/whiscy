@@ -3,6 +3,7 @@
 __version__ = 1.0
 
 import argparse
+
 # Logging
 import logging
 import math
@@ -13,12 +14,14 @@ logger = logging.getLogger("parasmooth")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.INFO)
-formatter = logging.Formatter('%(name)s [%(levelname)s] %(message)s')
+formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
-from libwhiscy.whiscy_data import (load_cons_file,
-                                   load_residue_distance_matrix,
-                                   load_smoothing_parameter_file)
+from libwhiscy.whiscy_data import (
+    load_cons_file,
+    load_residue_distance_matrix,
+    load_smoothing_parameter_file,
+)
 
 
 def get_weight(par, val):
@@ -30,15 +33,15 @@ def get_weight(par, val):
             break
         i += 1
 
-    if math.isclose(val, vh) or i==0:
-        return wh 
+    if math.isclose(val, vh) or i == 0:
+        return wh
     else:
         i -= 1
         key = list(par.keys())[i]
         vl = key
         wl = par[key]
 
-        return wl + (wh - wl) * (val - vl)/(vh - vl)
+        return wl + (wh - wl) * (val - vl) / (vh - vl)
 
 
 def calculate_parasmooth(res_sur, res_lac, resdist, par):
@@ -59,7 +62,7 @@ def calculate_parasmooth(res_sur, res_lac, resdist, par):
                 partner = resdist[i].nr2
             elif resdist[i].nr2 == res_sur[n].nr:
                 partner = resdist[i].nr1
-            if partner == -1: 
+            if partner == -1:
                 continue
 
             found = False
@@ -94,17 +97,40 @@ def calculate_parasmooth(res_sur, res_lac, resdist, par):
     return res_sur
 
 
-if __name__ == "__main__":
+def main():
 
     # Parse command line
-    parser = argparse.ArgumentParser(prog='parasmooth')
-    parser.add_argument("surface_cons_file", help="Surface conservation file", metavar="surface_cons_file")
-    parser.add_argument("low_accessible_cons_file", help="Low accessible conservation file", metavar="low_accessible_cons_file")
-    parser.add_argument("residue_distance_matrix", help="Residue distance matrix", metavar="residue_distance_matrix")
-    parser.add_argument("smoothing_parameter_file", help="Smoothing parameter file", metavar="smoothing_parameter_file")
-    parser.add_argument("-o", "--output", help="If set, output prediction to this file", 
-                        dest="output_file", metavar="output_file")
-    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
+    parser = argparse.ArgumentParser(prog="parasmooth")
+    parser.add_argument(
+        "surface_cons_file",
+        help="Surface conservation file",
+        metavar="surface_cons_file",
+    )
+    parser.add_argument(
+        "low_accessible_cons_file",
+        help="Low accessible conservation file",
+        metavar="low_accessible_cons_file",
+    )
+    parser.add_argument(
+        "residue_distance_matrix",
+        help="Residue distance matrix",
+        metavar="residue_distance_matrix",
+    )
+    parser.add_argument(
+        "smoothing_parameter_file",
+        help="Smoothing parameter file",
+        metavar="smoothing_parameter_file",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="If set, output prediction to this file",
+        dest="output_file",
+        metavar="output_file",
+    )
+    parser.add_argument(
+        "--version", action="version", version="%(prog)s {}".format(__version__)
+    )
     args = parser.parse_args()
 
     logger.info("Reading input files")
@@ -131,13 +157,22 @@ if __name__ == "__main__":
 
     # If output to file
     if args.output_file:
-        with open(args.output_file, 'w') as handle:
+        with open(args.output_file, "w") as handle:
             for n in range(len(res_sur)):
-                handle.write("{:8.5f}   {}{}{}".format(res_sur[n].score, 
-                                                       res_sur[n].code, 
-                                                       res_sur[n].nr,
-                                                       os.linesep))
+                handle.write(
+                    "{:8.5f}   {}{}{}".format(
+                        res_sur[n].score, res_sur[n].code, res_sur[n].nr, os.linesep
+                    )
+                )
         logger.info("Result written to {}".format(args.output_file))
     else:
         for n in range(len(res_sur)):
-            print("{:8.5f}   {}{}".format(res_sur[n].score, res_sur[n].code, res_sur[n].nr))
+            print(
+                "{:8.5f}   {}{}".format(
+                    res_sur[n].score, res_sur[n].code, res_sur[n].nr
+                )
+            )
+
+
+if __name__ == "__main__":
+    main()

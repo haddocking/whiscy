@@ -9,7 +9,9 @@ import pytest
 from . import GOLDEN_DATA_PATH
 from libwhiscy import PARAM_PATH
 
-PARASMOOTH_BIN = Path(Path(__file__).parent.parent, "bin", "parasmooth.py")
+PARASMOOTH_BIN = Path(
+    Path(__file__).parent.parent, "src", "whiscy", "cli_parasmooth.py"
+)
 
 env = os.environ.copy()
 env["PYTHONPATH"] = str(Path(__file__).parent.parent)
