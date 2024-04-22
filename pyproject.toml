@@ -1,9 +1,17 @@
 [tool.poetry]
 name = "whiscy"
-version = "1.1.3"
-description = "WHISCY is a software program that predicts protein-protein interfaces using conservation and structural information by calculating prediction scores for each surface residue based on sequence alignment."
+version = "1.2.0"
+description = "WHISCY is a software that predicts protein-protein interfaces using conservation and structural information by calculating prediction scores for each surface residue based on sequence alignment."
 authors = ["Bonvin Lab <bonvinlab.support@uu.nl>"]
 readme = "README.md"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: Unix",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+  "Intended Audience :: Science/Research",
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"

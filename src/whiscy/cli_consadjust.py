@@ -1,10 +1,4 @@
-#!/usr/bin/env python3
-
-__version__ = 1.0
-
 import argparse
-
-# Logging
 import logging
 import math
 import os
@@ -13,12 +7,12 @@ from pathlib import Path
 
 import numpy as np
 
+from whiscy.modules import PARAM_PATH
 from whiscy.modules.whiscy_data import (
     load_cons_file,
     load_residue_weights,
     load_z_table,
 )
-from whiscy.modules import PARAM_PATH
 
 logger = logging.getLogger("consadjust")
 logger.setLevel(logging.INFO)
@@ -44,9 +38,6 @@ def main():
         help="If set, output prediction to this file",
         dest="output_file",
         metavar="output_file",
-    )
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s {}".format(__version__)
     )
     args = parser.parse_args()
 
@@ -93,7 +84,7 @@ def main():
             neg = True
 
         index = np.argmax(z_values < currz)
-        upperz = z_values[index]
+        z_values[index]
 
         if index >= 24999:
             pscore = 0.5

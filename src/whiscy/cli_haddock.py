@@ -1,16 +1,12 @@
-#!/usr/bin/env python3
-
-"""Calculates the active/passive residues for HADDOCK
+"""
+Calculates the active/passive residues for HADDOCK
 
 - Active residues: >=0.18 (WHISCY score)
 - Passive residues: radius of 6.5A of active residues
 """
 
-__version__ = 1.0
-
 import argparse
 import os
-import sys
 
 import Bio.PDB
 
@@ -64,9 +60,6 @@ def main():
     parser.add_argument(
         "whiscy_scores_file", help="WHISCY scores file", metavar="whiscy_scores_file"
     )
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s {}".format(__version__)
-    )
     args = parser.parse_args()
 
     input_pdb_file_name = args.input_pdb_file
@@ -104,7 +97,7 @@ def main():
         neighbors.remove(active)
         for passive in neighbors:
             res_id = "{}{}".format(
-                STANDARD_TYPES[passive.get_resname()], passive.get_id()[1]
+                STANDARD_TYPES[passive.get_resname()], passive.get_id()[1]  # type: ignore
             )
             passive_residue_ids.append(res_id)
 

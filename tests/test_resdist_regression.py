@@ -1,12 +1,11 @@
+import os
 import subprocess
 import sys
-import os
 from pathlib import Path
 
 import pytest
 
 from . import GOLDEN_DATA_PATH
-
 
 env = os.environ.copy()
 env["PYTHONPATH"] = str(

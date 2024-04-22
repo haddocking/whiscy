@@ -19,9 +19,9 @@ To install Whiscy, follow these steps:
 
 - Clone the repository:
 
-    ```bash
-    git clone https://github.com/haddocking/whiscy && cd whiscy
-    ```
+  ```bash
+  git clone https://github.com/haddocking/whiscy && cd whiscy
+  ```
 
 - Install the scripts
 
@@ -33,23 +33,23 @@ To install Whiscy, follow these steps:
 
 - Check the installation
 
-    ```text
-    $ whiscy -h
-    usage: whiscy [-h] [-o output_file] [--version]
-                  surface_list conversion_table alignment_file distance_file
+  ```text
+  $ whiscy -h
+  usage: whiscy [-h] [-o output_file] [--version]
+                surface_list conversion_table alignment_file distance_file
 
-    positional arguments:
-      surface_list          Surface list
-      conversion_table      Conversion table
-      alignment_file        Alignment file
-      distance_file         Distance file
+  positional arguments:
+    surface_list          Surface list
+    conversion_table      Conversion table
+    alignment_file        Alignment file
+    distance_file         Distance file
 
-    options:
-      -h, --help            show this help message and exit
-      -o output_file, --output output_file
-                            If set, output prediction to this file
-      --version             show program's version number and exit
-    ```
+  options:
+    -h, --help            show this help message and exit
+    -o output_file, --output output_file
+                          If set, output prediction to this file
+    --version             show program's version number and exit
+  ```
 
 ### Troubleshooting
 

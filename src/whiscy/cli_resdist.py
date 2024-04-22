@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """This script calculates the minimum distance between all residues in the PDB structure.
 
 It assumes that the PDB file contains only one chain and there are no residues with
@@ -7,11 +5,7 @@ alternative positions. As this script should be executed after whiscy_setup, it 
 to make such assumptions.
 """
 
-__version__ = 1.0
-
 import argparse
-
-# Logging
 import logging
 import os
 import sys
@@ -37,9 +31,6 @@ def main():
     parser.add_argument("pdb_file", help="PDB file", metavar="pdb_file")
     parser.add_argument("conv_file", help="Conversion table file", metavar="conv_file")
     parser.add_argument("output_file", help="Output file name", metavar="output_file")
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s {}".format(__version__)
-    )
     args = parser.parse_args()
 
     # Read conversion table file

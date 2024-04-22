@@ -1,12 +1,5 @@
-#!/usr/bin/env python3
-
-"""Adds the WHISCY scoring prediction to the B-factor column of a given PDB"""
-
-__version__ = 1.0
-
 import argparse
 import os
-import sys
 
 STANDARD_TYPES = {
     "ALA": "A",
@@ -64,9 +57,6 @@ def main():
         dest="norm",
         action="store_true",
         default=False,
-    )
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s {}".format(__version__)
     )
     args = parser.parse_args()
 

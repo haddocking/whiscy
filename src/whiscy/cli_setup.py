@@ -1,11 +1,4 @@
-#!/usr/bin/env python3
-
-"""Whiscy predictor setup"""
-
-__version__ = 1.0
-
 import argparse
-import json
 import os
 import shutil
 import subprocess
@@ -29,13 +22,13 @@ with warnings.catch_warnings():
 import logging
 
 from whiscy.modules import (
+    CUTOFF,
+    HSSPCONV_BIN,
+    MUSCLE_BIN,
     PROTDIST_BIN,
     access,
     hssp,
     pdbutil,
-    CUTOFF,
-    HSSPCONV_BIN,
-    MUSCLE_BIN,
 )
 
 logger = logging.getLogger("whiscy_setup")
@@ -142,9 +135,7 @@ def main():
         metavar="alignment_format",
         default="fasta",
     )
-    parser.add_argument(
-        "--version", action="version", version="%(prog)s {}".format(__version__)
-    )
+
     args = parser.parse_args()
 
     filename, file_extension = os.path.splitext(os.path.basename(args.pdb_file_name))
@@ -235,7 +226,7 @@ def main():
                     hssp_file = hssp_file.replace("hssp", "hssp3")
                 hssp.decompress_bz2(compressed_hssp_file, hssp_file)
                 logger.info("HSSP alignment stored to {0}".format(hssp_file))
-            except Exception as err:
+            except Exception:
                 logger.warning("HSSP file could not be downloaded")
         try:
             if "hssp3" in hssp_file:
