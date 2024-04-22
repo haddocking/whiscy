@@ -7,12 +7,16 @@ import os
 import pytest
 
 from . import GOLDEN_DATA_PATH
-from libwhiscy import PARAM_PATH
+from whiscy.modules import PARAM_PATH
 
 env = os.environ.copy()
-env["PYTHONPATH"] = str(Path(__file__).parent.parent)
+env["PYTHONPATH"] = str(
+    Path(Path(__file__).parent.parent, "src"),
+)
 
-CONSADJUST_BIN = Path(Path(__file__).parent.parent, "bin", "consadjust.py")
+CONSADJUST_BIN = Path(
+    Path(__file__).parent.parent, "src", "whiscy", "cli_consadjust.py"
+)
 
 
 @pytest.fixture

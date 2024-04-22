@@ -3,7 +3,7 @@
 """Calculates the active/passive residues for HADDOCK
 
 - Active residues: >=0.18 (WHISCY score)
-- Passive residues: radius of 6.5A of active residues 
+- Passive residues: radius of 6.5A of active residues
 """
 
 __version__ = 1.0
@@ -14,10 +14,28 @@ import sys
 
 import Bio.PDB
 
-STANDARD_TYPES = {'ALA': 'A', 'ARG': 'R', 'ASN': 'N', 'ASP': 'D', 'CYS': 'C',
-                  'GLU': 'E', 'GLN': 'Q', 'GLY': 'G', 'HIS': 'H', 'ILE': 'I',
-                  'LEU': 'L', 'LYS': 'K', 'MET': 'M', 'PHE': 'F', 'PRO': 'P',
-                  'SER': 'S', 'THR': 'T', 'TRP': 'W', 'TYR': 'Y', 'VAL': 'V'}
+STANDARD_TYPES = {
+    "ALA": "A",
+    "ARG": "R",
+    "ASN": "N",
+    "ASP": "D",
+    "CYS": "C",
+    "GLU": "E",
+    "GLN": "Q",
+    "GLY": "G",
+    "HIS": "H",
+    "ILE": "I",
+    "LEU": "L",
+    "LYS": "K",
+    "MET": "M",
+    "PHE": "F",
+    "PRO": "P",
+    "SER": "S",
+    "THR": "T",
+    "TRP": "W",
+    "TYR": "Y",
+    "VAL": "V",
+}
 
 
 def parse_whiscy_scores(file_name):
@@ -33,14 +51,22 @@ def parse_whiscy_scores(file_name):
     return scores
 
 
-if __name__ == "__main__":
+def main():
 
     # Parse command line
-    parser = argparse.ArgumentParser(prog='whiscy2haddock')
-    parser.add_argument("input_pdb_file", help="Input PDB structure file", metavar="input_pdb_file")
-    parser.add_argument("output_pdb_file", help="Output PDB file", metavar="output_pdb_file")
-    parser.add_argument("whiscy_scores_file", help="WHISCY scores file", metavar="whiscy_scores_file")
-    parser.add_argument('--version', action='version', version='%(prog)s {}'.format(__version__))
+    parser = argparse.ArgumentParser(prog="whiscy2haddock")
+    parser.add_argument(
+        "input_pdb_file", help="Input PDB structure file", metavar="input_pdb_file"
+    )
+    parser.add_argument(
+        "output_pdb_file", help="Output PDB file", metavar="output_pdb_file"
+    )
+    parser.add_argument(
+        "whiscy_scores_file", help="WHISCY scores file", metavar="whiscy_scores_file"
+    )
+    parser.add_argument(
+        "--version", action="version", version="%(prog)s {}".format(__version__)
+    )
     args = parser.parse_args()
 
     input_pdb_file_name = args.input_pdb_file
@@ -59,23 +85,27 @@ if __name__ == "__main__":
     active_residues = []
     for residue in residues:
         try:
-            res_id = "{}{}".format(STANDARD_TYPES[residue.get_resname()], residue.get_id()[1])
+            res_id = "{}{}".format(
+                STANDARD_TYPES[residue.get_resname()], residue.get_id()[1]
+            )
             if scores[res_id] >= 0.18:
                 active_residues.append(residue)
         except KeyError:
             pass
 
     # Calculate passive residues
-    atoms  = Bio.PDB.Selection.unfold_entities(structure, 'A')
+    atoms = Bio.PDB.Selection.unfold_entities(structure, "A")
     neighbor_search = Bio.PDB.NeighborSearch(atoms)
     passive_residue_ids = []
     for active in active_residues:
-        center = active['CA'].coord
-        neighbors = neighbor_search.search(center, 6.5, level='R')
+        center = active["CA"].coord
+        neighbors = neighbor_search.search(center, 6.5, level="R")
         # Remove itself
         neighbors.remove(active)
         for passive in neighbors:
-            res_id = "{}{}".format(STANDARD_TYPES[passive.get_resname()], passive.get_id()[1])
+            res_id = "{}{}".format(
+                STANDARD_TYPES[passive.get_resname()], passive.get_id()[1]
+            )
             passive_residue_ids.append(res_id)
 
     # Create unique ids for passive residues
@@ -84,15 +114,17 @@ if __name__ == "__main__":
     # Create same ID list for active:
     active_residue_ids = []
     for residue in active_residues:
-        res_id = "{}{}".format(STANDARD_TYPES[residue.get_resname()], residue.get_id()[1])
+        res_id = "{}{}".format(
+            STANDARD_TYPES[residue.get_resname()], residue.get_id()[1]
+        )
         active_residue_ids.append(res_id)
     active_residue_ids = list(set(active_residue_ids))
 
     # Finally, remove from passive list the active:
     passive_residue_ids = list(set(passive_residue_ids) - set(active_residue_ids))
 
-    with open(input_pdb_file_name, 'r') as input:
-        with open(output_pdb_file_name, 'w') as output:
+    with open(input_pdb_file_name, "r") as input:
+        with open(output_pdb_file_name, "w") as output:
             for line in input:
                 line = line.rstrip(os.linesep)
                 if line and line.startswith("ATOM  "):
@@ -111,8 +143,20 @@ if __name__ == "__main__":
                     line = line[:61] + "%6.2f" % bfactor + line[66:]
                 output.write(line + os.linesep)
 
-    with open('active.txt', 'w') as output:
-        output.write(','.join([str(x) for x in sorted([int(id[1:]) for id in active_residue_ids])]))
+    with open("active.txt", "w") as output:
+        output.write(
+            ",".join(
+                [str(x) for x in sorted([int(id[1:]) for id in active_residue_ids])]
+            )
+        )
 
-    with open('passive.txt', 'w') as output:
-        output.write(','.join([str(x) for x in sorted([int(id[1:]) for id in passive_residue_ids])]))
+    with open("passive.txt", "w") as output:
+        output.write(
+            ",".join(
+                [str(x) for x in sorted([int(id[1:]) for id in passive_residue_ids])]
+            )
+        )
+
+
+if __name__ == "__main__":
+    main()

@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from libwhiscy import FREESASA_BIN
+from whiscy.modules import FREESASA_BIN
 
 
 def calculate_accessibility(pdb_file_name, output_file_name):
