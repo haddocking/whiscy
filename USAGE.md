@@ -1,6 +1,6 @@
 # Using WHISCY
 
-After it has been installed according to the instructions in the [INSTALL.md](INSTALL.md) file, you can use WHISCY to predict the binding site of a protein.
+After it has been installed according to the instructions in the [INSTALLATION.md](INSTALLATION.md) file, you can use WHISCY to predict the binding site of a protein.
 
 ## Example
 
