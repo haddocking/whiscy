@@ -9,6 +9,14 @@ import logging
 import math
 import os
 import sys
+from pathlib import Path
+
+from whiscy.modules import PARAM_PATH
+from whiscy.modules.whiscy_data import (
+    load_cons_file,
+    load_residue_distance_matrix,
+    load_smoothing_parameter_file,
+)
 
 logger = logging.getLogger("parasmooth")
 logger.setLevel(logging.INFO)
@@ -17,11 +25,9 @@ ch.setLevel(logging.INFO)
 formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
-from modules.whiscy_data import (
-    load_cons_file,
-    load_residue_distance_matrix,
-    load_smoothing_parameter_file,
-)
+
+
+SMOOTHING_PARAM_FILE = Path(PARAM_PATH, "parasmooth.par")
 
 
 def get_weight(par, val):
@@ -116,11 +122,11 @@ def main():
         help="Residue distance matrix",
         metavar="residue_distance_matrix",
     )
-    parser.add_argument(
-        "smoothing_parameter_file",
-        help="Smoothing parameter file",
-        metavar="smoothing_parameter_file",
-    )
+    # parser.add_argument(
+    #     "smoothing_parameter_file",
+    #     help="Smoothing parameter file",
+    #     metavar="smoothing_parameter_file",
+    # )
     parser.add_argument(
         "-o",
         "--output",
@@ -146,7 +152,7 @@ def main():
         resdist = load_residue_distance_matrix(args.residue_distance_matrix)
 
         # Read .par file
-        par = load_smoothing_parameter_file(args.smoothing_parameter_file)
+        par = load_smoothing_parameter_file(SMOOTHING_PARAM_FILE)
 
         # Calculate parasmooth values
         logger.info("Calculating parameter smoothing")

@@ -7,7 +7,6 @@ import os
 import pytest
 
 from . import GOLDEN_DATA_PATH
-from whiscy.modules import PARAM_PATH
 
 PARASMOOTH_BIN = Path(
     Path(__file__).parent.parent, "src", "whiscy", "cli_parasmooth.py"
@@ -35,11 +34,6 @@ def rd_file():
 
 
 @pytest.fixture
-def par_file():
-    return Path(PARAM_PATH, "parasmooth.par")
-
-
-@pytest.fixture
 def prediction_file():
     return Path(GOLDEN_DATA_PATH, "regression_parasmooth", "2SNIE.parasmooth")
 
@@ -53,12 +47,11 @@ def test_regression_2SNIE(
     acons_file,
     lcons_file,
     rd_file,
-    par_file,
     prediction_file,
 ):
 
     test_prediction_output = Path(scratch_path, "test.prediction")
-    cmd_line = f"{sys.executable} {PARASMOOTH_BIN} {acons_file} {lcons_file} {rd_file} {par_file} -o {test_prediction_output}"
+    cmd_line = f"{sys.executable} {PARASMOOTH_BIN} {acons_file} {lcons_file} {rd_file} -o {test_prediction_output}"
 
     result = subprocess.run(
         cmd_line.split(),

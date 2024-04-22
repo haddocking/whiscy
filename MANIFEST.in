@@ -1,0 +1,3 @@
+include src/whiscy/param/parasmooth.par
+include src/whiscy/param/weight_ma.txt
+include src/whiscy/param/ztable.txt

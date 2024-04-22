@@ -28,7 +28,7 @@ with warnings.catch_warnings():
 # Logging
 import logging
 
-from modules import (
+from whiscy.modules import (
     PROTDIST_BIN,
     access,
     hssp,

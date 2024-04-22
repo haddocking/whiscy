@@ -14,36 +14,38 @@ $ sudo apt-get update && \
 ## Muscle
 
 ```bash
-$ mkdir -p $HOME/software && cd $HOME/software
-$ mkdir muscle3.8.1551 && cd muscle3.8.1551
-$ wget https://drive5.com/muscle/muscle_src_3.8.1551.tar.gz
-$ tar -zxf muscle_src_3.8.1551.tar.gz && rm muscle_src_3.8.1551.tar.gz
-$ make
-$ export MUSCLE_BIN=$HOME/software/muscle3.8.1551/muscle
+mkdir -p $HOME/software && cd $HOME/software
+mkdir muscle3.8.1551 && cd muscle3.8.1551
+wget https://drive5.com/muscle/muscle_src_3.8.1551.tar.gz
+tar -zxf muscle_src_3.8.1551.tar.gz && rm muscle_src_3.8.1551.tar.gz
+make
+export MUSCLE_BIN=$HOME/software/muscle3.8.1551/muscle
 ```
 
 ## Freesasa
+
 ```bash
-$ mkdir -p $HOME/software && cd $HOME/software
-$ wget https://github.com/mittinatten/freesasa/releases/download/2.0.3/freesasa-2.0.3.tar.gz
-$ tar -zxf freesasa-2.0.3.tar.gz && rm freesasa-2.0.3.tar.gz
-$ cd freesasa-2.0.3
-$ ./configure --disable-json --prefix=`pwd`
-$ make
-$ make install
-$ export FREESASA_BIN=$HOME/software/freesasa-2.0.3/bin/freesasa
+mkdir -p $HOME/software && cd $HOME/software
+wget https://github.com/mittinatten/freesasa/releases/download/2.0.3/freesasa-2.0.3.tar.gz
+tar -zxf freesasa-2.0.3.tar.gz && rm freesasa-2.0.3.tar.gz
+cd freesasa-2.0.3
+./configure --disable-json --prefix=`pwd`
+make
+make install
+export FREESASA_BIN=$HOME/software/freesasa-2.0.3/bin/freesasa
 ```
 
 ## HSSPCONV
+
 ```bash
-$ mkdir -p $HOME/software && cd $HOME/software
-$ wget https://github.com/cmbi/hssp/archive/3.1.5.tar.gz
-$ tar -zxf 3.1.5.tar.gz && rm 3.1.5.tar.gz
-$ cd hssp-3.1.5
-$ ./autogen.she
-$ ./configure
-$ make hsspconv
-$ export HSSPCONV_BIN=$HOME/software/hssp-3.1.5/hsspconv
+mkdir -p $HOME/software && cd $HOME/software
+wget https://github.com/cmbi/hssp/archive/3.1.5.tar.gz
+tar -zxf 3.1.5.tar.gz && rm 3.1.5.tar.gz
+cd hssp-3.1.5
+./autogen.sh
+./configure
+make hsspconv
+export HSSPCONV_BIN=$HOME/software/hssp-3.1.5/hsspconv
 ```
 
 ## Protdist
@@ -51,12 +53,12 @@ $ export HSSPCONV_BIN=$HOME/software/hssp-3.1.5/hsspconv
 Protdist is distributed together with WHISCY, you can find it in the `whiscy` directory. We are working on a better way to install this dependency 🙂
 
 ```bash
-$ mkdir -p $HOME/software && cd $HOME/software
-$ git clone https://github.com/haddocking/whiscy
-$ mv whiscy/bin/protdist . && rm -rf whiscy
-$ cd protdist
-$ bash compile.sh
-$ export PROTDIST_BIN=$HOME/software/protdist/protdist
+mkdir -p $HOME/software && cd $HOME/software
+git clone https://github.com/haddocking/whiscy
+mv whiscy/bin/protdist . && rm -rf whiscy
+cd protdist
+bash compile.sh
+export PROTDIST_BIN=$HOME/software/protdist/protdist
 ```
 
 ---
