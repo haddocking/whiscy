@@ -9,10 +9,16 @@ import logging
 import math
 import os
 import sys
+from pathlib import Path
 
 import numpy as np
 
-from modules.whiscy_data import load_cons_file, load_residue_weights, load_z_table
+from whiscy.modules.whiscy_data import (
+    load_cons_file,
+    load_residue_weights,
+    load_z_table,
+)
+from whiscy.modules import PARAM_PATH
 
 logger = logging.getLogger("consadjust")
 logger.setLevel(logging.INFO)
@@ -22,16 +28,16 @@ formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
+RESIDUE_WEIGHT_FILE = Path(PARAM_PATH, "weight_ma.txt")
+ZTABLE_FILE = Path(PARAM_PATH, "ztable.txt")
+
 
 def main():
 
     # Parse command line
     parser = argparse.ArgumentParser(prog="consadjust")
     parser.add_argument("cons_file", help="Conservation file", metavar="cons_file")
-    parser.add_argument(
-        "residue_weight_file", help="Residue weight file", metavar="residue_weight_file"
-    )
-    parser.add_argument("z_table_file", help="Z-table file", metavar="z_table_file")
+
     parser.add_argument(
         "-o",
         "--output",
@@ -48,17 +54,9 @@ def main():
         logger.error("Conservation file {} does not exist".format(args.cons_file))
         raise SystemExit
 
-    if not os.path.exists(args.residue_weight_file):
-        logger.error("Weight file {} does not exist".format(args.residue_weight_file))
-        raise SystemExit
-
-    if not os.path.exists(args.z_table_file):
-        logger.error("Z-table {} does not exist".format(args.z_table_file))
-        raise SystemExit
-
     logger.info("Reading input files")
 
-    resweight = load_residue_weights(args.residue_weight_file)
+    resweight = load_residue_weights(RESIDUE_WEIGHT_FILE)
 
     residues = load_cons_file(args.cons_file)
 
@@ -81,7 +79,7 @@ def main():
     zcalc = [(res.score - mean) / stddev for res in residues]
 
     # Load Z-matrix
-    z_values = np.array(load_z_table(args.z_table_file))
+    z_values = np.array(load_z_table(ZTABLE_FILE))
     if len(z_values) != 25000:
         logger.error("Reading error in Z-table {}".format(args.cons_file))
         raise SystemExit
