@@ -13,7 +13,7 @@ from . import GOLDEN_DATA_PATH
 env = os.environ.copy()
 env["PYTHONPATH"] = str(Path(__file__).parent.parent)
 
-WHISCY_BIN = Path(Path(__file__).parent.parent, "whiscy.py")
+WHISCY_BIN = Path(Path(__file__).parent.parent, "src", "whiscy", "cli.py")
 
 
 @pytest.fixture
