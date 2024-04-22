@@ -40,7 +40,7 @@ Interfaces often form patches, so that neighbours of interface residues often ar
 
 ## Installation
 
-Please refer to [INSTALL.md](INSTALL.md) for a detailed guide on how to install WHISCY in macOS and GNU/Linux.
+Please refer to [INSTALLATION.md](INSTALLATION.md) for a detailed guide on how to install WHISCY in macOS and GNU/Linux.
 
 ## Usage
 
