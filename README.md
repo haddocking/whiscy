@@ -12,7 +12,6 @@ This repository contains an updated version of WHISCY. The original code was pub
 
 - de Vries, S. J., van Dijk, A. D. J. & Bonvin, A. M. J. J. [WHISCY: What information does surface conservation yield? Application to data‐driven docking.](https://doi.org/doi:10.1002/prot.20842) Proteins: Structure, Function, and Bioinformatics vol. 63 479–489 (2006).
 
-
 ## Table of contents
 
 - [How does WHISCY work?](#how-does-whiscy-work)
@@ -46,4 +45,3 @@ Please refer to [INSTALL.md](INSTALL.md) for a detailed guide on how to install 
 ## Usage
 
 Check [USAGE.md](USAGE.md) to learn how to use WHISCY to predict protein-protein interfaces.
-
