@@ -9,7 +9,9 @@ from . import GOLDEN_DATA_PATH
 
 
 env = os.environ.copy()
-env["PYTHONPATH"] = str(Path(__file__).parent.parent)
+env["PYTHONPATH"] = str(
+    Path(Path(__file__).parent.parent, "src"),
+)
 
 RESDIST_BIN = Path(Path(__file__).parent.parent, "src", "whiscy", "cli_resdist.py")
 

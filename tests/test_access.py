@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from libwhiscy import access
+from whiscy.modules import access
 
 from . import GOLDEN_DATA_PATH
 

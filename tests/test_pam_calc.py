@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from libwhiscy.pam_calc import pam_calc_similarity, pam_load_sequences
+from whiscy.modules.pam_calc import pam_calc_similarity, pam_load_sequences
 
 from . import (
     GOLDEN_DATA_PATH,
