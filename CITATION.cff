@@ -1,0 +1,29 @@
+# YAML 1.2
+# Metadata for citation of this software according to the CFF format (https://citation-file-format.github.io/)
+cff-version: 1.0.3
+message: If you use this software, please cite it using these metadata.
+# FIXME title as repository name might not be the best name, please make human readable
+title: 'haddocking/whiscy: v1.2.0'
+doi: 10.5281/zenodo.11032291
+# FIXME splitting of full names is error prone, please check if given/family name are correct
+authors:
+- given-names: Brian
+  family-names: Jimenez
+  affiliation: '@zymvol'
+- given-names: Rodrigo
+  family-names: Honorato
+  name-particle: Vargas
+  affiliation: '@UtrechtUniversity'
+- given-names: SSchott
+  family-names: ''
+  affiliation:
+- given-names: Alexandre
+  family-names: Bonvin
+  affiliation: '@UtrechtUniversity'
+- given-names: Katrin
+  family-names: Leinweber
+  affiliation: '@gitlabhq'
+version: 1.2.0
+date-released: 2024-04-22
+repository-code: https://github.com/haddocking/whiscy
+license: cc-by-4.0
