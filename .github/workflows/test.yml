@@ -21,12 +21,11 @@ jobs:
           target: test
           tags: whiscy:test
 
-      - name: Run unit tests
-        id: unit-tests
+      - name: Run tests
         run: >
-          docker run -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report --rm whiscy:test pytest -m unit --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
+          docker run -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report --rm whiscy:test pytest --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
 
-      - name: Run regression tests
-        if: steps.unit-tests.outcome == 'success'
-        run: >
-          docker run -v ${PWD}/coverage-report:/opt/software/whiscy/coverage-report --rm whiscy:test pytest -m regression --cov --cov-report xml:/opt/software/whiscy/coverage-report/coverage.xml --cov-append -vv --hypothesis-show-statistics
+      - uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./coverage-report/coverage.xml
