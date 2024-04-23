@@ -4,6 +4,8 @@
 ![PyPI - Status](https://img.shields.io/pypi/status/whiscy)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/whiscy)
 [![ci](https://github.com/haddocking/whiscy/actions/workflows/test.yml/badge.svg)](https://github.com/haddocking/whiscy/actions/workflows/test.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2866f5c9325a492fb4758361935b9650)](https://app.codacy.com/gh/haddocking/whiscy/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/2866f5c9325a492fb4758361935b9650)](https://app.codacy.com/gh/haddocking/whiscy/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 
 
 
