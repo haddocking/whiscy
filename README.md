@@ -1,5 +1,6 @@
 # WHISCY - WHat Information does Surface Conservation Yield?
 
+[![Downloads](https://static.pepy.tech/badge/whiscy)](https://pepy.tech/project/whiscy)
 ![PyPI - License](https://img.shields.io/pypi/l/whiscy)
 ![PyPI - Status](https://img.shields.io/pypi/status/whiscy)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/whiscy)
