@@ -2,6 +2,7 @@
 
 import os
 import re
+import sys
 
 from Bio import AlignIO
 from Bio.PDB import PDBList
@@ -77,13 +78,15 @@ def map_protein_to_sequence_alignment(
     # Check if sequence is the same
     pdb_seq = "".join([mapping[k] for k in sorted(mapping.keys())])
     if pdb_seq != sequence:
-        raise SystemExit("ERROR: PDB sequence doest not match sequence alignment")
+        print("ERROR: PDB sequence doest not match sequence alignment")
+        sys.exit(1)
 
     # Account for gaps in phylipseq file
     # alignment = list(AlignIO.parse(phylip_file, format='phylip-sequential'))[0]
     # master_phylip = alignment[0].seq
     # if str(master_phylip.ungap('-')) != pdb_seq:
-    #    raise SystemExit("ERROR: PDB sequence doest not match sequence alignment in phylip file")
+    #    print("ERROR: PDB sequence doest not match sequence alignment in phylip file")
+    #    sys.exit(1)
 
     with open(output_file_name, "w") as output_handle:
         output_handle.write(

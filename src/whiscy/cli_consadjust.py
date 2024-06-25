@@ -43,7 +43,7 @@ def main():
 
     if not os.path.exists(args.cons_file):
         logger.error("Conservation file {} does not exist".format(args.cons_file))
-        raise SystemExit
+        sys.exit(1)
 
     logger.info("Reading input files")
 
@@ -65,7 +65,7 @@ def main():
         logger.error(
             "All identical values in conservation file {}".format(args.cons_file)
         )
-        raise SystemExit
+        sys.exit(1)
 
     zcalc = [(res.score - mean) / stddev for res in residues]
 
@@ -73,7 +73,7 @@ def main():
     z_values = np.array(load_z_table(ZTABLE_FILE))
     if len(z_values) != 25000:
         logger.error("Reading error in Z-table {}".format(args.cons_file))
-        raise SystemExit
+        sys.exit(1)
 
     for n in range(consnr):
         pscore = 0.0

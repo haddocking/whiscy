@@ -151,7 +151,7 @@ def main():
                 pdbutil.download_pdb_structure(pdb_code, input_pdb_file)
             except Exception as err:
                 logger.error(str(err))
-                raise SystemExit
+                sys.exit(1)
         else:
             logger.warning(
                 "PDB structure already exists ({0}), no need to download it again".format(
@@ -164,7 +164,7 @@ def main():
 
     if not os.path.exists(input_pdb_file):
         logger.error("PDB structure file {0} not found".format(input_pdb_file))
-        raise SystemExit
+        sys.exit(1)
 
     # Check if chain belongs to this PDB
     pdb_parser = PDBParser(PERMISSIVE=True, QUIET=True)
@@ -173,14 +173,14 @@ def main():
     chain_id = args.chain_id.upper()
     if len(chain_id) > 1:
         logger.error("Wrong chain id {0}".format(chain_id))
-        raise SystemExit
+        sys.exit(1)
     if chain_id not in chain_ids:
         logger.error(
             "Chain {0} provided not in available chains: {1}".format(
                 chain_id, str(chain_ids)
             )
         )
-        raise SystemExit
+        sys.exit(1)
 
     # Save only the given chain and discard residues with alternative positions
     io = PDBIO()
@@ -302,7 +302,7 @@ def main():
 
     if not os.path.exists(phylip_file):
         logger.error("PHYLIP sequence file {0} not found".format(phylip_file))
-        raise SystemExit
+        sys.exit(1)
 
     # Calculate protdist
     protdist_output_file = "{0}_{1}.out".format(filename, chain_id)

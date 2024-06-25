@@ -150,7 +150,7 @@ def main():
         res_sur = calculate_parasmooth(res_sur, res_lac, resdist, par)
     except Exception as err:
         logger.error(str(err))
-        raise SystemExit
+        sys.exit(1)
 
     # If output to file
     if args.output_file:
