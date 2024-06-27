@@ -79,7 +79,7 @@ def main():
 
     if not len(converted_surface):
         logger.error("No surface residues")
-        raise SystemExit
+        sys.exit(1)
 
     logger.info("Initializing score calculation...")
     try:
@@ -88,7 +88,7 @@ def main():
         )
     except Exception as err:
         logger.error(str(err))
-        raise SystemExit
+        sys.exit(1)
 
     logger.info("Calculating scores...")
     realsum = 0
@@ -98,7 +98,7 @@ def main():
         totlist.append(r)
         if r.nr > seqlen or r.nr < 1:
             logger.error("Surface residue out of range")
-            raise SystemExit
+            sys.exit(1)
         posnr, distances, scores = pam_calc_similarity(
             converted_surface[n] - 1, seqnr, sequences, seq_distances
         )
@@ -109,7 +109,7 @@ def main():
 
     if realsum == 0:
         logger.error("No sequence information for any surface residues")
-        raise SystemExit
+        sys.exit(1)
 
     logger.info("Subtracting average value ...")
 
