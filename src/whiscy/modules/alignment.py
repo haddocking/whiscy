@@ -96,7 +96,8 @@ def write_conversion_table(mapping, pdb_file, chain_id, file_name):
     """Write the PDB residue number -> alignment column table (.conv)."""
     with open(file_name, "w") as handle:
         handle.write(
-            f"# Conversion table from {pdb_file} and chain {chain_id} to sequence{os.linesep}"
+            f"# Conversion table from {pdb_file} and chain {chain_id} to sequence"
+            f"{os.linesep}"
         )
         for pdb_res_id in sorted(mapping):
             handle.write(f"{pdb_res_id}     {mapping[pdb_res_id]}{os.linesep}")
