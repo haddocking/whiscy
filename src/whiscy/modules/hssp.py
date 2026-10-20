@@ -89,6 +89,8 @@ def _parse_hssp_proteins(line_buffer):
 def _parse_hssp_alignments(line_buffer, chain_id, num_alignments):
     """Parses the '## ALIGNMENTS section' from HSSP alignment file"""
     alignments = [[] for i in range(num_alignments)]
+    # Residues of the chain itself, one per alignment column
+    master = []
     first_alignment = 0
     last_alignment = 0
     current_num_alignments = 0
@@ -104,6 +106,10 @@ def _parse_hssp_alignments(line_buffer, chain_id, num_alignments):
             current_num_alignments = last_alignment - first_alignment + 1
         else:
             if line[12] == chain_id and line[14] != "X":
+                # Only collect the chain's residues once, not per alignment block
+                if first_alignment == 0:
+                    # DSSP writes disulfide-bonded cysteines as lower case letters
+                    master.append("C" if line[14].islower() else line[14])
                 for i, s in enumerate(line[51 : 51 + current_num_alignments]):
                     # We will convert spaces or dots to -
                     if s == "." or s == " ":
@@ -111,11 +117,15 @@ def _parse_hssp_alignments(line_buffer, chain_id, num_alignments):
                     # We leave residues in minor case as if to not forget insertions
                     alignments[first_alignment + i].append(s)
     alignments = [("".join(s)) for s in alignments]
-    return alignments
+    return "".join(master), alignments
 
 
 def hssp_file_to_phylip(hssp_file_name, phylip_file_name, chain_id, master_sequence):
     """Parses an HSSP file and returns a list of the sequences"""
+    # The MASTER row is the chain sequence as listed in the HSSP file, so it has
+    # one residue per alignment column. It can differ from master_sequence (read
+    # from the PDB file), e.g. residues with insertion codes; whiscy_setup maps
+    # the PDB residues onto it afterwards.
     # We're only interested in the lenght of the sequence of our given chain_id,
     # SEQLENGHT header gives us the sum of all.
     seqlength = len(master_sequence)
@@ -156,9 +166,10 @@ def hssp_file_to_phylip(hssp_file_name, phylip_file_name, chain_id, master_seque
                     prot_line_buffer.append(line)
 
         proteins = _parse_hssp_proteins(prot_line_buffer)
-        alignments = _parse_hssp_alignments(
+        hssp_master, alignments = _parse_hssp_alignments(
             line_buffer, chain_id.upper(), num_alignments
         )
+        seqlength = len(hssp_master)
 
         all_zero = sum([len(a) for a in alignments]) == 0
 
@@ -178,7 +189,7 @@ def hssp_file_to_phylip(hssp_file_name, phylip_file_name, chain_id, master_seque
                 )
             )
             # Write master sequence
-            output_handle.write("MASTER    {}{}".format(master_sequence, os.linesep))
+            output_handle.write("MASTER    {}{}".format(hssp_master, os.linesep))
             # Write the rest of non null alignments
             for k in sorted(proteins.keys()):
                 if k not in non_valid:
