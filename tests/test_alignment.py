@@ -72,12 +72,9 @@ def test_map_unrelated_reference_is_rejected():
 
 
 def test_gapped_reference_end_to_end():
-    """
-    Map the uploaded-alignment case that crashed consadjust with KeyError: '-'.
-
-    After projection every PDB residue maps to a column where the reference
-    has a residue, never a gap.
-    """
+    """Map the uploaded-alignment case that crashed consadjust (KeyError: '-')."""
+    # After projection every PDB residue maps to a column where the reference
+    # has a residue, never a gap
     reference = "MSTN--KQLAGHE" + PDB_SEQ[:10] + "---" + PDB_SEQ[10:] + "WW-KK"
     rows = [("target", reference), ("hit", reference.replace("-", "A"))]
     projected = project_on_reference(rows)

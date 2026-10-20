@@ -70,11 +70,7 @@ def ncbi_blast(fasta_file: str, output_file: str) -> None:
 
 
 def msa_to_phylseq(msa: MultipleSeqAlignment, output_file: str) -> None:
-    """
-    Convert a MSA containing the MASTER sequence to a Phylip Seq file.
-
-    The MASTER row is written first.
-    """
+    """Write a MSA containing the MASTER sequence as Phylip Seq, MASTER first."""
     rows = [(record.id, str(record.seq)) for record in msa]
     rows.sort(key=lambda row: row[0] != "MASTER")
     if rows[0][0] != "MASTER":

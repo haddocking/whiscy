@@ -1,13 +1,11 @@
-"""
-Map a multiple sequence alignment onto the residues of a PDB chain.
+"""Map a multiple sequence alignment onto the residues of a PDB chain."""
 
-WHISCY scores alignment column ``i`` as residue ``i`` of the target protein,
-so the alignment written to the .phylseq file must have exactly one column per
-target residue, and the .conv file must map each PDB residue number to its
-column. This module builds both from any alignment whose reference row is the
-target protein (the uploaded alignment's first sequence, or the PDB sequence
-added to a BLAST/MUSCLE alignment).
-"""
+# WHISCY scores alignment column i as residue i of the target protein, so the
+# alignment written to the .phylseq file must have exactly one column per
+# target residue, and the .conv file must map each PDB residue number to its
+# column. This module builds both from any alignment whose reference row is the
+# target protein (the uploaded alignment's first sequence, or the PDB sequence
+# added to a BLAST/MUSCLE alignment).
 
 import os
 
@@ -24,13 +22,10 @@ class AlignmentMappingError(Exception):
 
 
 def project_on_reference(rows, reference_index=0):
-    """
-    Keep only the alignment columns where the reference row has a residue.
-
-    ``rows`` is a list of (name, aligned_sequence) tuples. Returns the rows
-    with gap columns of the reference removed, so the reference row becomes
-    its ungapped sequence and column ``i`` is residue ``i`` of the reference.
-    """
+    """Keep only the alignment columns where the reference row has a residue."""
+    # rows is a list of (name, aligned_sequence) tuples. After removing the gap
+    # columns of the reference, the reference row is its ungapped sequence and
+    # column i is residue i of the reference.
     lengths = {len(seq) for _, seq in rows}
     if len(lengths) != 1:
         raise AlignmentMappingError(
@@ -42,15 +37,12 @@ def project_on_reference(rows, reference_index=0):
 
 
 def map_pdb_to_reference(pdb_residues, reference, min_identity=MIN_IDENTITY):
-    """
-    Map PDB residue numbers to 1-based positions in the reference sequence.
-
-    ``pdb_residues`` is a dict {residue number: one-letter code}. The PDB
-    sequence is aligned to the (ungapped) reference, which may be longer,
-    e.g. the full-length protein when the structure covers a domain only.
-    Raises AlignmentMappingError if the PDB chain does not match the
-    reference closely enough.
-    """
+    """Map PDB residue numbers to 1-based positions in the reference sequence."""
+    # pdb_residues is a dict {residue number: one-letter code}. The PDB
+    # sequence is aligned to the (ungapped) reference, which may be longer,
+    # e.g. the full-length protein when the structure covers a domain only.
+    # Raises AlignmentMappingError if the PDB chain does not match the
+    # reference closely enough.
     numbers = sorted(pdb_residues)
     pdb_seq = "".join(pdb_residues[n] for n in numbers)
     reference = reference.upper()
