@@ -4,7 +4,7 @@ All notable changes to WHISCY, one line per pull request, newest first.
 Releases are tagged in git and published as Docker images at
 `ghcr.io/haddocking/whiscy:<tag>`.
 
-## [Unreleased]
+## [v1.3.0] - 2026-10-20
 
 - Map alignment columns onto the target residues in `whiscy_setup`, so
   conservation scores are assigned to the right residues for uploaded and BLAST

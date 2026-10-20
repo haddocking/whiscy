@@ -2,7 +2,7 @@
 
 """Python 3 implementation of the Whiscy C binary"""
 
-__version__ = "1.0"
+__version__ = "1.3.0"
 
 import argparse
 

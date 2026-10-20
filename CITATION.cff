@@ -23,7 +23,7 @@ authors:
 - given-names: Katrin
   family-names: Leinweber
   affiliation: '@gitlabhq'
-version: 1.2.0
-date-released: 2024-04-22
+version: 1.3.0
+date-released: 2026-10-20
 repository-code: https://github.com/haddocking/whiscy
 license: cc-by-4.0
