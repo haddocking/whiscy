@@ -172,6 +172,8 @@ def test_regression_1PPEI(
 
     # Put the blast file in the scratch path to skip blasting it via ncbi
     shutil.copy(blast_file_1ppe, scratch_path)
+    # and the structure, to skip downloading it from the PDB
+    shutil.copy(pdb_file_1ppe, scratch_path)
 
     cmd_line = f"{sys.executable} {WHISCY_SETUP_BIN} 1ppe i"
     result = subprocess.run(
@@ -228,6 +230,8 @@ def test_regression_3QI0(
 
     # Put the blast file in the scratch path to skip blasting it via ncbi
     shutil.copy(blast_file_3qi0, scratch_path)
+    # and the structure, to skip downloading it from the PDB
+    shutil.copy(pdb_file_3qi0, scratch_path)
 
     cmd_line = f"{sys.executable} {WHISCY_SETUP_BIN} 3qi0 C"
     result = subprocess.run(

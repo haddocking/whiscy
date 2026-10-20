@@ -2,9 +2,7 @@
 
 import os
 import re
-import sys
 
-from Bio import AlignIO
 from Bio.PDB import PDBList
 from Bio.PDB.PDBIO import Select
 from Bio.PDB.PDBParser import PDBParser
@@ -68,37 +66,3 @@ def get_pdb_sequence(input_pdb_file, chain_id, mapping_output=False, with_gaps=F
         return mapping
     else:
         return "".join([mapping[k] for k in sorted(mapping.keys())])
-
-
-def map_protein_to_sequence_alignment(
-    pdb_file, chain_id, sequence, phylip_file, output_file_name
-):
-    """Creates a dictionary .conv file mapping protein residue numeration to aligment"""
-    mapping = get_pdb_sequence(pdb_file, chain_id, mapping_output=True)
-    # Check if sequence is the same
-    pdb_seq = "".join([mapping[k] for k in sorted(mapping.keys())])
-    if pdb_seq != sequence:
-        print("ERROR: PDB sequence doest not match sequence alignment")
-        sys.exit(1)
-
-    # Account for gaps in phylipseq file
-    # alignment = list(AlignIO.parse(phylip_file, format='phylip-sequential'))[0]
-    # master_phylip = alignment[0].seq
-    # if str(master_phylip.ungap('-')) != pdb_seq:
-    #    print("ERROR: PDB sequence doest not match sequence alignment in phylip file")
-    #    sys.exit(1)
-
-    with open(output_file_name, "w") as output_handle:
-        output_handle.write(
-            "# Conversion table from {} and chain {} to sequence{}".format(
-                pdb_file, chain_id, os.linesep
-            )
-        )
-        seq_res_id = 1
-        for pdb_res_id in sorted(mapping.keys()):
-            # Do not map gaps if any
-            if mapping[pdb_res_id] != "-":
-                output_handle.write(
-                    "{0}     {1}{2}".format(pdb_res_id, seq_res_id, os.linesep)
-                )
-            seq_res_id += 1

@@ -1,5 +1,5 @@
 #==============================================================================================
-FROM python:3.11 AS base
+FROM python:3.11-bookworm AS base
 
 LABEL author="Rodrigo V. Honorato <r.vargashonorato@uu.nl>"
 
