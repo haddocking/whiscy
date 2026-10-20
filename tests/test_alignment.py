@@ -72,7 +72,8 @@ def test_map_unrelated_reference_is_rejected():
 
 
 def test_gapped_reference_end_to_end():
-    """The uploaded-alignment case that crashed consadjust with KeyError: '-'.
+    """
+    Map the uploaded-alignment case that crashed consadjust with KeyError: '-'.
 
     After projection every PDB residue maps to a column where the reference
     has a residue, never a gap.

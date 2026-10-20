@@ -1,4 +1,5 @@
-"""Map a multiple sequence alignment onto the residues of a PDB chain.
+"""
+Map a multiple sequence alignment onto the residues of a PDB chain.
 
 WHISCY scores alignment column ``i`` as residue ``i`` of the target protein,
 so the alignment written to the .phylseq file must have exactly one column per
@@ -19,11 +20,12 @@ MIN_IDENTITY = 0.9
 
 
 class AlignmentMappingError(Exception):
-    pass
+    """The alignment cannot be mapped onto the PDB chain."""
 
 
 def project_on_reference(rows, reference_index=0):
-    """Keep only the alignment columns where the reference row has a residue.
+    """
+    Keep only the alignment columns where the reference row has a residue.
 
     ``rows`` is a list of (name, aligned_sequence) tuples. Returns the rows
     with gap columns of the reference removed, so the reference row becomes
@@ -40,7 +42,8 @@ def project_on_reference(rows, reference_index=0):
 
 
 def map_pdb_to_reference(pdb_residues, reference, min_identity=MIN_IDENTITY):
-    """Map PDB residue numbers to 1-based positions in the reference sequence.
+    """
+    Map PDB residue numbers to 1-based positions in the reference sequence.
 
     ``pdb_residues`` is a dict {residue number: one-letter code}. The PDB
     sequence is aligned to the (ungapped) reference, which may be longer,
@@ -64,7 +67,9 @@ def map_pdb_to_reference(pdb_residues, reference, min_identity=MIN_IDENTITY):
     mapping = {}
     identical = 0
     for (ref_start, ref_end), (pdb_start, pdb_end) in zip(*alignment.aligned):
-        for ref_pos, pdb_pos in zip(range(ref_start, ref_end), range(pdb_start, pdb_end)):
+        for ref_pos, pdb_pos in zip(
+            range(ref_start, ref_end), range(pdb_start, pdb_end)
+        ):
             mapping[numbers[pdb_pos]] = ref_pos + 1
             if reference[ref_pos] == pdb_seq[pdb_pos]:
                 identical += 1
@@ -88,6 +93,7 @@ def read_phylseq(file_name):
 
 
 def write_phylseq(rows, file_name):
+    """Write (name, sequence) rows as a WHISCY .phylseq file."""
     with open(file_name, "w") as handle:
         handle.write(f"{len(rows)}  {len(rows[0][1])}{os.linesep}")
         for name, seq in rows:
@@ -95,6 +101,7 @@ def write_phylseq(rows, file_name):
 
 
 def write_conversion_table(mapping, pdb_file, chain_id, file_name):
+    """Write the PDB residue number -> alignment column table (.conv)."""
     with open(file_name, "w") as handle:
         handle.write(
             f"# Conversion table from {pdb_file} and chain {chain_id} to sequence{os.linesep}"

@@ -70,8 +70,11 @@ def ncbi_blast(fasta_file: str, output_file: str) -> None:
 
 
 def msa_to_phylseq(msa: MultipleSeqAlignment, output_file: str) -> None:
-    """Converts a MSA containing the MASTER sequence to a Phylip Seq file,
-    with the MASTER row first"""
+    """
+    Convert a MSA containing the MASTER sequence to a Phylip Seq file.
+
+    The MASTER row is written first.
+    """
     rows = [(record.id, str(record.seq)) for record in msa]
     rows.sort(key=lambda row: row[0] != "MASTER")
     if rows[0][0] != "MASTER":
@@ -259,7 +262,9 @@ def main():
             # The structure sequence is aligned together with the hits, so the
             # MSA columns can be mapped onto its residues
             blast_qresult = SearchIO.read(blast_output_file, "blast-xml")
-            records = [SeqRecord(Seq(str(master_sequence)), id="MASTER", description="")]
+            records = [
+                SeqRecord(Seq(str(master_sequence)), id="MASTER", description="")
+            ]
             for hit in blast_qresult:
                 hit_record = hit[0].hit
                 records.append(
