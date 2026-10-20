@@ -12,6 +12,8 @@ from Bio.Align.Applications import MuscleCommandline
 from Bio.Blast import NCBIWWW
 from Bio.PDB import PDBIO
 from Bio.PDB.PDBParser import PDBParser
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 
 warnings.simplefilter("ignore", BiopythonWarning)
 with warnings.catch_warnings():
@@ -27,6 +29,7 @@ from whiscy.modules import (
     MUSCLE_BIN,
     PROTDIST_BIN,
     access,
+    alignment,
     hssp,
     pdbutil,
 )
@@ -66,18 +69,14 @@ def ncbi_blast(fasta_file: str, output_file: str) -> None:
     result_handle.close()
 
 
-def msa_to_phylseq(
-    msa: MultipleSeqAlignment, master_sequence: str, output_file: str
-) -> None:
-    """Converts a MSA to a Phylip Seq file"""
-    with open(output_file, "w") as output_handle:
-        # Write header
-        output_handle.write(f"{len(msa)}  {len(master_sequence)}{os.linesep}")
-        # Write master sequence
-        output_handle.write(f"MASTER    {master_sequence}{os.linesep}")
-        # Write the rest of alignments
-        for alignment in msa:
-            output_handle.write(f"{alignment.id[:10]:10s}{alignment.seq}{os.linesep}")
+def msa_to_phylseq(msa: MultipleSeqAlignment, output_file: str) -> None:
+    """Converts a MSA containing the MASTER sequence to a Phylip Seq file,
+    with the MASTER row first"""
+    rows = [(record.id, str(record.seq)) for record in msa]
+    rows.sort(key=lambda row: row[0] != "MASTER")
+    if rows[0][0] != "MASTER":
+        raise ValueError("MASTER sequence not found in the MSA")
+    alignment.write_phylseq(rows, output_file)
 
 
 def hsspconv(hssp_file, converted_hssp_file):
@@ -257,10 +256,19 @@ def main():
             assert os.path.exists(blast_output_file), "BLAST file not found"
 
             # Convert file to FASTA format
+            # The structure sequence is aligned together with the hits, so the
+            # MSA columns can be mapped onto its residues
             blast_qresult = SearchIO.read(blast_output_file, "blast-xml")
-            records = []
+            records = [SeqRecord(Seq(str(master_sequence)), id="MASTER", description="")]
             for hit in blast_qresult:
-                records.append(hit[0].hit)
+                hit_record = hit[0].hit
+                records.append(
+                    SeqRecord(
+                        Seq(str(hit_record.seq).replace("-", "")),
+                        id=hit_record.id,
+                        description="",
+                    )
+                )
             blast_fasta_file = "{0}_{1}_blast.fasta".format(filename, chain_id)
             SeqIO.write(records, blast_fasta_file, "fasta")
 
@@ -273,11 +281,7 @@ def main():
             # Convert MSA to Phylipseq
             logger.info("Converting MSA file to Phylseq format...")
             output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
-            msa_to_phylseq(
-                msa=msa,
-                master_sequence=str(master_sequence),
-                output_file=output_phylseq_file,
-            )
+            msa_to_phylseq(msa=msa, output_file=output_phylseq_file)
 
             assert os.path.exists(output_phylseq_file), "PHYLIP file not found"
             logger.info(f"{output_phylseq_file} file written")
@@ -304,6 +308,25 @@ def main():
         logger.error("PHYLIP sequence file {0} not found".format(phylip_file))
         sys.exit(1)
 
+    # WHISCY scores alignment column i as residue i of the target: keep only
+    # the columns where the first (target) sequence has a residue, and map the
+    # PDB residues onto them
+    try:
+        rows = alignment.project_on_reference(alignment.read_phylseq(phylip_file))
+        pdb_residues = pdbutil.get_pdb_sequence(
+            current_pdb_file, chain_id, mapping_output=True
+        )
+        residue_mapping = alignment.map_pdb_to_reference(pdb_residues, rows[0][1])
+    except alignment.AlignmentMappingError as err:
+        logger.error(str(err))
+        sys.exit(1)
+    alignment.write_phylseq(rows, phylip_file)
+    logger.info(
+        "Alignment mapped: {0} of {1} PDB residues, {2} alignment columns".format(
+            len(residue_mapping), len(pdb_residues), len(rows[0][1])
+        )
+    )
+
     # Calculate protdist
     protdist_output_file = "{0}_{1}.out".format(filename, chain_id)
     calculate_protdist(phylip_file, protdist_output_file)
@@ -311,8 +334,8 @@ def main():
 
     # Generate conversion table file
     conv_output_file = "{0}_{1}.conv".format(filename, chain_id)
-    pdbutil.map_protein_to_sequence_alignment(
-        current_pdb_file, chain_id, master_sequence, phylip_file, conv_output_file
+    alignment.write_conversion_table(
+        residue_mapping, current_pdb_file, chain_id, conv_output_file
     )
     logger.info("Conversion table file generated")
 
