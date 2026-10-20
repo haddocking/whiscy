@@ -4,7 +4,7 @@ All notable changes to WHISCY, one line per pull request, newest first.
 Releases are tagged in git and published as Docker images at
 `ghcr.io/haddocking/whiscy:<tag>`.
 
-## [Unreleased]
+## [v1.3.1] - 2026-10-20
 
 - Take the HSSP `MASTER` row from the HSSP alignment, so residues with
   insertion codes no longer shift or break the alignment (#38, closes #37)
