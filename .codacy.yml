@@ -1,0 +1,6 @@
+---
+# pytest tests are built on plain `assert`, which Bandit flags as B101
+engines:
+  bandit:
+    exclude_paths:
+      - "tests/**"
