@@ -177,10 +177,12 @@ class FakeServer:
     """Answer _http calls from a list of (URL fragment, response) pairs."""
 
     def __init__(self, responses):
+        """Store the responses, in the order they are requested."""
         self.responses = list(responses)
         self.calls = []
 
     def __call__(self, url, data=None):
+        """Return the next response after checking the URL."""
         self.calls.append((url, data))
         fragment, response = self.responses.pop(0)
         assert fragment in url
@@ -250,9 +252,11 @@ class FakeResponse(io.BytesIO):
     """Response object usable as a context manager."""
 
     def __enter__(self):
+        """Return the response itself."""
         return self
 
     def __exit__(self, *args):
+        """Close the response."""
         self.close()
 
 
