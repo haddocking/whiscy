@@ -1,15 +1,11 @@
 import os
 from pathlib import Path
 
-MUSCLE_BIN = os.environ.get("MUSCLE_BIN")
 FREESASA_BIN = os.environ.get("FREESASA_BIN")
 HSSPCONV_BIN = os.environ.get("HSSPCONV_BIN")
 PROTDIST_BIN = os.environ.get("PROTDIST_BIN")
 
 # Make sure none of them are None
-if MUSCLE_BIN is None:
-    raise ValueError("MUSCLE_BIN not found in system variables")
-
 if FREESASA_BIN is None:
     raise ValueError("FREESASA_BIN not found in system variables")
 

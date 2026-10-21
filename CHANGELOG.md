@@ -4,6 +4,12 @@ All notable changes to WHISCY, one line per pull request, newest first.
 Releases are tagged in git and published as Docker images at
 `ghcr.io/haddocking/whiscy:<tag>`.
 
+## [Unreleased]
+
+- Replace the NCBI BLAST search with the ColabFold MMseqs2 server, falling back
+  to EBI BLAST (UniProtKB), and filter out redundant hits; drop MUSCLE (#40,
+  closes #39)
+
 ## [v1.3.1] - 2026-10-20
 
 - Take the HSSP `MASTER` row from the HSSP alignment, so residues with
