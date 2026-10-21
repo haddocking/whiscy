@@ -16,7 +16,6 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-import xml.etree.ElementTree as ET  # nosec B405 - parses responses of the EBI service
 
 logger = logging.getLogger("whiscy_setup")
 
@@ -50,7 +49,9 @@ class HomologSearchError(Exception):
 
 
 def _http(url, data=None):
-    """GET (or POST data) a URL, retrying on network errors."""
+    """GET (or POST data) an https URL, retrying on network errors."""
+    if not url.startswith("https://"):
+        raise HomologSearchError("Not an https URL: {0}".format(url))
     if data is not None:
         data = urllib.parse.urlencode(data).encode()
     request = urllib.request.Request(
@@ -58,7 +59,8 @@ def _http(url, data=None):
     )
     for attempt in range(1, HTTP_TRIES + 1):
         try:
-            with urllib.request.urlopen(  # nosec B310 - fixed https URLs
+            # Only the fixed https service URLs above are requested
+            with urllib.request.urlopen(  # nosec B310 # nosemgrep
                 request, timeout=HTTP_TIMEOUT
             ) as response:
                 return response.read()
@@ -110,7 +112,7 @@ def colabfold_search(sequence):
 
 
 def ebi_search(sequence, email):
-    """Run blastp against UniProtKB at the EBI and return the result XML."""
+    """Run blastp against UniProtKB at the EBI and return the result JSON."""
     params = {
         "email": email,
         "program": "blastp",
@@ -132,7 +134,7 @@ def ebi_search(sequence, email):
         raise HomologSearchError(
             "EBI BLAST search ended with status {0}".format(status)
         )
-    return _http("{0}/result/{1}/xml".format(EBI_URL, job)).decode()
+    return _http("{0}/result/{1}/json".format(EBI_URL, job)).decode()
 
 
 def parse_a3m(text, sequence):
@@ -154,25 +156,18 @@ def parse_a3m(text, sequence):
     return [(name, row) for name, row in hits if len(row) == len(sequence)]
 
 
-def parse_ebi_xml(text, sequence):
-    """Hits of an EBI BLAST XML result aligned to the target sequence."""
-    root = ET.fromstring(text)  # nosec B314 - response of the EBI service
+def parse_ebi_json(text, sequence):
+    """Hits of an EBI BLAST JSON result aligned to the target sequence."""
     rows = []
-    for hit in root.iter():
-        if not hit.tag.endswith("}hit") and hit.tag != "hit":
+    for hit in json.loads(text).get("hits", []):
+        hsps = hit.get("hit_hsps") or []
+        if not hsps:
             continue
-        alignment = next(
-            (e for e in hit.iter() if e.tag.split("}")[-1] == "alignment"), None
+        hsp = hsps[0]
+        row = anchor_on_query(
+            hsp["hsp_qseq"], hsp["hsp_hseq"], int(hsp["hsp_query_from"]), sequence
         )
-        if alignment is None:
-            continue
-        fields = {e.tag.split("}")[-1]: e for e in alignment}
-        query, match = fields.get("querySeq"), fields.get("matchSeq")
-        if query is None or match is None or not query.text or not match.text:
-            continue
-        name = hit.get("ac") or hit.get("id")
-        start = int(query.get("start"))
-        rows.append((name, anchor_on_query(query.text, match.text, start, sequence)))
+        rows.append((hit.get("hit_acc") or hit.get("hit_id"), row))
     return rows
 
 
@@ -231,7 +226,7 @@ def find_homologs(sequence, email=None):
         services.append(
             (
                 "EBI BLAST",
-                lambda: parse_ebi_xml(ebi_search(sequence, email), sequence),
+                lambda: parse_ebi_json(ebi_search(sequence, email), sequence),
             )
         )
     else:
@@ -249,13 +244,12 @@ def find_homologs(sequence, email=None):
             TypeError,
             ValueError,
             tarfile.TarError,
-            ET.ParseError,
         ) as err:
             logger.warning("{0} failed: {1}".format(service, err))
             continue
         kept = filter_redundant(sequence, hits)
         logger.info(
-            "{0}: {1} hits, {2} kept after removing redundant ones".format(
+            "{0}: {1} hits, {2} kept (redundant ones removed)".format(
                 service, len(hits), len(kept)
             )
         )

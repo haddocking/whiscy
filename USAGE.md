@@ -19,20 +19,23 @@ wget https://files.rcsb.org/download/1PPE.pdb
 ```text
 $ whiscy_setup 1PPE.pdb E
 
-  2026-10-21 09:11:50,923 cli_setup:156 INFO - PDB structure with chain E saved to 1PPE_E.pdb
-  2026-10-21 09:11:51,002 cli_setup:163 INFO - Atom accessibility calculated to 1PPE_E.rsa
-  2026-10-21 09:11:51,004 cli_setup:167 INFO - Surface and buried residues calculated
-  2026-10-21 09:11:51,022 cli_setup:212 INFO - HSSP file not found, searching for homologous sequences
-  2026-10-21 09:11:51,022 homologs:238 WARNING - No contact email set, the EBI BLAST fallback is disabled
-  2026-10-21 09:11:51,022 homologs:242 INFO - Searching homologs with ColabFold MMseqs2
-  2026-10-21 09:18:21,178 homologs:255 INFO - ColabFold MMseqs2: 5000 hits, 250 kept after removing redundant ones
-  2026-10-21 09:18:21,181 cli_setup:231 INFO - Homologs stored in 1PPE_E_homologs.fasta
-  2026-10-21 09:18:21,182 cli_setup:238 INFO - 1PPE_E.phylseq written with 250 homologs
-  2026-10-21 09:18:21,199 cli_setup:277 INFO - Alignment mapped: 220 of 220 PDB residues, 220 alignment columns
-  2026-10-21 09:18:21,459 cli_setup:286 INFO - Protdist calculated
-  2026-10-21 09:18:21,459 cli_setup:293 INFO - Conversion table file generated
-  2026-10-21 09:18:21,460 cli_setup:295 INFO - Whiscy setup finished
+09:11:50 INFO - PDB structure with chain E saved to 1PPE_E.pdb
+09:11:51 INFO - Atom accessibility calculated to 1PPE_E.rsa
+09:11:51 INFO - Surface and buried residues calculated
+09:11:51 INFO - HSSP file not found, searching for homologous sequences
+09:11:51 WARNING - No contact email set, the EBI BLAST fallback is disabled
+09:11:51 INFO - Searching homologs with ColabFold MMseqs2
+09:18:21 INFO - ColabFold MMseqs2: 5000 hits, 250 kept (redundant ones removed)
+09:18:21 INFO - Homologs stored in 1PPE_E_homologs.fasta
+09:18:21 INFO - 1PPE_E.phylseq written with 250 homologs
+09:18:21 INFO - Alignment mapped: 220 of 220 PDB residues, 220 alignment columns
+09:18:21 INFO - Protdist calculated
+09:18:21 INFO - Conversion table file generated
+09:18:21 INFO - Whiscy setup finished
 ```
+
+The log is shortened here: each line also starts with the date and the
+source line.
 
 Without an alignment (`--alignment`), `whiscy_setup` searches for homologous
 sequences of the structure's sequence:

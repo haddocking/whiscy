@@ -42,4 +42,7 @@ options:
 
 ### Troubleshooting
 
-If you get an error such as `ValueError: FREESASA_BIN not found in system variables`, make sure you have followed the steps in [THIRDPARTY.md](THIRDPARTY.md) to install the third-party dependencies.
+If you get an error such as
+`ValueError: FREESASA_BIN not found in system variables`, make sure you have
+followed the steps in [THIRDPARTY.md](THIRDPARTY.md) to install the
+third-party dependencies.
