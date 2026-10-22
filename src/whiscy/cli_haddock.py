@@ -2,7 +2,9 @@
 Calculates the active/passive residues for HADDOCK
 
 - Active residues: >=0.18 (WHISCY score)
-- Passive residues: radius of 6.5A of active residues
+- Passive residues: surface residues within 6.5A of active residues. The
+  surface is the WHISCY surface list (.sur) when given, otherwise the
+  residues with a WHISCY score.
 """
 
 import argparse
@@ -47,6 +49,12 @@ def parse_whiscy_scores(file_name):
     return scores
 
 
+def parse_surface_list(file_name):
+    """Parses a WHISCY surface list (.sur): one residue number per line"""
+    with open(file_name) as input:
+        return {int(line.split()[0]) for line in input if line.strip()}
+
+
 def main():
 
     # Parse command line
@@ -60,6 +68,11 @@ def main():
     parser.add_argument(
         "whiscy_scores_file", help="WHISCY scores file", metavar="whiscy_scores_file"
     )
+    parser.add_argument(
+        "--surface_list",
+        help="WHISCY surface list (.sur); passive residues are taken from it",
+        default=None,
+    )
     args = parser.parse_args()
 
     input_pdb_file_name = args.input_pdb_file
@@ -68,6 +81,12 @@ def main():
 
     # Parse scores from the WHISCY output file
     scores = parse_whiscy_scores(whiscy_scores_file_name)
+
+    # Surface residues: only these can be passive
+    if args.surface_list:
+        surface = parse_surface_list(args.surface_list)
+    else:
+        surface = {int(res_id[1:]) for res_id in scores}
 
     # Parse input PDB file
     pdb_parser = Bio.PDB.PDBParser(QUIET=True)
@@ -96,6 +115,8 @@ def main():
         # Remove itself
         neighbors.remove(active)
         for passive in neighbors:
+            if passive.get_id()[1] not in surface:
+                continue
             res_id = "{}{}".format(
                 STANDARD_TYPES[passive.get_resname()], passive.get_id()[1]  # type: ignore
             )
