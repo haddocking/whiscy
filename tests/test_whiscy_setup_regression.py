@@ -73,8 +73,8 @@ def suract_file_1ppe():
 
 
 @pytest.fixture
-def blast_file_1ppe():
-    return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "1ppe_I_blast.xml")
+def homologs_file_1ppe():
+    return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "1ppe_I_homologs.fasta")
 
 
 @pytest.fixture
@@ -133,8 +133,8 @@ def suract_file_3qi0():
 
 
 @pytest.fixture
-def blast_file_3qi0():
-    return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "3qi0_C_blast.xml")
+def homologs_file_3qi0():
+    return Path(GOLDEN_DATA_PATH, "regression_whiscy_setup", "3qi0_C_homologs.fasta")
 
 
 @pytest.mark.regression
@@ -153,7 +153,7 @@ def test_regression_1PPEI(
     rsa_file_1ppe,
     surface_file_1ppe,
     suract_file_1ppe,
-    blast_file_1ppe,
+    homologs_file_1ppe,
 ):
     # All the files produced by the whiscy_setup protocol:
     # 1ppe.hssp      1ppe.pdb       1ppe_I.conv    1ppe_I.fasta   1ppe_I.lac
@@ -170,8 +170,8 @@ def test_regression_1PPEI(
     pred_surface_file = Path(scratch_path, "1ppe_I.sur")
     pred_suract_file = Path(scratch_path, "1ppe_I.suract")
 
-    # Put the blast file in the scratch path to skip blasting it via ncbi
-    shutil.copy(blast_file_1ppe, scratch_path)
+    # Put the homologs in the scratch path to skip the remote search
+    shutil.copy(homologs_file_1ppe, scratch_path)
     # and the structure, to skip downloading it from the PDB
     shutil.copy(pdb_file_1ppe, scratch_path)
 
@@ -214,7 +214,7 @@ def test_regression_3QI0(
     rsa_file_3qi0,
     surface_file_3qi0,
     suract_file_3qi0,
-    blast_file_3qi0,
+    homologs_file_3qi0,
 ):
 
     pred_pdb_file = Path(scratch_path, "3qi0.pdb")
@@ -228,8 +228,8 @@ def test_regression_3QI0(
     pred_surface_file = Path(scratch_path, "3qi0_C.sur")
     pred_suract_file = Path(scratch_path, "3qi0_C.suract")
 
-    # Put the blast file in the scratch path to skip blasting it via ncbi
-    shutil.copy(blast_file_3qi0, scratch_path)
+    # Put the homologs in the scratch path to skip the remote search
+    shutil.copy(homologs_file_3qi0, scratch_path)
     # and the structure, to skip downloading it from the PDB
     shutil.copy(pdb_file_3qi0, scratch_path)
 

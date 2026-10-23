@@ -6,7 +6,6 @@ Below we will go into a step-by-step guide on how to install Whiscy. Instruction
 
 Whiscy depends on the following third-party software:
 
-- Muscle
 - FreeSASA
 - HSSPCONV
 - Protdist
@@ -43,4 +42,7 @@ options:
 
 ### Troubleshooting
 
-If you get an error such as `ValueError: MUSCLE_BIN not found in system variables`, make sure you have followed the steps in [THIRDPARTY.md](THIRDPARTY.md) to install the third-party dependencies.
+If you get an error such as
+`ValueError: FREESASA_BIN not found in system variables`, make sure you have
+followed the steps in [THIRDPARTY.md](THIRDPARTY.md) to install the
+third-party dependencies.

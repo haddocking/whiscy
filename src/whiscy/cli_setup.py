@@ -5,20 +5,11 @@ import subprocess
 import sys
 import warnings
 
-# Import SearchIO and suppress experimental warning
-from Bio import AlignIO, BiopythonExperimentalWarning, BiopythonWarning, SeqIO
-from Bio.Align import MultipleSeqAlignment
-from Bio.Align.Applications import MuscleCommandline
-from Bio.Blast import NCBIWWW
+from Bio import AlignIO, BiopythonWarning, SeqIO
 from Bio.PDB import PDBIO
 from Bio.PDB.PDBParser import PDBParser
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
 
 warnings.simplefilter("ignore", BiopythonWarning)
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore", BiopythonExperimentalWarning)
-    from Bio import SearchIO
 
 # Logging
 import logging
@@ -26,10 +17,10 @@ import logging
 from whiscy.modules import (
     CUTOFF,
     HSSPCONV_BIN,
-    MUSCLE_BIN,
     PROTDIST_BIN,
     access,
     alignment,
+    homologs,
     hssp,
     pdbutil,
 )
@@ -45,37 +36,12 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-def muscle_msa(
-    input_sequence_file: str, output_alignment_file: str
-) -> MultipleSeqAlignment:
-    """Calculates a MSA using MUSCLE's Biopython wrapper"""
-
-    assert MUSCLE_BIN is not None, "MUSCLE_BIN not found in system variables"
-
-    muscle_cline = MuscleCommandline(
-        MUSCLE_BIN, input=input_sequence_file, out=output_alignment_file
-    )
-    _, _ = muscle_cline()
-    msa = AlignIO.read(output_alignment_file, "fasta")
-    return msa
-
-
-def ncbi_blast(fasta_file: str, output_file: str) -> None:
-    """Performs a remote BLAST against the NCBI server"""
-    record = SeqIO.read(fasta_file, format="fasta")
-    result_handle = NCBIWWW.qblast("blastp", "nr", record.format("fasta"))
-    with open(output_file, "w") as out_handle:
-        out_handle.write(result_handle.read())
-    result_handle.close()
-
-
-def msa_to_phylseq(msa: MultipleSeqAlignment, output_file: str) -> None:
-    """Write a MSA containing the MASTER sequence as Phylip Seq, MASTER first."""
-    rows = [(record.id, str(record.seq)) for record in msa]
-    rows.sort(key=lambda row: row[0] != "MASTER")
-    if rows[0][0] != "MASTER":
-        raise ValueError("MASTER sequence not found in the MSA")
-    alignment.write_phylseq(rows, output_file)
+def write_homologs(master_sequence, rows, output_file):
+    """Write the structure sequence and its aligned homologs as FASTA."""
+    with open(output_file, "w") as handle:
+        handle.write(">MASTER{0}{1}{0}".format(os.linesep, master_sequence))
+        for name, row in rows:
+            handle.write(">{0}{1}{2}{1}".format(name, os.linesep, row))
 
 
 def hsspconv(hssp_file, converted_hssp_file):
@@ -241,51 +207,37 @@ def main():
             logger.debug(e)
 
     if not os.path.exists(hssp_file):
-        logger.info("HSSP file not found, fallback to generating MSA with blastp")
         # if no alignment is provided, will do it automatically
         if not args.alignment:
-            # Run BLASTP if needed
-            blast_output_file = "{0}_{1}_blast.xml".format(filename, chain_id)
-            input_sequence_file = "{0}_{1}.fasta".format(filename, chain_id)
-            if not os.path.exists(blast_output_file):
-                logger.info("Running blastp via NCBI")
-                ncbi_blast(input_sequence_file, blast_output_file)
-                logger.info("Result stored in {0}".format(blast_output_file))
-
-            assert os.path.exists(blast_output_file), "BLAST file not found"
-
-            # Convert file to FASTA format
-            # The structure sequence is aligned together with the hits, so the
-            # MSA columns can be mapped onto its residues
-            blast_qresult = SearchIO.read(blast_output_file, "blast-xml")
-            records = [
-                SeqRecord(Seq(str(master_sequence)), id="MASTER", description="")
-            ]
-            for hit in blast_qresult:
-                hit_record = hit[0].hit
-                records.append(
-                    SeqRecord(
-                        Seq(str(hit_record.seq).replace("-", "")),
-                        id=hit_record.id,
-                        description="",
+            logger.info("HSSP file not found, searching for homologous sequences")
+            # The homologs are aligned to the structure sequence, one column
+            # per residue; a previous search result is reused if present
+            homologs_file = "{0}_{1}_homologs.fasta".format(filename, chain_id)
+            if os.path.exists(homologs_file):
+                logger.info("Using the homologs in {0}".format(homologs_file))
+                rows = [
+                    (record.id, str(record.seq))
+                    for record in SeqIO.parse(homologs_file, "fasta")
+                ][1:]
+            else:
+                try:
+                    rows = homologs.find_homologs(
+                        str(master_sequence), os.environ.get("WHISCY_EBI_EMAIL")
                     )
-                )
-            blast_fasta_file = "{0}_{1}_blast.fasta".format(filename, chain_id)
-            SeqIO.write(records, blast_fasta_file, "fasta")
+                except homologs.HomologSearchError as err:
+                    logger.error(str(err))
+                    sys.exit(1)
+                write_homologs(master_sequence, rows, homologs_file)
+                logger.info("Homologs stored in {0}".format(homologs_file))
 
-            # Multiple sequence alignment
-            logger.info("Generating MSA using MUSCLE...")
-            output_alignment_file = "{0}_{1}_msa.fasta".format(filename, chain_id)
-            msa = muscle_msa(blast_fasta_file, output_alignment_file)
-            logger.info("Done.")
-
-            # Convert MSA to Phylipseq
-            logger.info("Converting MSA file to Phylseq format...")
             output_phylseq_file = "{0}_{1}.phylseq".format(filename, chain_id)
-            msa_to_phylseq(msa=msa, output_file=output_phylseq_file)
-
-            assert os.path.exists(output_phylseq_file), "PHYLIP file not found"
-            logger.info(f"{output_phylseq_file} file written")
+            phylseq_rows = [("MASTER", str(master_sequence))]
+            for n, (name, row) in enumerate(rows, 1):
+                phylseq_rows.append(("{0}_{1}".format(n, name), row))
+            alignment.write_phylseq(phylseq_rows, output_phylseq_file)
+            logger.info(
+                "{0} written with {1} homologs".format(output_phylseq_file, len(rows))
+            )
 
         else:
             # Alignment is provided, need to convert it to phylipseq

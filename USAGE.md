@@ -19,20 +19,41 @@ wget https://files.rcsb.org/download/1PPE.pdb
 ```text
 $ whiscy_setup 1PPE.pdb E
 
-  2024-04-22 11:43:39,469 cli_setup:201 INFO - PDB structure with chain E saved to 1PPE_E.pdb
-  2024-04-22 11:43:39,494 cli_setup:208 INFO - Atom accessibility calculated to 1PPE_E.rsa
-  2024-04-22 11:43:39,495 cli_setup:212 INFO - Surface and buried residues calculated
-  2024-04-22 11:43:39,513 cli_setup:255 INFO - HSSP file not found, fallback to generating MSA with blastp
-  2024-04-22 11:43:39,513 cli_setup:262 INFO - Running blastp via NCBI
-  2024-04-22 11:44:43,926 cli_setup:264 INFO - Result stored in 1PPE_E_blast.xml
-  2024-04-22 11:44:43,933 cli_setup:277 INFO - Generating MSA using MUSCLE...
-  2024-04-22 11:44:44,027 cli_setup:280 INFO - Done.
-  2024-04-22 11:44:44,027 cli_setup:283 INFO - Converting MSA file to Phylseq format...
-  2024-04-22 11:44:44,027 cli_setup:292 INFO - 1PPE_E.phylseq file written
-  2024-04-22 11:44:44,046 cli_setup:319 INFO - Protdist calculated
-  2024-04-22 11:44:44,054 cli_setup:326 INFO - Conversion table file generated
-  2024-04-22 11:44:44,054 cli_setup:328 INFO - Whiscy setup finished
+09:11:50 INFO - PDB structure with chain E saved to 1PPE_E.pdb
+09:11:51 INFO - Atom accessibility calculated to 1PPE_E.rsa
+09:11:51 INFO - Surface and buried residues calculated
+09:11:51 INFO - HSSP file not found, searching for homologous sequences
+09:11:51 WARNING - No contact email set, the EBI BLAST fallback is disabled
+09:11:51 INFO - Searching homologs with ColabFold MMseqs2
+09:18:21 INFO - ColabFold MMseqs2: 5000 hits, 250 kept (redundant ones removed)
+09:18:21 INFO - Homologs stored in 1PPE_E_homologs.fasta
+09:18:21 INFO - 1PPE_E.phylseq written with 250 homologs
+09:18:21 INFO - Alignment mapped: 220 of 220 PDB residues, 220 alignment columns
+09:18:21 INFO - Protdist calculated
+09:18:21 INFO - Conversion table file generated
+09:18:21 INFO - Whiscy setup finished
 ```
+
+The log is shortened here: each line also starts with the date and the
+source line.
+
+Without an alignment (`--alignment`), `whiscy_setup` searches for homologous
+sequences of the structure's sequence:
+
+1. With the [ColabFold MMseqs2 server](https://github.com/sokrypton/ColabFold)
+   (UniRef). This usually takes seconds to a few minutes.
+2. If that fails or finds fewer than 10 usable homologs, with
+   [EBI BLAST](https://www.ebi.ac.uk/jdispatcher/sss/ncbiblast) against
+   UniProtKB. The EBI requires a contact email, given with the
+   `WHISCY_EBI_EMAIL` environment variable; without it this step is skipped.
+
+Near-identical hits carry no conservation signal, so the hits are filtered:
+at most 90% identity to the query and to each other, at least 50% of the
+query covered, up to 250 hits. The result is stored in
+`<name>_<chain>_homologs.fasta` and reused if the command is run again. If
+fewer than 3 homologs are found, `whiscy_setup` stops and asks for an
+alignment. `WHISCY_SEARCH_TIMEOUT` sets the time limit per service in seconds
+(default 3600).
 
 This script will generate a set of files needed for the prediction step with `whiscy`. Here it is a list of the generated files in our 1PPE complex.
 

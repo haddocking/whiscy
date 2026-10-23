@@ -15,13 +15,6 @@ RUN apt-get update && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #------------------------------------------------------------------------------------------
-# Build Muscle
-WORKDIR ${SOFTWARE_PATH}/muscle3.8.1551
-RUN curl https://drive5.com/muscle/muscle_src_3.8.1551.tar.gz | tar xzv && \
-  make
-ENV MUSCLE_BIN=${SOFTWARE_PATH}/muscle3.8.1551/muscle
-
-#------------------------------------------------------------------------------------------
 # Build hsspconv
 WORKDIR ${SOFTWARE_PATH}
 RUN wget https://github.com/cmbi/hssp/archive/3.1.5.tar.gz && \

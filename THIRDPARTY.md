@@ -11,17 +11,6 @@ $ sudo apt-get update && \
   sudo apt-get install -y build-essential libboost-all-dev
 ```
 
-## Muscle
-
-```bash
-mkdir -p $HOME/software && cd $HOME/software
-mkdir muscle3.8.1551 && cd muscle3.8.1551
-wget https://drive5.com/muscle/muscle_src_3.8.1551.tar.gz
-tar -zxf muscle_src_3.8.1551.tar.gz && rm muscle_src_3.8.1551.tar.gz
-make
-export MUSCLE_BIN=$HOME/software/muscle3.8.1551/muscle
-```
-
 ## Freesasa
 
 ```bash
@@ -66,7 +55,6 @@ export PROTDIST_BIN=$HOME/software/protdist/protdist
 In the end the system variables that define the third-party dependencies should look like this:
 
 ```bash
-export MUSCLE_BIN=$HOME/software/muscle3.8.1551/muscle
 export FREESASA_BIN=$HOME/software/freesasa-2.0.3/bin/freesasa
 export HSSPCONV_BIN=$HOME/software/hssp-3.1.5/hsspconv
 export PROTDIST_BIN=$HOME/software/protdist/protdist
