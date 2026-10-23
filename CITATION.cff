@@ -24,6 +24,6 @@ authors:
   family-names: Leinweber
   affiliation: '@gitlabhq'
 version: 1.4.0
-date-released: 2026-10-21
+date-released: 2026-10-23
 repository-code: https://github.com/haddocking/whiscy
 license: cc-by-4.0

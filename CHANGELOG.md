@@ -4,13 +4,10 @@ All notable changes to WHISCY, one line per pull request, newest first.
 Releases are tagged in git and published as Docker images at
 `ghcr.io/haddocking/whiscy:<tag>`.
 
-## [Unreleased]
+## [v1.4.0] - 2026-10-23
 
 - Restrict the passive residues of `whiscy_haddock` to the surface, taken from
   the new `--surface_list` option or else the scored residues (#41)
-
-## [v1.4.0] - 2026-10-21
-
 - Replace the NCBI BLAST search with the ColabFold MMseqs2 server, falling back
   to EBI BLAST (UniProtKB), and filter out redundant hits; drop MUSCLE (#40,
   closes #39)
