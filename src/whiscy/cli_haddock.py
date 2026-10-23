@@ -50,7 +50,7 @@ def parse_whiscy_scores(file_name):
 
 
 def parse_surface_list(file_name):
-    """Parses a WHISCY surface list (.sur): one residue number per line"""
+    """Parses a WHISCY surface list (.sur): one residue number per line."""
     with open(file_name) as input:
         return {int(line.split()[0]) for line in input if line.strip()}
 
