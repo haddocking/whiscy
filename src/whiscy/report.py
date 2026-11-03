@@ -160,14 +160,11 @@ def _read_list(fname):
 
 
 def generate_report(pdb, files, scores, options):
-    """
-    Write report.html and state.mvsj in the current directory.
-
-    pdb is the structure shown, files the files to link to, scores a dict of
-    WHISCY scores per residue (e.g. {"V75": 0.16}) and options the options
-    shown in the report. The HADDOCK residues are read from active.txt and
-    passive.txt. Returns the path of report.html.
-    """
+    """Write report.html and state.mvsj in the current directory; return its path."""
+    # pdb is the structure shown, files the files to link to, scores a dict of
+    # WHISCY scores per residue (e.g. {"V75": 0.16}) and options the options
+    # shown in the report. The HADDOCK residues are read from active.txt and
+    # passive.txt.
     pdb = os.path.relpath(pdb)
     active, passive = _read_list("active.txt"), _read_list("passive.txt")
     smin, smax = min(scores.values()), max(scores.values())
