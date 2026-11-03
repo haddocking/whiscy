@@ -4,6 +4,12 @@ All notable changes to WHISCY, one line per pull request, newest first.
 Releases are tagged in git and published as Docker images at
 `ghcr.io/haddocking/whiscy:<tag>`.
 
+## [v1.5.0] - 2026-11-03
+
+- Write an HTML report of the prediction in `whiscy_haddock` (`report.html`,
+  a Mol* view of the WHISCY scores and of the active and passive residues;
+  `--no-report` to turn it off) (#44, closes #43)
+
 ## [v1.4.0] - 2026-10-23
 
 - Restrict the passive residues of `whiscy_haddock` to the surface, taken from

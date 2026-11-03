@@ -2,8 +2,6 @@
 
 """Python 3 implementation of the Whiscy C binary"""
 
-__version__ = "1.4.0"
-
 import argparse
 
 # Logging
@@ -11,6 +9,7 @@ import logging
 import os
 import sys
 
+from whiscy import __version__
 from whiscy.modules.pam_calc import pam_calc_similarity, pam_load_sequences
 from whiscy.modules.pam_data import code
 from whiscy.modules.quotes import get_one
