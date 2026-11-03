@@ -48,6 +48,7 @@ def test_regression_consadjust2SNIE(scratch_path, cons_file, acons_file):
         cmd_line.split(),
         capture_output=True,
         env=env,
+        cwd=scratch_path,
     )
 
     assert result.returncode == 0

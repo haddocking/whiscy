@@ -15,6 +15,8 @@ from Bio.PDB.PDBParser import PDBParser
 from whiscy.modules.pdbutil import is_hydrogen
 from whiscy.modules.whiscy_data import load_conversion_table
 
+from whiscy import log_to_file
+
 logger = logging.getLogger("residue_distance")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
@@ -32,6 +34,7 @@ def main():
     parser.add_argument("conv_file", help="Conversion table file", metavar="conv_file")
     parser.add_argument("output_file", help="Output file name", metavar="output_file")
     args = parser.parse_args()
+    log_to_file(logger)
 
     # Read conversion table file
     logger.info("Reading conversion table")

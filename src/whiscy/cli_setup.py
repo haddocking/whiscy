@@ -9,6 +9,8 @@ from Bio import AlignIO, BiopythonWarning, SeqIO
 from Bio.PDB import PDBIO
 from Bio.PDB.PDBParser import PDBParser
 
+from whiscy import log_to_file
+
 warnings.simplefilter("ignore", BiopythonWarning)
 
 # Logging
@@ -101,6 +103,7 @@ def main():
     )
 
     args = parser.parse_args()
+    log_to_file(logger)
 
     filename, file_extension = os.path.splitext(os.path.basename(args.pdb_file_name))
     with_pdb_code = file_extension == ""
