@@ -1,0 +1,23 @@
+site_name: WHISCY
+site_url: https://www.bonvinlab.org/whiscy
+repo_name: haddocking/whiscy
+repo_url: https://github.com/haddocking/whiscy
+use_directory_urls: false
+# docs/ links to the README, INSTALLATION, USAGE and THIRDPARTY files, media/
+# and example/ of the repository
+exclude_docs: |
+  example/benchmarking/
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+  palette:
+    primary: teal
+    accent: teal
+
+nav:
+  - Home: README.md
+  - Installation: INSTALLATION.md
+  - Usage: USAGE.md
+  - Web server: webserver.md
