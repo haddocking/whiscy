@@ -73,6 +73,13 @@ def main():
         help="WHISCY surface list (.sur); passive residues are taken from it",
         default=None,
     )
+    parser.add_argument(
+        "--no-report",
+        dest="report",
+        action="store_false",
+        help="Do not write report.html and state.mvsj (the prediction with a "
+        "Mol* view)",
+    )
     args = parser.parse_args()
 
     input_pdb_file_name = args.input_pdb_file
@@ -170,6 +177,32 @@ def main():
                 [str(x) for x in sorted([int(id[1:]) for id in passive_residue_ids])]
             )
         )
+
+    if args.report:
+        from whiscy.report import generate_report
+
+        options = {
+            "structure": input_pdb_file_name,
+            "scores": whiscy_scores_file_name,
+            "surface list": args.surface_list or "residues with a score",
+            "active residues": "score >= 0.18",
+            "passive residues": "surface, within 6.5 A of an active CA",
+        }
+        fname = generate_report(
+            os.getcwd(),
+            input_pdb_file_name,
+            [
+                whiscy_scores_file_name,
+                output_pdb_file_name,
+                "active.txt",
+                "passive.txt",
+            ],
+            scores,
+            set(active_residue_ids),
+            set(passive_residue_ids),
+            options,
+        )
+        print("Report written to {}".format(fname))
 
 
 if __name__ == "__main__":

@@ -16,6 +16,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.11"
 biopython = "1.79"
+molviewspec = "*"  # report.html
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"

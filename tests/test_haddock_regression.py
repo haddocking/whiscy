@@ -1,4 +1,5 @@
 import filecmp
+import json
 import os
 import subprocess
 import sys
@@ -92,3 +93,18 @@ def test_passive_residues_are_on_the_surface(scratch_path):
     assert passive
     assert passive <= surface
     assert not passive & active
+
+
+@pytest.mark.parametrize("scratch_path", ["scratch_haddock_report"], indirect=True)
+def test_report(scratch_path):
+    result = run_haddock(scratch_path)
+
+    assert result.returncode == 0
+    state = json.loads(Path(scratch_path, "state.mvsj").read_text())
+    snapshots = state["snapshots"]
+    assert [s["metadata"]["key"] for s in snapshots] == ["scores", "haddock"]
+    # Mol* loads the structure relative to the report, in the same directory
+    for s in snapshots:
+        assert Path(scratch_path, s["root"]["children"][0]["params"]["url"]).exists()
+    html = Path(scratch_path, "report.html").read_text()
+    assert Path(scratch_path, "active.txt").read_text() in html
