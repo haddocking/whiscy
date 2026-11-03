@@ -13,8 +13,11 @@ theme:
   features:
     - navigation.tabs
   palette:
-    primary: teal
-    accent: teal
+    primary: custom
+    accent: custom
+
+extra_css:
+  - stylesheets/extra.css
 
 nav:
   - Home: README.md
