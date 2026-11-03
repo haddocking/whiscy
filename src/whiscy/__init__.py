@@ -1,3 +1,5 @@
+"""WHISCY: protein-protein interface prediction from conservation."""
+
 from importlib.metadata import version
 from pathlib import Path
 

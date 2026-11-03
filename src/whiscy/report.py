@@ -1,9 +1,7 @@
-"""
-HTML report of a WHISCY prediction, with a Mol* view (MolViewSpec).
+"""HTML report of a WHISCY prediction, with a Mol* view (MolViewSpec)."""
 
-The report refers to the files by relative names, so the directory can be
-served as is, e.g. with `python -m http.server -d <directory>`.
-"""
+# The report refers to the files by relative names, so the directory can be
+# served as is, e.g. with `python -m http.server -d <directory>`.
 
 import os
 import warnings
