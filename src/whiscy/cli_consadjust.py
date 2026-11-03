@@ -14,6 +14,8 @@ from whiscy.modules.whiscy_data import (
     load_z_table,
 )
 
+from whiscy import log_to_file
+
 logger = logging.getLogger("consadjust")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
@@ -40,6 +42,7 @@ def main():
         metavar="output_file",
     )
     args = parser.parse_args()
+    log_to_file(logger)
 
     if not os.path.exists(args.cons_file):
         logger.error("Conservation file {} does not exist".format(args.cons_file))

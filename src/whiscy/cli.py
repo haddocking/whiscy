@@ -9,7 +9,7 @@ import logging
 import os
 import sys
 
-from whiscy import __version__
+from whiscy import __version__, log_to_file
 from whiscy.modules.pam_calc import pam_calc_similarity, pam_load_sequences
 from whiscy.modules.pam_data import code
 from whiscy.modules.quotes import get_one
@@ -55,6 +55,7 @@ def main():
         "--version", action="version", version="%(prog)s {}".format(__version__)
     )
     args = parser.parse_args()
+    log_to_file(logger)
 
     logger.info("Parsing surface list...")
     surface_list = load_surface_list(args.surface_list)

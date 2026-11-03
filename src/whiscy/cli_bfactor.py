@@ -1,5 +1,17 @@
 import argparse
+import logging
 import os
+import sys
+
+from whiscy import log_to_file
+
+logger = logging.getLogger("whiscy_bfactor")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 STANDARD_TYPES = {
     "ALA": "A",
@@ -59,6 +71,7 @@ def main():
         default=False,
     )
     args = parser.parse_args()
+    log_to_file(logger)
 
     input_pdb_file_name = args.input_pdb_file
     output_pdb_file_name = args.output_pdb_file
@@ -87,7 +100,7 @@ def main():
                     line = line[:61] + "%6.2f" % score + line[66:]
                 output.write(line + os.linesep)
 
-    print(
+    logger.info(
         "{} PDB file with WHISCY scores in B-factor column has been created".format(
             output_pdb_file_name
         )

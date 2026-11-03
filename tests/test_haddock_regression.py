@@ -109,3 +109,16 @@ def test_report(scratch_path):
         assert Path(scratch_path, s["root"]["children"][0]["params"]["url"]).exists()
     html = Path(scratch_path, "report.html").read_text()
     assert Path(scratch_path, "active.txt").read_text() in html
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize("scratch_path", ["scratch_haddock_log"], indirect=True)
+def test_log_file(scratch_path):
+    # Each command appends to whiscy.log, starting with the version and command
+    run_haddock(scratch_path)
+    run_haddock(scratch_path, "--no-report")
+
+    log = Path(scratch_path, "whiscy.log").read_text()
+    assert log.count("whiscy_haddock [INFO] WHISCY ") == 2
+    assert "Report written to" in log
+    assert 'href="whiscy.log"' in Path(scratch_path, "report.html").read_text()

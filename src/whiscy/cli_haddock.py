@@ -8,9 +8,21 @@ Calculates the active/passive residues for HADDOCK
 """
 
 import argparse
+import logging
 import os
+import sys
 
 import Bio.PDB
+
+from whiscy import LOG_FILE, log_to_file
+
+logger = logging.getLogger("whiscy_haddock")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 ACTIVE_CUTOFF = 0.18  # WHISCY score
 PASSIVE_DISTANCE = 6.5  # A, from the CA of an active residue
@@ -84,6 +96,7 @@ def main():
         "Mol* view)",
     )
     args = parser.parse_args()
+    log_to_file(logger)
 
     input_pdb_file_name = args.input_pdb_file
     output_pdb_file_name = args.output_pdb_file
@@ -194,9 +207,9 @@ def main():
             ),
         }
         files = [whiscy_scores_file_name, output_pdb_file_name]
-        files += ["active.txt", "passive.txt"]
+        files += ["active.txt", "passive.txt", LOG_FILE]
         fname = generate_report(output_pdb_file_name, files, scores, options)
-        print("Report written to {}".format(fname))
+        logger.info("Report written to {}".format(fname))
 
 
 if __name__ == "__main__":

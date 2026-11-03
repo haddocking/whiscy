@@ -12,6 +12,8 @@ from whiscy.modules.whiscy_data import (
     load_smoothing_parameter_file,
 )
 
+from whiscy import log_to_file
+
 logger = logging.getLogger("parasmooth")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
@@ -129,6 +131,7 @@ def main():
         metavar="output_file",
     )
     args = parser.parse_args()
+    log_to_file(logger)
 
     logger.info("Reading input files")
 

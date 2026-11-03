@@ -57,6 +57,7 @@ def test_regression_2SNIE(
         cmd_line.split(),
         capture_output=True,
         env=env,
+        cwd=scratch_path,
     )
 
     assert result.returncode == 0

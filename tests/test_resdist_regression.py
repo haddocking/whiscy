@@ -43,6 +43,7 @@ def test_rd_regression_1PPEI(scratch_path, pdb_file, conversion_file, rd_file):
         cmd_line.split(),
         capture_output=True,
         env=env,
+        cwd=scratch_path,
     )
 
     assert result.returncode == 0

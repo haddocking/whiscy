@@ -86,6 +86,7 @@ def test_regression_2SNIE(
         cmd_line.split(),
         capture_output=True,
         env=env,
+        cwd=scratch_path,
     )
 
     assert result.returncode == 0
@@ -113,6 +114,7 @@ def test_regression_3QI0C(
         cmd_line.split(),
         capture_output=True,
         env=env,
+        cwd=scratch_path,
     )
 
     assert result.returncode == 0
