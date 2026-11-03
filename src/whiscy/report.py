@@ -1,4 +1,5 @@
-"""HTML report of a WHISCY prediction, with a Mol* view (MolViewSpec).
+"""
+HTML report of a WHISCY prediction, with a Mol* view (MolViewSpec).
 
 The report refers to the files by relative names, so the directory can be
 served as is, e.g. with `python -m http.server -d <directory>`.
@@ -132,7 +133,8 @@ def _score_color(score, smin, smax):
 
 
 def _snapshot(pdb, key, title, description, colors):
-    """Return a Mol* snapshot of the structure surface.
+    """
+    Return a Mol* snapshot of the structure surface.
 
     colors is a list of (color, residue numbers); the other residues are grey.
     """
@@ -164,7 +166,8 @@ def _read_list(fname):
 
 
 def generate_report(pdb, files, scores, options):
-    """Write report.html and state.mvsj in the current directory.
+    """
+    Write report.html and state.mvsj in the current directory.
 
     pdb is the structure shown, files the files to link to, scores a dict of
     WHISCY scores per residue (e.g. {"V75": 0.16}) and options the options
