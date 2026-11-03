@@ -1,5 +1,7 @@
 # Web server manual
 
+![WHISCY](media/whiscy_logo.png)
+
 The WHISCY web server at <https://wenmr.science.uu.nl/whiscy> predicts the
 protein-protein interface of one protein chain and gives the active and passive
 residues to use as restraints in [HADDOCK](https://www.bonvinlab.org/software/).
