@@ -23,8 +23,7 @@ MOLSTAR_VERSION = "5.13.1"
 # Ends of the score scale, light enough for black text on them.
 BLUE, RED = (67, 147, 195), (214, 96, 77)
 
-TEMPLATE = Template(
-    """\
+TEMPLATE = Template("""\
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,6 +68,8 @@ the files of the viewer. Serve this directory with
 </div>
 <section>
 <h3>HADDOCK restraints</h3>
+<p>The second view of the viewer above shows these residues on the structure
+(click <b>Next</b>).</p>
 <p><b>Active residues</b> (high WHISCY score), as in active.txt:</p>
 <pre>${active}</pre>
 <p><b>Passive residues</b> (surface residues next to an active residue), as in
@@ -114,8 +115,7 @@ if (location.protocol === 'file:') {
 </script>
 </body>
 </html>
-"""  # noqa: E501
-)
+""")  # noqa: E501
 
 
 def _shade(t, rgb):
@@ -176,7 +176,8 @@ def generate_report(pdb, files, scores, options):
             "WHISCY scores",
             "Surface residues colored by their WHISCY score, from blue "
             "({:.3f}) to white (0) to red ({:.3f}); residues without a score "
-            "in grey.".format(smin, smax),
+            "in grey.\n\nClick **Next** for the HADDOCK residues: active in red, "
+            "passive in green.".format(smin, smax),
             [(color, [int(res[1:])]) for res, color in colors.items()],
         ),
         _snapshot(
@@ -184,7 +185,9 @@ def generate_report(pdb, files, scores, options):
             "haddock",
             "HADDOCK residues",
             "Active residues ({:d}) in red, passive residues ({:d}) in "
-            "green.".format(len(active), len(passive)),
+            "green.\n\nClick **Prev** for the WHISCY scores.".format(
+                len(active), len(passive)
+            ),
             [("red", active), ("green", passive)],
         ),
     ]

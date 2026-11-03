@@ -2,7 +2,7 @@
   "kind": "multiple",
   "metadata": {
     "description": "WHISCY prediction",
-    "timestamp": "2026-11-03T10:50:32.269409+00:00",
+    "timestamp": "2026-11-03T16:07:33.897979+00:00",
     "version": "1.8"
   },
   "snapshots": [
@@ -1616,7 +1616,7 @@
       },
       "metadata": {
         "title": "WHISCY scores",
-        "description": "Surface residues colored by their WHISCY score, from blue (-1.288) to white (0) to red (0.615); residues without a score in grey.",
+        "description": "Surface residues colored by their WHISCY score, from blue (-1.288) to white (0) to red (0.615); residues without a score in grey.\n\nClick **Next** for the HADDOCK residues: active in red, passive in green.",
         "description_format": "markdown",
         "key": "scores",
         "linger_duration_ms": 1000
@@ -1895,7 +1895,7 @@
       },
       "metadata": {
         "title": "HADDOCK residues",
-        "description": "Active residues (32) in red, passive residues (34) in green.",
+        "description": "Active residues (32) in red, passive residues (34) in green.\n\nClick **Prev** for the WHISCY scores.",
         "description_format": "markdown",
         "key": "haddock",
         "linger_duration_ms": 1000
