@@ -131,11 +131,7 @@ def _score_color(score, smin, smax):
 
 
 def _snapshot(pdb, key, title, description, colors):
-    """
-    Return a Mol* snapshot of the structure surface.
-
-    colors is a list of (color, residue numbers); the other residues are grey.
-    """
+    """Return a Mol* snapshot of the surface, colored by (color, residues) pairs."""
     builder = create_builder()
     surface = (
         builder.download(url=pdb)
