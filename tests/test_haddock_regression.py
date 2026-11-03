@@ -95,6 +95,7 @@ def test_passive_residues_are_on_the_surface(scratch_path):
     assert not passive & active
 
 
+@pytest.mark.regression
 @pytest.mark.parametrize("scratch_path", ["scratch_haddock_report"], indirect=True)
 def test_report(scratch_path):
     result = run_haddock(scratch_path)

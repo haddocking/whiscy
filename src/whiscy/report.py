@@ -5,7 +5,6 @@ served as is, e.g. with `python -m http.server -d <directory>`.
 """
 
 import os
-import shutil
 import warnings
 from html import escape
 from string import Template
@@ -133,7 +132,10 @@ def _score_color(score, smin, smax):
 
 
 def _snapshot(pdb, key, title, description, colors):
-    """Return a Mol* snapshot of the structure, colored by residue number."""
+    """Return a Mol* snapshot of the structure surface.
+
+    colors is a list of (color, residue numbers); the other residues are grey.
+    """
     builder = create_builder()
     surface = (
         builder.download(url=pdb)
@@ -144,8 +146,9 @@ def _snapshot(pdb, key, title, description, colors):
         .representation(type="surface")
         .color(color="lightgrey")
     )
-    for resi, color in colors:
-        surface.color(color=color, selector=ComponentExpression(auth_seq_id=resi))
+    for color, resis in colors:
+        selector = [ComponentExpression(auth_seq_id=resi) for resi in resis]
+        surface.color(color=color, selector=selector)
     return builder.get_snapshot(
         key=key,
         title=title,
@@ -154,43 +157,41 @@ def _snapshot(pdb, key, title, description, colors):
     )
 
 
-def generate_report(directory, pdb, files, scores, active, passive, options):
-    """Write report.html and state.mvsj in directory.
+def _read_list(fname):
+    """Return the residue numbers of active.txt or passive.txt."""
+    with open(fname) as f:
+        return [int(x) for x in f.read().split(",") if x]
 
-    pdb is the input structure (copied to directory, so the report can load
-    it), files the other files to link to, scores a dict of WHISCY scores per
-    residue (e.g. {"V75": 0.16}), active and passive the HADDOCK residue ids
-    and options the options shown in the report. Returns the path of
-    report.html.
+
+def generate_report(pdb, files, scores, options):
+    """Write report.html and state.mvsj in the current directory.
+
+    pdb is the structure shown, files the files to link to, scores a dict of
+    WHISCY scores per residue (e.g. {"V75": 0.16}) and options the options
+    shown in the report. The HADDOCK residues are read from active.txt and
+    passive.txt. Returns the path of report.html.
     """
-    pdb_name = os.path.basename(pdb)
-    target = os.path.join(directory, pdb_name)
-    if not (os.path.exists(target) and os.path.samefile(pdb, target)):
-        shutil.copyfile(pdb, target)
-
+    pdb = os.path.relpath(pdb)
+    active, passive = _read_list("active.txt"), _read_list("passive.txt")
     smin, smax = min(scores.values()), max(scores.values())
-    colors = [
-        (int(res[1:]), _score_color(score, smin, smax)) for res, score in scores.items()
-    ]
-    haddock = [(int(res[1:]), "red") for res in active]
-    haddock += [(int(res[1:]), "green") for res in passive]
+    colors = {res: _score_color(score, smin, smax) for res, score in scores.items()}
     snapshots = [
         _snapshot(
-            pdb_name,
+            pdb,
             "scores",
             "WHISCY scores",
             "Surface residues colored by their WHISCY score, from blue "
             "({:.3f}) to white (0) to red ({:.3f}); residues without a score "
             "in grey.".format(smin, smax),
-            colors,
+            [(color, [int(res[1:])]) for res, color in colors.items()],
         ),
         _snapshot(
-            pdb_name,
+            pdb,
             "haddock",
             "HADDOCK residues",
             "Active residues ({:d}) in red, passive residues ({:d}) in "
             "green.".format(len(active), len(passive)),
-            haddock,
+            [("red", active), ("green", passive)],
         ),
     ]
     state = MVSJ(
@@ -199,38 +200,38 @@ def generate_report(directory, pdb, files, scores, active, passive, options):
             metadata=GlobalMetadata(description="WHISCY prediction"),
         )
     )
-    with open(os.path.join(directory, "state.mvsj"), "w", encoding="utf-8") as f:
-        f.write(state.dumps(indent=2))
+    with open("state.mvsj", "w", encoding="utf-8") as f:
+        f.write(state.dumps())
 
-    rows = ["<table class='sortable'><tr><th>Rank</th><th>Residue</th>"]
-    rows.append("<th>Score</th><th>HADDOCK</th></tr>")
+    rows = [
+        "<table class='sortable'><tr><th>Rank</th><th>Residue</th>"
+        "<th>Score</th><th>HADDOCK</th></tr>"
+    ]
     ranked = sorted(scores.items(), key=lambda item: -item[1])
     for rank, (res, score) in enumerate(ranked, 1):
-        kind = "active" if res in active else "passive" if res in passive else ""
+        resi = int(res[1:])
+        kind = "active" if resi in active else "passive" if resi in passive else ""
         rows.append(
             "<tr class='{}'><td>{:d}</td><td>{}</td>"
             "<td style='background: {}'>{:.5f}</td><td>{}</td></tr>".format(
-                kind, rank, res, _score_color(score, smin, smax), score, kind
+                kind, rank, res, colors[res], score, kind
             )
         )
     rows.append("</table>")
 
-    def residues(ids):
-        return ",".join(str(n) for n in sorted(int(res[1:]) for res in ids)) or "None"
-
-    links = [pdb_name] + [os.path.relpath(f, directory) for f in files]
     html = TEMPLATE.substitute(
         molstar=MOLSTAR_VERSION,
         options="".join(
             "<li>{}: {}</li>".format(escape(k), escape(str(v)))
             for k, v in options.items()
         ),
-        downloads=" ".join('<a href="{0}">{0}</a>'.format(escape(f)) for f in links),
-        active=residues(active),
-        passive=residues(passive),
+        downloads=" ".join(
+            '<a href="{0}">{0}</a>'.format(escape(os.path.relpath(f))) for f in files
+        ),
+        active=",".join(map(str, active)) or "None",
+        passive=",".join(map(str, passive)) or "None",
         table="".join(rows),
     )
-    fname = os.path.join(directory, "report.html")
-    with open(fname, "w", encoding="utf-8") as f:
+    with open("report.html", "w", encoding="utf-8") as f:
         f.write(html)
-    return fname
+    return os.path.abspath("report.html")

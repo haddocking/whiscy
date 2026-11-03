@@ -186,8 +186,8 @@ Report written to /path/to/report.html
 ```
 
 It also writes `report.html` and `state.mvsj` (the MolViewSpec state of the
-Mol* view) in the current directory, and copies the input structure there; use
-`--no-report` to turn this off. The report shows the structure colored by
+Mol* view) in the current directory; use `--no-report` to turn this off. The
+report shows the output structure colored by
 WHISCY score and by active and passive residues, the residue lists, and the
 table of scores. It loads the files of the directory, so open it through a web
 server, e.g. `python -m http.server`, then http://localhost:8000/report.html.

@@ -12,6 +12,9 @@ import os
 
 import Bio.PDB
 
+ACTIVE_CUTOFF = 0.18  # WHISCY score
+PASSIVE_DISTANCE = 6.5  # A, from the CA of an active residue
+
 STANDARD_TYPES = {
     "ALA": "A",
     "ARG": "R",
@@ -107,7 +110,7 @@ def main():
             res_id = "{}{}".format(
                 STANDARD_TYPES[residue.get_resname()], residue.get_id()[1]
             )
-            if scores[res_id] >= 0.18:
+            if scores[res_id] >= ACTIVE_CUTOFF:
                 active_residues.append(residue)
         except KeyError:
             pass
@@ -118,7 +121,7 @@ def main():
     passive_residue_ids = []
     for active in active_residues:
         center = active["CA"].coord
-        neighbors = neighbor_search.search(center, 6.5, level="R")
+        neighbors = neighbor_search.search(center, PASSIVE_DISTANCE, level="R")
         # Remove itself
         neighbors.remove(active)
         for passive in neighbors:
@@ -185,23 +188,14 @@ def main():
             "structure": input_pdb_file_name,
             "scores": whiscy_scores_file_name,
             "surface list": args.surface_list or "residues with a score",
-            "active residues": "score >= 0.18",
-            "passive residues": "surface, within 6.5 A of an active CA",
+            "active residues": "score >= {}".format(ACTIVE_CUTOFF),
+            "passive residues": "surface, within {} A of an active CA".format(
+                PASSIVE_DISTANCE
+            ),
         }
-        fname = generate_report(
-            os.getcwd(),
-            input_pdb_file_name,
-            [
-                whiscy_scores_file_name,
-                output_pdb_file_name,
-                "active.txt",
-                "passive.txt",
-            ],
-            scores,
-            set(active_residue_ids),
-            set(passive_residue_ids),
-            options,
-        )
+        files = [whiscy_scores_file_name, output_pdb_file_name]
+        files += ["active.txt", "passive.txt"]
+        fname = generate_report(output_pdb_file_name, files, scores, options)
         print("Report written to {}".format(fname))
 
 
