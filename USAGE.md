@@ -5,12 +5,14 @@ After it has been installed according to the instructions in the [INSTALLATION.m
 ## Example
 
 Below we will give an example of how to use WHISCY to predict the binding site
-of trypsin, chain E of the trypsin-inhibitor complex 1PPE. The `example` directory holds
-the files of two runs, made with the commands below:
+of trypsin, chain E of the trypsin-inhibitor complex 1PPE. The `example`
+directory holds the files of two runs, made with the commands below:
 
 - `example/colabfold`: the homologs are searched for automatically (the
   default); see its [report](example/colabfold/report.html) and
-  [log](example/colabfold/whiscy.log);
+  [log](example/colabfold/whiscy.log). The search below was run on
+  4 November 2026; the directory was then made from its homologs
+  (`1ppe_E_homologs.fasta`), so its log shows them being reused;
 - `example/hssp`: the alignment comes from an HSSP file; see its
   [report](example/hssp/report.html) and [log](example/hssp/whiscy.log).
 
@@ -152,7 +154,8 @@ $ whiscy 1ppe_E.sur 1ppe_E.conv 1ppe_E.phylseq 1ppe_E.out -o 1ppe_E.cons
     -  Tommy Cooper
 ```
 
-The file `1ppe_E.cons` will contain the initial predictions, but we can improve them by adding the interface propensities and smoothing the surface.
+The file `1ppe_E.cons` will contain the initial predictions, but we can improve
+them by adding the interface propensities and smoothing the surface.
 
 ```text
 $ head -5 1ppe_E.cons
@@ -260,7 +263,7 @@ In the examples, the active residues are:
 
 | Example | Score ≥ 0.18 | Top 10 |
 | --- | --- | --- |
-| [Homolog search](example/colabfold/report.html) | COLABFOLD_CUTOFF | COLABFOLD_TOP10 |
+| [Homolog search](example/colabfold/report.html) | 39 | 39, 40, 41, 57, 73, 75, 82, 94, 191, 192 |
 | [HSSP file](example/hssp/report.html) | 39, 41, 57, 73, 94, 191, 192, 193, 195 | the same and 214 |
 
 It also writes `report.html` and `state.mvsj` (the MolViewSpec state of the
