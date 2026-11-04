@@ -30,7 +30,6 @@ def run_haddock(scratch_path, *extra):
         sys.executable,
         str(HADDOCK_BIN),
         str(Path(DATA_PATH, "3qi0_C.pdb")),
-        "test_haddock.pdb",
         str(Path(DATA_PATH, "3qi0_C.cons")),
         *extra,
     ]
@@ -48,7 +47,7 @@ def test_regression_3qi0_C_surface_list(scratch_path):
 
     assert result.returncode == 0
     assert filecmp.cmp(
-        Path(scratch_path, "test_haddock.pdb"), Path(DATA_PATH, "3qi0_C_haddock.pdb")
+        Path(scratch_path, "haddock-cutoff.pdb"), Path(DATA_PATH, "3qi0_C_haddock.pdb")
     )
     assert filecmp.cmp(
         Path(scratch_path, "active.txt"), Path(DATA_PATH, "3qi0_C_active.txt")
@@ -103,7 +102,11 @@ def test_report(scratch_path):
     assert result.returncode == 0
     state = json.loads(Path(scratch_path, "state.mvsj").read_text())
     snapshots = state["snapshots"]
-    assert [s["metadata"]["key"] for s in snapshots] == ["scores", "haddock"]
+    assert [s["metadata"]["key"] for s in snapshots] == [
+        "scores",
+        "haddock1",
+        "haddock2",
+    ]
     # Mol* loads the structure relative to the report, in the same directory
     for s in snapshots:
         assert Path(scratch_path, s["root"]["children"][0]["params"]["url"]).exists()
@@ -122,3 +125,22 @@ def test_log_file(scratch_path):
     assert log.count("whiscy_haddock [INFO] WHISCY ") == 2
     assert "Report written to" in log
     assert 'href="whiscy.log"' in Path(scratch_path, "report.html").read_text()
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize("scratch_path", ["scratch_haddock_top10"], indirect=True)
+def test_top10(scratch_path):
+    # The 10 best-scored residues are active, and none of them is passive
+    sur = Path(DATA_PATH, "3qi0_C.sur")
+    result = run_haddock(scratch_path, "--no-report", "--surface_list", str(sur))
+
+    assert result.returncode == 0
+    lines = Path(DATA_PATH, "3qi0_C.cons").read_text().split("\n")
+    scores = [(float(x.split()[0]), int(x.split()[1][1:])) for x in lines if x]
+    top10 = {resi for _, resi in sorted(scores, reverse=True)[:10]}
+    assert read_list(Path(scratch_path, "active_top10.txt")) == top10
+    passive = read_list(Path(scratch_path, "passive_top10.txt"))
+    assert passive and not passive & top10
+    lines = Path(scratch_path, "haddock-top10.pdb").read_text().splitlines()
+    atoms = [x for x in lines if x.startswith("ATOM  ")]
+    assert {int(x[22:26]) for x in atoms if float(x[60:66]) == 100} == top10
