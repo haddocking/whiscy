@@ -26,6 +26,7 @@ This repository contains an updated version of WHISCY. The original code was pub
 - [How does WHISCY work?](#how-does-whiscy-work)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Web server](#web-server)
 
 ## How does WHISCY work?
 
@@ -54,3 +55,12 @@ Please refer to [INSTALLATION.md](INSTALLATION.md) for a detailed guide on how t
 ## Usage
 
 Check [USAGE.md](USAGE.md) to learn how to use WHISCY to predict protein-protein interfaces.
+
+## Web server
+
+WHISCY is also available as a web server at
+<https://wenmr.science.uu.nl/whiscy>. See its
+[online manual](https://www.bonvinlab.org/whiscy/webserver.html); the
+documentation of WHISCY, with the
+[benchmark](https://www.bonvinlab.org/whiscy/benchmark.html), is at
+<https://www.bonvinlab.org/whiscy>.

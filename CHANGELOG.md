@@ -4,6 +4,24 @@ All notable changes to WHISCY, one line per pull request, newest first.
 Releases are tagged in git and published as Docker images at
 `ghcr.io/haddocking/whiscy:<tag>`.
 
+## [v1.6.0] - 2026-11-04
+
+- Examples regenerated with latest version (#63, closes #55)
+- Publish the protein-protein benchmark (BM5) on the documentation site (#62,
+  closes #60)
+- Give the top-10 HADDOCK residues next to the score cutoff in
+  `whiscy_haddock` (`active_top10.txt`, `passive_top10.txt`,
+  `haddock-top10.pdb`, and a view and lists in the report); the output PDB
+  files have fixed names (`haddock-cutoff.pdb`, `haddock-top10.pdb`), so the
+  output PDB argument is removed (#61, closes #59)
+- Remove the HSSP download, which no longer works, and the HSSPCONV
+  dependency; a local HSSP file is still read with `--hssp` (#58, closes #54)
+- Write a log file of the run (`whiscy.log`), to which every command appends,
+  starting with the WHISCY version and its command line; the report links to
+  it (#50, closes #45)
+- Add a web server manual and publish the documentation with MkDocs at
+  <https://www.bonvinlab.org/whiscy> (#49, closes #46)
+
 ## [v1.5.0] - 2026-11-03
 
 - Write an HTML report of the prediction in `whiscy_haddock` (`report.html`,

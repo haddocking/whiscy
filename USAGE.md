@@ -4,38 +4,59 @@ After it has been installed according to the instructions in the [INSTALLATION.m
 
 ## Example
 
-Below we will give an example of how to use WHISCY to predict the binding site of the protein 1PPE.
+Below we will give an example of how to use WHISCY to predict the binding site
+of trypsin, chain E of the trypsin-inhibitor complex 1PPE. The `example`
+directory holds the files of two runs, made with the commands below:
+
+- `example/colabfold`: the homologs are searched for automatically (the
+  default); see its [report](example/colabfold/report.html) and
+  [log](example/colabfold/whiscy.log). The search below was run on
+  4 November 2026; the directory was then made from its homologs
+  (`1ppe_E_homologs.fasta`), so its log shows them being reused;
+- `example/hssp`: the alignment comes from an HSSP file; see its
+  [report](example/hssp/report.html) and [log](example/hssp/whiscy.log).
 
 ### Get an input PDB
 
 Download the PDB file of the protein 1PPE from the [RCSB PDB](https://www.rcsb.org/structure/1PPE) website.
 
 ```bash
-wget https://files.rcsb.org/download/1PPE.pdb
+wget https://files.rcsb.org/download/1PPE.pdb -O 1ppe.pdb
 ```
 
 ### Setup the prediction
 
-```text
-$ whiscy_setup 1PPE.pdb E
+`whiscy_setup` extracts the chain, calculates the accessibility of its
+residues, and makes the alignment WHISCY needs. The alignment comes from one
+of:
 
-09:11:50 INFO - PDB structure with chain E saved to 1PPE_E.pdb
-09:11:51 INFO - Atom accessibility calculated to 1PPE_E.rsa
-09:11:51 INFO - Surface and buried residues calculated
-09:11:51 INFO - HSSP file not found, searching for homologous sequences
-09:11:51 WARNING - No contact email set, the EBI BLAST fallback is disabled
-09:11:51 INFO - Searching homologs with ColabFold MMseqs2
-09:18:21 INFO - ColabFold MMseqs2: 5000 hits, 250 kept (redundant ones removed)
-09:18:21 INFO - Homologs stored in 1PPE_E_homologs.fasta
-09:18:21 INFO - 1PPE_E.phylseq written with 250 homologs
-09:18:21 INFO - Alignment mapped: 220 of 220 PDB residues, 220 alignment columns
-09:18:21 INFO - Protdist calculated
-09:18:21 INFO - Conversion table file generated
-09:18:21 INFO - Whiscy setup finished
+- an alignment file of your own, given with `--alignment` (and
+  `--alignment_format`, by default `fasta`);
+- an HSSP file, given with `--hssp <name>` for `<name>.hssp` (see below);
+- a search for homologous sequences, when neither is given.
+
+#### Searching for homologs (example/colabfold)
+
+```text
+$ whiscy_setup 1ppe.pdb E
+
+cli_setup:100 INFO - WHISCY 1.6.0: whiscy_setup 1ppe.pdb E
+cli_setup:153 INFO - PDB structure with chain E saved to 1ppe_E.pdb
+cli_setup:160 INFO - Atom accessibility calculated to 1ppe_E.rsa
+cli_setup:164 INFO - Surface and buried residues calculated
+cli_setup:186 INFO - HSSP file not found, searching for homologous sequences
+homologs:233 WARNING - No contact email set, the EBI BLAST fallback is disabled
+homologs:237 INFO - Searching homologs with ColabFold MMseqs2
+homologs:251 INFO - ColabFold MMseqs2: 5000 hits, 250 kept (redundant ones removed)
+cli_setup:205 INFO - Homologs stored in 1ppe_E_homologs.fasta
+cli_setup:212 INFO - 1ppe_E.phylseq written with 250 homologs
+cli_setup:251 INFO - Alignment mapped: 220 of 220 PDB residues, 220 alignment columns
+cli_setup:260 INFO - Protdist calculated
+cli_setup:267 INFO - Conversion table file generated
+cli_setup:269 INFO - Whiscy setup finished
 ```
 
-The log is shortened here: each line also starts with the date and the
-source line.
+The log is shortened here: each line also starts with the date and time.
 
 Without an alignment (`--alignment`), `whiscy_setup` searches for homologous
 sequences of the structure's sequence:
@@ -53,26 +74,59 @@ query covered, up to 250 hits. The result is stored in
 `<name>_<chain>_homologs.fasta` and reused if the command is run again. If
 fewer than 3 homologs are found, `whiscy_setup` stops and asks for an
 alignment. `WHISCY_SEARCH_TIMEOUT` sets the time limit per service in seconds
-(default 3600).
+(default 3600). The search results change as the sequence databases grow, so
+a new search can give other homologs than the ones in
+[1ppe_E_homologs.fasta](example/colabfold/1ppe_E_homologs.fasta).
 
-This script will generate a set of files needed for the prediction step with `whiscy`. Here it is a list of the generated files in our 1PPE complex.
+#### From an HSSP file (example/hssp)
 
-> Follow the links to see a set of pre-generated files for the 1PPE protein.
+```text
+$ whiscy_setup 1ppe.pdb E --hssp 1ppe
 
-| File name                                | Explanation                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------ |
-| [1ppe.hssp](example/1ppe.hssp)           | HSSP alignment (the HSSP database is no longer online)             |
-| [1ppe.hssp.bz2](example/1ppe.hssp.bz2)   | HSSP MSA file compressed                                           |
-| [1ppe.pdb](example/1ppe.pdb)             | PDB file download from the Protein Data Bank                       |
-| [1ppe_E.pdb](example/1ppe_E.pdb)         | 1ppe.pdb parsed to select only the given `chain_id`                |
-| [1ppe_E.rsa](example/1ppe_E.rsa)         | SASA output of `freesasa` in `NACCESS` format of `1ppe_E.pdb` file |
-| [1ppe_E.fasta](example/1ppe_E.fasta)     | Sequence of 1ppe_E.pdb. Alternative residues have been removed     |
-| [1ppe_E.phylseq](example/1ppe_E.phylseq) | MSA file translated from HSSP to PHYLIP format                     |
-| [1ppe_E.conv](example/1ppe_E.conv)       | PDB residue numeration to FASTA sequence numeration                |
-| [1ppe_E.out](example/1ppe_E.out)         | Output of the `protdist` software on 1ppe_E.pdb                    |
-| [1ppe_E.sur](example/1ppe_E.sur)         | >15 % surface residue list according to `sa_pred_cutoff` cutoff    |
-| [1ppe_E.suract](example/1ppe_E.suract)   | >40 % surface residue list according to `sa_act_cutoff` cutoff     |
-| [1ppe_E.lac](example/1ppe_E.lac)         | 0-15 % accessible residue list                                     |
+cli_setup:100 INFO - WHISCY 1.6.0: whiscy_setup 1ppe.pdb E --hssp 1ppe
+cli_setup:153 INFO - PDB structure with chain E saved to 1ppe_E.pdb
+cli_setup:160 INFO - Atom accessibility calculated to 1ppe_E.rsa
+cli_setup:164 INFO - Surface and buried residues calculated
+cli_setup:177 INFO - HSSP file converted to PHYLIP format
+cli_setup:251 INFO - Alignment mapped: 220 of 220 PDB residues, 223 alignment columns
+cli_setup:260 INFO - Protdist calculated
+cli_setup:267 INFO - Conversion table file generated
+cli_setup:269 INFO - Whiscy setup finished
+```
+
+HSSP files can be obtained from the
+[XSSP server](https://www3.cmbi.umcn.nl/xssp/) of the CMBI: choose the output
+"HSSP" and give a PDB code, or use its
+[REST API](https://www3.cmbi.umcn.nl/xssp/api/examples), e.g.:
+
+```bash
+# Submit the job, then poll its status and fetch the result
+curl -X POST -F "data=1ppe" https://www3.cmbi.umcn.nl/xssp/api/create/pdb_id/hssp_hssp/
+curl https://www3.cmbi.umcn.nl/xssp/api/status/pdb_id/hssp_hssp/<id>/
+curl https://www3.cmbi.umcn.nl/xssp/api/result/pdb_id/hssp_hssp/<id>/
+```
+
+The result is JSON; its `result` field is the HSSP file. For 1PPE this is the
+same alignment as [1ppe.hssp](example/hssp/1ppe.hssp) (generated in 2017, 330
+sequences). WHISCY reads this classic HSSP format, not the Stockholm one.
+
+#### Files
+
+`whiscy_setup` writes the files needed for the prediction step with
+`whiscy`:
+
+| File name | Explanation |
+| --- | --- |
+| [1ppe_E.pdb](example/colabfold/1ppe_E.pdb) | 1ppe.pdb parsed to select only the given `chain_id` |
+| [1ppe_E.rsa](example/colabfold/1ppe_E.rsa) | SASA output of `freesasa` in `NACCESS` format of `1ppe_E.pdb` file |
+| [1ppe_E.fasta](example/colabfold/1ppe_E.fasta) | Sequence of 1ppe_E.pdb. Alternative residues have been removed |
+| [1ppe_E_homologs.fasta](example/colabfold/1ppe_E_homologs.fasta) | Homologs found by the search (not with `--hssp` or `--alignment`) |
+| [1ppe_E.phylseq](example/colabfold/1ppe_E.phylseq) | Alignment in PHYLIP format |
+| [1ppe_E.conv](example/colabfold/1ppe_E.conv) | PDB residue numeration to alignment numeration |
+| [1ppe_E.out](example/colabfold/1ppe_E.out) | Output of the `protdist` software on the alignment |
+| [1ppe_E.sur](example/colabfold/1ppe_E.sur) | >15 % surface residue list according to `sa_pred_cutoff` cutoff |
+| [1ppe_E.suract](example/colabfold/1ppe_E.suract) | >40 % surface residue list according to `sa_act_cutoff` cutoff |
+| [1ppe_E.lac](example/colabfold/1ppe_E.lac) | 0-15 % accessible residue list |
 
 ### Make the interface prediction
 
@@ -84,7 +138,8 @@ WHISCY needs four input files (generated before):
 - `distance_file (.out)` is the output of Protdist software
 
 ```text
-$ whiscy 1PPE_E.sur 1PPE_E.conv 1PPE_E.phylseq 1PPE_E.out -o 1PPE_E.cons
+$ whiscy 1ppe_E.sur 1ppe_E.conv 1ppe_E.phylseq 1ppe_E.out -o 1ppe_E.cons
+  whiscy [INFO] WHISCY 1.6.0: whiscy 1ppe_E.sur 1ppe_E.conv 1ppe_E.phylseq 1ppe_E.out -o 1ppe_E.cons
   whiscy [INFO] Parsing surface list...
   whiscy [INFO] Loading conversion table...
   whiscy [INFO] Converting...
@@ -93,33 +148,37 @@ $ whiscy 1PPE_E.sur 1PPE_E.conv 1PPE_E.phylseq 1PPE_E.out -o 1PPE_E.cons
   whiscy [INFO] Subtracting average value ...
   whiscy [INFO] Sorting scores...
   whiscy [INFO] Writing scores...
-  whiscy [INFO] Prediction written to 1PPE_E.cons
+  whiscy [INFO] Prediction written to 1ppe_E.cons
 
   "I’m on a whisky diet. I’ve lost three days already."
     -  Tommy Cooper
 ```
 
-The file `1PPE_E.cons` will contain the initial predictions, but we can improve them by adding the interface propensities and smoothing the surface.
+The file `1ppe_E.cons` will contain the initial predictions, but we can improve
+them by adding the interface propensities and smoothing the surface.
 
 ```text
-$ head 1PPE_E.cons
-  0.10595   N25
-  0.10595   N72
-  0.10595   N74
-  0.10595   N79
-  0.10595  N100
-  0.10595  N179
-  0.10572   N95
-  0.10572  N115
-  0.10446   S37
-  0.10446   S49
+$ head -5 1ppe_E.cons
+0.28571  N245
+0.28489  S214
+0.28370  S195
+0.26034  Q192
+0.25988  I176
+```
+
+The same command on the residues of low accessibility (`.lac`) gives their
+scores, used for the smoothing below:
+
+```text
+whiscy 1ppe_E.lac 1ppe_E.conv 1ppe_E.phylseq 1ppe_E.out -o 1ppe_E.lcons
 ```
 
 #### Add Interface propensities
 
 ```text
-$ whiscy_consadjust 1PPE_E.cons -o 1PPE_E.acons
+$ whiscy_consadjust 1ppe_E.cons -o 1ppe_E.acons
 
+consadjust [INFO] WHISCY 1.6.0: whiscy_consadjust 1ppe_E.cons -o 1ppe_E.acons
 consadjust [INFO] Reading input files
 consadjust [INFO] Subtracting average value...
 consadjust [INFO] Sorting scores...
@@ -129,45 +188,52 @@ consadjust [INFO] Writing scores...
 #### Smooth the surface
 
 ```text
-$ whiscy_resdist 1PPE_E.pdb 1PPE_E.conv 1PPE_E.rd
+$ whiscy_resdist 1ppe_E.pdb 1ppe_E.conv 1ppe_E.rd
 
+residue_distance [INFO] WHISCY 1.6.0: whiscy_resdist 1ppe_E.pdb 1ppe_E.conv 1ppe_E.rd
 residue_distance [INFO] Reading conversion table
-residue_distance [INFO] Reading PDB structure from 1PPE_E.pdb
-residue_distance [INFO] Residue distances written to 1PPE_E.rd
+residue_distance [INFO] Reading PDB structure from 1ppe_E.pdb
+residue_distance [INFO] Residue distances written to 1ppe_E.rd
 ```
 
 ```text
-$ whiscy_parasmooth 1PPE_E.acons 1PPE_E.cons 1PPE_E.rd -o 1PPE_E.pscons
+$ whiscy_parasmooth 1ppe_E.acons 1ppe_E.lcons 1ppe_E.rd -o 1ppe_E.pscons
 
+parasmooth [INFO] WHISCY 1.6.0: whiscy_parasmooth 1ppe_E.acons 1ppe_E.lcons 1ppe_E.rd -o 1ppe_E.pscons
 parasmooth [INFO] Reading input files
 parasmooth [INFO] Calculating parameter smoothing
-parasmooth [INFO] Result written to 1PPE_E.pscons
+parasmooth [INFO] Result written to 1ppe_E.pscons
 ```
 
-`1PPE_E.pscons` will contain the final predictions! 🎉
+`1ppe_E.pscons` will contain the final predictions! 🎉 Here for the two
+examples (left: homolog search, right: HSSP file):
 
 ```text
-head 1PPE_E.pscons
- 0.16475   V75
- 0.14702   I73
- 0.14633   L114
- 0.14547   F82
- 0.14297   V76
- 0.12907   R117
- 0.12127   Q81
- 0.11694   N115
- 0.11630   N72
- 0.11512   N25
+$ head 1ppe_E.pscons
+ 0.19753   Y39         0.31595   Y39
+ 0.17385   F41         0.31046   H57
+ 0.16250   I73         0.24401   C191
+ 0.12739   C191        0.23303   Y94
+ 0.12673   H40         0.23289   I73
+ 0.12072   Y94         0.21471   F41
+ 0.10342   H57         0.20514   S195
+ 0.09771   V75         0.19676   G193
+ 0.09197   Q192        0.18962   Q192
+ 0.08481   F82         0.17610   S214
 ```
+
+Both put the inhibitor-binding site of trypsin at the top (Y39-F41, the
+catalytic H57 and S195, C191-G193), but the scores differ with the alignment.
 
 ## Visualizing the results
 
 You can visualize the predictions in the input structure using `whiscy_bfactor`, this script will add the WHISCY scores to the B-factor column of the PDB file.
 
 ```text
-$ whiscy_bfactor 1PPE_E.pdb 1PPE_E_whiscy.pdb 1PPE_E.pscons
+$ whiscy_bfactor 1ppe_E.pdb 1ppe_E_whiscy.pdb 1ppe_E.pscons
 
-1PPE_E_whiscy.pdb PDB file with WHISCY scores in B-factor column has been created
+whiscy_bfactor [INFO] WHISCY 1.6.0: whiscy_bfactor 1ppe_E.pdb 1ppe_E_whiscy.pdb 1ppe_E.pscons
+whiscy_bfactor [INFO] 1ppe_E_whiscy.pdb PDB file with WHISCY scores in B-factor column has been created
 ```
 
 Now open the structure in your favorite molecular viewer and check the WHISCY scores in the B-factor column.
@@ -187,9 +253,18 @@ The passive residues are the surface residues next to an active one. The
 B-factors of 100 for active, -100 for passive and 0 for the other residues.
 
 ```text
-$ whiscy_haddock 1PPE_E.pdb 1PPE_E.pscons --surface_list 1PPE_E.sur
-Report written to /path/to/report.html
+$ whiscy_haddock 1ppe_E.pdb 1ppe_E.pscons --surface_list 1ppe_E.sur
+
+whiscy_haddock [INFO] WHISCY 1.6.0: whiscy_haddock 1ppe_E.pdb 1ppe_E.pscons --surface_list 1ppe_E.sur
+whiscy_haddock [INFO] Report written to /path/to/report.html
 ```
+
+In the examples, the active residues are:
+
+| Example | Score ≥ 0.18 | Top 10 |
+| --- | --- | --- |
+| [Homolog search](example/colabfold/report.html) | 39 | 39, 40, 41, 57, 73, 75, 82, 94, 191, 192 |
+| [HSSP file](example/hssp/report.html) | 39, 41, 57, 73, 94, 191, 192, 193, 195 | the same and 214 |
 
 It also writes `report.html` and `state.mvsj` (the MolViewSpec state of the
 Mol* view) in the current directory; use `--no-report` to turn this off. The

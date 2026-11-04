@@ -39,6 +39,28 @@ options:
   --version             show program's version number and exit
 ```
 
+### Environment variables
+
+WHISCY reads these environment variables:
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `FREESASA_BIN` | yes | Path to the `freesasa` binary |
+| `PROTDIST_BIN` | yes | Path to the `protdist` binary |
+| `WHISCY_EBI_EMAIL` | no | Contact email for EBI BLAST (see below) |
+| `WHISCY_SEARCH_TIMEOUT` | no | Time limit per search service, in s (3600) |
+
+Without an alignment, `whiscy_setup` searches for homologs with ColabFold
+MMseqs2, and with EBI BLAST when ColabFold fails or finds fewer than 10
+usable homologs. The EBI requires a contact email; without
+`WHISCY_EBI_EMAIL` this fallback is skipped. See [USAGE.md](USAGE.md).
+
+```bash
+export FREESASA_BIN=$HOME/software/freesasa-2.0.3/bin/freesasa
+export PROTDIST_BIN=$HOME/software/protdist/protdist
+export WHISCY_EBI_EMAIL=your.name@example.org
+```
+
 ### Troubleshooting
 
 If you get an error such as

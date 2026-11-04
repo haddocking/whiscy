@@ -89,8 +89,8 @@ The results page shows the WHISCY report (`report.html`):
 - a table of the scores of all residues, which can be sorted by clicking a
   column header.
 
-For an example, see the [example report](example/report.html) of the 1PPE
-chain E prediction.
+For an example, see the [example report](example/colabfold/report.html) of
+the 1PPE chain E prediction.
 
 ### Residues for HADDOCK
 
