@@ -22,4 +22,4 @@ def log_to_file(logger):
     handler.setFormatter(logger.handlers[0].formatter)
     logger.addHandler(handler)
     command = shlex.join([Path(sys.argv[0]).name] + sys.argv[1:])
-    logger.info("WHISCY {}: {}".format(__version__, command))
+    logger.info("WHISCY {}: {}".format(__version__, command), stacklevel=2)
