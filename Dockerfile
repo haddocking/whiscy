@@ -10,20 +10,8 @@ ARG SOFTWARE_PATH=/opt/software
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
   build-essential \
-  libboost-all-dev \
   && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
-
-#------------------------------------------------------------------------------------------
-# Build hsspconv
-WORKDIR ${SOFTWARE_PATH}
-RUN wget https://github.com/cmbi/hssp/archive/3.1.5.tar.gz && \
-  tar -zxvf 3.1.5.tar.gz && \
-  cd hssp-3.1.5 && \
-  ./autogen.sh && \
-  ./configure && \
-  make hsspconv
-ENV HSSPCONV_BIN=${SOFTWARE_PATH}/hssp-3.1.5/hsspconv
 
 #------------------------------------------------------------------------------------------
 # Build freesasa

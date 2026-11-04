@@ -18,7 +18,6 @@ import logging
 
 from whiscy.modules import (
     CUTOFF,
-    HSSPCONV_BIN,
     PROTDIST_BIN,
     access,
     alignment,
@@ -44,15 +43,6 @@ def write_homologs(master_sequence, rows, output_file):
         handle.write(">MASTER{0}{1}{0}".format(os.linesep, master_sequence))
         for name, row in rows:
             handle.write(">{0}{1}{2}{1}".format(name, os.linesep, row))
-
-
-def hsspconv(hssp_file, converted_hssp_file):
-    """Converts a HSSP in version 3 to original format"""
-    cmd = f"{HSSPCONV_BIN} < {hssp_file} > {converted_hssp_file}"
-    try:
-        subprocess.run(cmd, shell=True)
-    except:
-        subprocess.check_call(cmd, shell=True)
 
 
 def calculate_protdist(phylip_file, protdist_output_file):
@@ -85,7 +75,11 @@ def main():
     )
     parser.add_argument("chain_id", help="Chain ID to be predicted", metavar="chain_id")
     parser.add_argument(
-        "--hssp", help="HSSP ID code", dest="hssp", metavar="hssp", default=None
+        "--hssp",
+        help="Name of a local HSSP file (<hssp>.hssp)",
+        dest="hssp",
+        metavar="hssp",
+        default=None,
     )
     parser.add_argument(
         "--alignment",
@@ -173,43 +167,20 @@ def main():
     master_sequence = pdbutil.get_pdb_sequence(input_pdb_file, chain_id)
     write_to_fasta("{0}_{1}.fasta".format(filename, chain_id), master_sequence)
 
-    if args.hssp:
-        hssp_file = "{0}.hssp".format(args.hssp)
-        phylip_file = "{0}_{1}.phylseq".format(args.hssp, chain_id)
+    # A local HSSP alignment (--hssp, or named after the structure)
+    hssp_name = args.hssp or pdb_code
+    hssp_file = "{0}.hssp".format(hssp_name)
+    phylip_file = "{0}_{1}.phylseq".format(hssp_name, chain_id)
+
+    if os.path.exists(hssp_file):
+        hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
+        logger.info("HSSP file converted to PHYLIP format")
+
+    elif args.hssp:
+        logger.error("HSSP file {0} not found".format(hssp_file))
+        sys.exit(1)
+
     else:
-        hssp_file = "{0}.hssp".format(pdb_code)
-        phylip_file = "{0}_{1}.phylseq".format(pdb_code, chain_id)
-
-    if with_pdb_code or args.hssp:
-        # Get the HSSP alignment from FTP if pdb code specified
-        if not os.path.exists(hssp_file):
-            logger.info("Downloading HSSP alignment...")
-            try:
-                compressed_hssp_file = hssp.get_from_ftp(pdb_code)
-                if not compressed_hssp_file:
-                    compressed_hssp_file = hssp.get_from_url(pdb_code)
-
-                if "hssp3" in compressed_hssp_file:
-                    hssp_file = hssp_file.replace("hssp", "hssp3")
-                hssp.decompress_bz2(compressed_hssp_file, hssp_file)
-                logger.info("HSSP alignment stored to {0}".format(hssp_file))
-            except Exception:
-                logger.warning("HSSP file could not be downloaded")
-        try:
-            if "hssp3" in hssp_file:
-                # HSSP downloaded file is in new HSSP3 format, need to be
-                # converted back to original HSSP format using hsspconv
-                converted_hssp_file = hssp_file.replace("hssp3", "hssp")
-                hsspconv(hssp_file, converted_hssp_file)
-                hssp_file = converted_hssp_file
-
-            hssp.hssp_file_to_phylip(hssp_file, phylip_file, chain_id, master_sequence)
-            logger.info("HSSP file converted to PHYLIP format")
-
-        except Exception as e:
-            logger.debug(e)
-
-    if not os.path.exists(hssp_file):
         # if no alignment is provided, will do it automatically
         if not args.alignment:
             logger.info("HSSP file not found, searching for homologous sequences")

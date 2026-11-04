@@ -61,7 +61,7 @@ This script will generate a set of files needed for the prediction step with `wh
 
 | File name                                | Explanation                                                        |
 | ---------------------------------------- | ------------------------------------------------------------------ |
-| [1ppe.hssp](example/1ppe.hssp)           | Multiple sequence alignment download from the HSSP database        |
+| [1ppe.hssp](example/1ppe.hssp)           | HSSP alignment (the HSSP database is no longer online)             |
 | [1ppe.hssp.bz2](example/1ppe.hssp.bz2)   | HSSP MSA file compressed                                           |
 | [1ppe.pdb](example/1ppe.pdb)             | PDB file download from the Protein Data Bank                       |
 | [1ppe_E.pdb](example/1ppe_E.pdb)         | 1ppe.pdb parsed to select only the given `chain_id`                |

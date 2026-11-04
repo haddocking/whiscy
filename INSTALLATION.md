@@ -7,7 +7,6 @@ Below we will go into a step-by-step guide on how to install Whiscy. Instruction
 Whiscy depends on the following third-party software:
 
 - FreeSASA
-- HSSPCONV
 - Protdist
 
 The installation of these dependencies is described in the [THIRDPARTY.md](THIRDPARTY.md) file.
