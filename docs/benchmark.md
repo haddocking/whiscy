@@ -1,20 +1,19 @@
 # Benchmark: protein-protein interfaces
 
-How well WHISCY predicts protein-protein interfaces, on the complexes of
-Docking Benchmark 5 without antibodies, with the homolog search of WHISCY
-1.4.0 (ColabFold MMseqs2). Run in October 2026. The docking benchmark with
-HADDOCK, using these predictions as restraints, is in progress.
+This page describes how well does WHISCY predict protein-protein interfaces based on 
+a benchmark using the complexes of Docking Benchmark 5 without antibodies.
+It uses the homolog search of WHISCY 1.4.0 (ColabFold MMseqs2), run in October 2026. 
 
 ## Dataset
 
 - **Complexes:** the 187 complexes of Docking Benchmark 5 (Vreven et al.,
-  J. Mol. Biol. 2015, doi:10.1016/j.jmb.2015.07.016) that contain no
+  J. Mol. Biol. 2015, doi:10.1016/j.jmb.2015.07.016) excluding
   antibody, antibody fragment or nanobody, from the HADDOCK-ready version
   [haddocking/BM5-clean](https://github.com/haddocking/BM5-clean).
 - **Structures:** both partners of each complex, from the bound structures:
   374 chains of 28 to 2119 residues (median 182.5). 52 partners made of
   several chains are merged into one chain in BM5-clean; the main results
-  are for the 322 single-chain partners, as users submit them.
+  are for the 322 single-chain partners, as users would submit them.
 - **Categories:** enzyme-inhibitor (EI, 44 complexes), enzyme-substrate (ES,
   17), enzyme with a regulatory or accessory chain (ER, 26), G-protein (OG,
   23), receptor (OR, 22) and other (OX, 50).
@@ -31,8 +30,8 @@ HADDOCK, using these predictions as restraints, is in progress.
 - The default protocol of the web server: `whiscy` on the surface and on the
   low-accessible residues, interface propensities (`whiscy_consadjust`) and
   surface smoothing (`whiscy_parasmooth`).
-- **Precision:** the share of selected residues that are interface residues.
-  **Recall:** the share of interface residues that are selected. Values are
+- **Precision:** the share of predicted residues that are interface residues.
+  **Recall:** the share of true interface residues that are predicted. Values are
   pooled over all chains, or averaged per chain (mean).
 
 368 of the 374 chains got an alignment. The 6 without one are merged
@@ -99,8 +98,9 @@ partners. By category: EI 0.66, ES 0.70, ER 0.68, OG 0.76, OR 0.54, OX 0.60.
 ## HADDOCK restraints
 
 `whiscy_haddock` turns the prediction into active residues and passive
-residues: the surface residues with an atom within 6.5 Å of the Cα of an
-active residue. Here the active residues are the top N residues or those
+residues for use in HADDOCK. Passive residues are defined as  the surface
+residues with an atom within 6.5 Å of the Cα of an active residue. 
+Here the active residues are the top N residues or those
 above a score cutoff. Precision and recall of the combined list are means
 per chain against the full interface, buried residues included, so recall
 cannot exceed 0.88 with surface passive residues. The lower panels show the
@@ -139,6 +139,3 @@ median number of residues in the list.
 - **Submit single chains:** merged multi-chain partners are poorly predicted
   (top-10 precision 0.22), since each homolog covers only part of the merged
   sequence.
-- **Check the scores:** with gappy alignments a few chains (8 of 368) get
-  scores on a wrong scale (above 5, instead of about −1 to 1); their
-  predictions are not reliable.
