@@ -41,7 +41,7 @@ TEMPLATE = Template("""\
               border-left: 1px solid #ccc; background: #f6f5f3; }
   table { border-collapse: collapse; margin: 0.5rem 0 1rem; }
   th, td { border: 1px solid #a0a0a0; padding: 4px 8px; text-align: right; }
-  tr.active { font-weight: bold; }
+  td.active { font-weight: bold; }
   pre { white-space: pre-wrap; }
   table.sortable th { cursor: pointer; }
   #file-hint { background: #fff3cd; padding: 0.5rem; }
@@ -68,14 +68,11 @@ the files of the viewer. Serve this directory with
 </div>
 <section>
 <h3>HADDOCK restraints</h3>
-<p>The second view of the viewer above shows these residues on the structure
-(click <b>Next</b>).</p>
-<p><b>Active residues</b> (high WHISCY score), as in active.txt:</p>
-<pre>${active}</pre>
-<p><b>Passive residues</b> (surface residues next to an active residue), as in
-passive.txt:</p>
-<pre>${passive}</pre>
-<p>You should not trust WHISCY predictions blindly, but always try to relate
+<p>Two selections of active residues: those with a WHISCY score above the
+cutoff, and the best-scored residues. The passive residues are the surface
+residues next to an active residue. The viewer above shows each selection
+on the structure (click <b>Next</b>).</p>
+${restraints}<p>You should not trust WHISCY predictions blindly, but always try to relate
 them to information that you already have. WHISCY works very well for proteins
 with a single conserved protein binding site. It should not be used for
 non-conserved interactions, such as antibody-antigens. If you know that your
@@ -153,22 +150,16 @@ def _snapshot(pdb, key, title, description, colors):
     )
 
 
-def _read_list(fname):
-    """Return the residue numbers of active.txt or passive.txt."""
-    with open(fname) as f:
-        return [int(x) for x in f.read().split(",") if x]
-
-
-def generate_report(pdb, files, scores, options):
+def generate_report(pdb, files, scores, options, selections):
     """Write report.html and state.mvsj in the current directory; return its path."""
     # pdb is the structure shown, files the files to link to, scores a dict of
-    # WHISCY scores per residue (e.g. {"V75": 0.16}) and options the options
-    # shown in the report. The HADDOCK residues are read from active.txt and
-    # passive.txt.
+    # WHISCY scores per residue (e.g. {"V75": 0.16}), options the options
+    # shown in the report and selections the HADDOCK residues, as
+    # {name: (active residue numbers, passive residue numbers)}.
     pdb = os.path.relpath(pdb)
-    active, passive = _read_list("active.txt"), _read_list("passive.txt")
     smin, smax = min(scores.values()), max(scores.values())
     colors = {res: _score_color(score, smin, smax) for res, score in scores.items()}
+    names = list(selections)
     snapshots = [
         _snapshot(
             pdb,
@@ -176,21 +167,27 @@ def generate_report(pdb, files, scores, options):
             "WHISCY scores",
             "Surface residues colored by their WHISCY score, from blue "
             "({:.3f}) to white (0) to red ({:.3f}); residues without a score "
-            "in grey.\n\nClick **Next** for the HADDOCK residues: active in red, "
-            "passive in green.".format(smin, smax),
+            "in grey.\n\nClick **Next** for the HADDOCK residues ({}): active "
+            "in red, passive in green.".format(smin, smax, ", then ".join(names)),
             [(color, [int(res[1:])]) for res, color in colors.items()],
-        ),
-        _snapshot(
-            pdb,
-            "haddock",
-            "HADDOCK residues",
-            "Active residues ({:d}) in red, passive residues ({:d}) in "
-            "green.\n\nClick **Prev** for the WHISCY scores.".format(
-                len(active), len(passive)
-            ),
-            [("red", active), ("green", passive)],
-        ),
+        )
     ]
+    for n, (name, (active, passive)) in enumerate(selections.items(), 1):
+        nav = "Click **Prev** for the {}".format(
+            "WHISCY scores" if n == 1 else "HADDOCK residues ({})".format(names[n - 2])
+        )
+        if n < len(names):
+            nav += ", **Next** for the HADDOCK residues ({})".format(names[n])
+        snapshots.append(
+            _snapshot(
+                pdb,
+                "haddock{}".format(n),
+                "HADDOCK residues ({})".format(name),
+                "Active residues ({:d}) in red, passive residues ({:d}) in "
+                "green.\n\n{}.".format(len(active), len(passive), nav),
+                [("red", active), ("green", passive)],
+            )
+        )
     state = MVSJ(
         data=States(
             snapshots=snapshots,
@@ -200,19 +197,37 @@ def generate_report(pdb, files, scores, options):
     with open("state.mvsj", "w", encoding="utf-8") as f:
         f.write(state.dumps())
 
+    restraints = "".join(
+        "<h4>Active residues: {}</h4>"
+        "<p><b>Active residues ({:d}):</b></p><pre>{}</pre>"
+        "<p><b>Passive residues ({:d}):</b></p><pre>{}</pre>".format(
+            escape(name),
+            len(active),
+            ",".join(map(str, active)) or "None",
+            len(passive),
+            ",".join(map(str, passive)) or "None",
+        )
+        for name, (active, passive) in selections.items()
+    )
+
     rows = [
-        "<table class='sortable'><tr><th>Rank</th><th>Residue</th>"
-        "<th>Score</th><th>HADDOCK</th></tr>"
+        "<table class='sortable'><tr><th>Rank</th><th>Residue</th><th>Score</th>"
+        + "".join("<th>{}</th>".format(escape(name)) for name in names)
+        + "</tr>"
     ]
     ranked = sorted(scores.items(), key=lambda item: -item[1])
     for rank, (res, score) in enumerate(ranked, 1):
         resi = int(res[1:])
-        kind = "active" if resi in active else "passive" if resi in passive else ""
+        kinds = [
+            "active" if resi in active else "passive" if resi in passive else ""
+            for active, passive in selections.values()
+        ]
         rows.append(
-            "<tr class='{}'><td>{:d}</td><td>{}</td>"
-            "<td style='background: {}'>{:.5f}</td><td>{}</td></tr>".format(
-                kind, rank, res, colors[res], score, kind
+            "<tr><td>{:d}</td><td>{}</td><td style='background: {}'>{:.5f}</td>".format(
+                rank, res, colors[res], score
             )
+            + "".join("<td class='{0}'>{0}</td>".format(kind) for kind in kinds)
+            + "</tr>"
         )
     rows.append("</table>")
 
@@ -225,8 +240,7 @@ def generate_report(pdb, files, scores, options):
         downloads=" ".join(
             '<a href="{0}">{0}</a>'.format(escape(os.path.relpath(f))) for f in files
         ),
-        active=",".join(map(str, active)) or "None",
-        passive=",".join(map(str, passive)) or "None",
+        restraints=restraints,
         table="".join(rows),
     )
     with open("report.html", "w", encoding="utf-8") as f:

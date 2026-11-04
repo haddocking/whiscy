@@ -174,20 +174,26 @@ Now open the structure in your favorite molecular viewer and check the WHISCY sc
 
 ## Residues for HADDOCK and the HTML report
 
-`whiscy_haddock` selects active residues (WHISCY score of at least 0.18) and
-passive residues (surface residues next to an active one) for
-[HADDOCK](https://wenmr.science.uu.nl/haddock2.4/). It writes them to
-`active.txt` and `passive.txt`, and their B-factor (100 for active, -100 for
-passive) to the output PDB file.
+`whiscy_haddock` selects active and passive residues for
+[HADDOCK](https://wenmr.science.uu.nl/haddock2.4/) in two ways:
+
+| Active residues | Files |
+| --- | --- |
+| WHISCY score of at least 0.18 | `active.txt`, `passive.txt`, `haddock-cutoff.pdb` |
+| the 10 best-scored residues | `active_top10.txt`, `passive_top10.txt`, `haddock-top10.pdb` |
+
+The passive residues are the surface residues next to an active one. The
+`.txt` files list the residue numbers, comma-separated; the PDB files have
+B-factors of 100 for active, -100 for passive and 0 for the other residues.
 
 ```text
-$ whiscy_haddock 1PPE_E.pdb 1PPE_E_haddock.pdb 1PPE_E.pscons --surface_list 1PPE_E.sur
+$ whiscy_haddock 1PPE_E.pdb 1PPE_E.pscons --surface_list 1PPE_E.sur
 Report written to /path/to/report.html
 ```
 
 It also writes `report.html` and `state.mvsj` (the MolViewSpec state of the
 Mol* view) in the current directory; use `--no-report` to turn this off. The
-report shows the output structure colored by
-WHISCY score and by active and passive residues, the residue lists, and the
-table of scores. It loads the files of the directory, so open it through a web
+report shows the structure colored by
+WHISCY score and by the active and passive residues of each selection, the
+residue lists, and the table of scores. It loads the files of the directory, so open it through a web
 server, e.g. `python -m http.server`, then <http://localhost:8000/report.html>.

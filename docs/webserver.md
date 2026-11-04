@@ -81,10 +81,11 @@ protein-protein interface.
 
 The results page shows the WHISCY report (`report.html`):
 
-- a 3D viewer with two views: the surface coloured by WHISCY score, from blue
-  (lowest) to white (0) to red (highest), and, with **Next**, the HADDOCK
-  residues, active in red and passive in green;
-- the active and passive residues for HADDOCK;
+- a 3D viewer with three views: the surface coloured by WHISCY score, from
+  blue (lowest) to white (0) to red (highest), and, with **Next**, the HADDOCK
+  residues of each selection (score cutoff, then top 10), active in red and
+  passive in green;
+- the active and passive residues for HADDOCK, for both selections;
 - a table of the scores of all residues, which can be sorted by clicking a
   column header.
 
@@ -93,12 +94,16 @@ chain E prediction.
 
 ### Residues for HADDOCK
 
-- **Active residues** (`active.txt`): residues with a WHISCY score of at least
-  0.18.
-- **Passive residues** (`passive.txt`): the other surface residues with an
-  atom within 6.5 Å of the Cα of an active residue.
+WHISCY gives two selections of active residues:
 
-Both are comma-separated lists of residue numbers, ready to paste in HADDOCK.
+- **Score cutoff** (`active.txt`): residues with a WHISCY score of at least
+  0.18. Some proteins get few or no active residues this way.
+- **Top 10** (`active_top10.txt`): the 10 best-scored residues.
+
+For each, the **passive residues** (`passive.txt`, `passive_top10.txt`) are
+the other surface residues with an atom within 6.5 Å of the Cα of an active
+residue. The files are comma-separated lists of residue numbers, ready to
+paste in HADDOCK.
 
 ### Files
 
@@ -109,8 +114,9 @@ The download (`whiscy.zip`) contains all the files of the job, among which:
 | `report.html`, `state.mvsj` | The report and its 3D views |
 | `<name>.pscons` | The WHISCY scores, one residue per line (see below) |
 | `<name>_bfactor.pdb` | The structure, WHISCY scores as B-factors |
-| `<name>_haddock.pdb` | The structure, HADDOCK residues as B-factors |
-| `active.txt`, `passive.txt` | The residues for HADDOCK |
+| `haddock-cutoff.pdb`, `haddock-top10.pdb` | HADDOCK residues as B-factors |
+| `active.txt`, `passive.txt` | The residues for HADDOCK (score cutoff) |
+| `active_top10.txt`, `passive_top10.txt` | The residues for HADDOCK (top 10) |
 | `whiscy.log` | The log of the job |
 
 Without surface smoothing the scores file is `<name>.acons`, and without
