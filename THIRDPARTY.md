@@ -8,7 +8,7 @@ All will be installed in a `software` directory in your `$HOME` directory.
 
 ```bash
 $ sudo apt-get update && \
-  sudo apt-get install -y build-essential libboost-all-dev
+  sudo apt-get install -y build-essential
 ```
 
 ## Freesasa
@@ -22,19 +22,6 @@ cd freesasa-2.0.3
 make
 make install
 export FREESASA_BIN=$HOME/software/freesasa-2.0.3/bin/freesasa
-```
-
-## HSSPCONV
-
-```bash
-mkdir -p $HOME/software && cd $HOME/software
-wget https://github.com/cmbi/hssp/archive/3.1.5.tar.gz
-tar -zxf 3.1.5.tar.gz && rm 3.1.5.tar.gz
-cd hssp-3.1.5
-./autogen.sh
-./configure
-make hsspconv
-export HSSPCONV_BIN=$HOME/software/hssp-3.1.5/hsspconv
 ```
 
 ## Protdist
@@ -56,6 +43,5 @@ In the end the system variables that define the third-party dependencies should 
 
 ```bash
 export FREESASA_BIN=$HOME/software/freesasa-2.0.3/bin/freesasa
-export HSSPCONV_BIN=$HOME/software/hssp-3.1.5/hsspconv
 export PROTDIST_BIN=$HOME/software/protdist/protdist
 ```

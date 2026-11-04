@@ -253,3 +253,20 @@ def test_regression_3QI0(
     assert filecmp.cmp(rsa_file_3qi0, pred_rsa_file)
     assert filecmp.cmp(surface_file_3qi0, pred_surface_file)
     assert filecmp.cmp(suract_file_3qi0, pred_suract_file)
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    "scratch_path", ["scratch_regression_whiscy_setup_hssp"], indirect=True
+)
+def test_missing_hssp_file(scratch_path, pdb_file_1ppe):
+    # --hssp names a local file; there is no HSSP database to download from
+    shutil.copy(pdb_file_1ppe, scratch_path)
+
+    cmd_line = f"{sys.executable} {WHISCY_SETUP_BIN} 1ppe.pdb I --hssp missing"
+    result = subprocess.run(
+        cmd_line.split(), capture_output=True, env=env, cwd=scratch_path
+    )
+
+    assert result.returncode == 1
+    assert b"HSSP file missing.hssp not found" in result.stdout

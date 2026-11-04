@@ -2,15 +2,11 @@ import os
 from pathlib import Path
 
 FREESASA_BIN = os.environ.get("FREESASA_BIN")
-HSSPCONV_BIN = os.environ.get("HSSPCONV_BIN")
 PROTDIST_BIN = os.environ.get("PROTDIST_BIN")
 
 # Make sure none of them are None
 if FREESASA_BIN is None:
     raise ValueError("FREESASA_BIN not found in system variables")
-
-if HSSPCONV_BIN is None:
-    raise ValueError("HSSPCONV_BIN not found in system variables")
 
 if PROTDIST_BIN is None:
     raise ValueError("PROTDIST_BIN not found in system variables")
