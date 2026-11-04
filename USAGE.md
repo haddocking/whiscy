@@ -177,10 +177,10 @@ Now open the structure in your favorite molecular viewer and check the WHISCY sc
 `whiscy_haddock` selects active and passive residues for
 [HADDOCK](https://wenmr.science.uu.nl/haddock2.4/) in two ways:
 
-| Active residues | Files |
-| --- | --- |
-| WHISCY score of at least 0.18 | `active.txt`, `passive.txt`, `haddock-cutoff.pdb` |
-| the 10 best-scored residues | `active_top10.txt`, `passive_top10.txt`, `haddock-top10.pdb` |
+- active residues with a WHISCY score of at least 0.18: `active.txt`,
+  `passive.txt` and `haddock-cutoff.pdb`;
+- the 10 best-scored residues as active: `active_top10.txt`,
+  `passive_top10.txt` and `haddock-top10.pdb`.
 
 The passive residues are the surface residues next to an active one. The
 `.txt` files list the residue numbers, comma-separated; the PDB files have
@@ -193,7 +193,7 @@ Report written to /path/to/report.html
 
 It also writes `report.html` and `state.mvsj` (the MolViewSpec state of the
 Mol* view) in the current directory; use `--no-report` to turn this off. The
-report shows the structure colored by
-WHISCY score and by the active and passive residues of each selection, the
-residue lists, and the table of scores. It loads the files of the directory, so open it through a web
-server, e.g. `python -m http.server`, then <http://localhost:8000/report.html>.
+report shows the structure colored by WHISCY score and by the active and
+passive residues of each selection, the residue lists, and the table of
+scores. It loads the files of the directory, so open it through a web server,
+e.g. `python -m http.server`, then <http://localhost:8000/report.html>.
