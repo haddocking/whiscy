@@ -24,3 +24,4 @@ nav:
   - Installation: INSTALLATION.md
   - Usage: USAGE.md
   - Web server: webserver.md
+  - Benchmark: benchmark.md
