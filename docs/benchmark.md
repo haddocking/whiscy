@@ -1,8 +1,9 @@
 # Benchmark: protein-protein interfaces
 
-This page describes how well does WHISCY predict protein-protein interfaces based on 
-a benchmark using the complexes of Docking Benchmark 5 without antibodies.
-It uses the homolog search of WHISCY 1.4.0 (ColabFold MMseqs2), run in October 2026. 
+This page describes how well WHISCY predicts protein-protein interfaces, based
+on a benchmark using the complexes of Docking Benchmark 5 without antibodies.
+It uses the homolog search of WHISCY 1.4.0 (ColabFold MMseqs2), run in October
+2026.
 
 ## Dataset
 
@@ -98,8 +99,8 @@ partners. By category: EI 0.66, ES 0.70, ER 0.68, OG 0.76, OR 0.54, OX 0.60.
 ## HADDOCK restraints
 
 `whiscy_haddock` turns the prediction into active residues and passive
-residues for use in HADDOCK. Passive residues are defined as  the surface
-residues with an atom within 6.5 Å of the Cα of an active residue. 
+residues for use in HADDOCK. Passive residues are defined as the surface
+residues with an atom within 6.5 Å of the Cα of an active residue.
 Here the active residues are the top N residues or those
 above a score cutoff. Precision and recall of the combined list are means
 per chain against the full interface, buried residues included, so recall
