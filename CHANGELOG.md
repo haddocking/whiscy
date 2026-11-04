@@ -6,7 +6,7 @@ Releases are tagged in git and published as Docker images at
 
 ## [v1.6.0] - 2026-11-04
 
-- Examples regenerated with latest version (#XX, closes #55)
+- Examples regenerated with latest version (#63, closes #55)
 - Publish the protein-protein benchmark (BM5) on the documentation site (#62,
   closes #60)
 - Give the top-10 HADDOCK residues next to the score cutoff in
