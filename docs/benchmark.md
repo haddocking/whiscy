@@ -41,9 +41,10 @@ the merged sequence.
 
 ## Interface prediction
 
-Single-chain partners (322 chains):
+Single-chain partners (322 chains), precision (P) and recall (R), pooled or
+mean per chain, and the chains with at least one residue selected:
 
-| Selection | Precision (pooled) | Recall (pooled) | Precision (mean) | Recall (mean) | Chains with ≥ 1 selected |
+| Selection | P pooled | R pooled | P mean | R mean | Chains |
 | --- | --- | --- | --- | --- | --- |
 | Top 10 | 0.39 | 0.20 | 0.39 | 0.21 | 322 / 322 |
 | Top 20 | 0.34 | 0.34 | 0.34 | 0.36 | 322 / 322 |
@@ -109,7 +110,7 @@ median number of residues in the list.
 
 ![HADDOCK restraint residues against the score cutoff](benchmark/haddock_cutoff.png)
 
-| Active residues | Median residues in the list | Precision | Recall | Chains with restraints |
+| Active residues | Median list size | Precision | Recall | Chains |
 | --- | --- | --- | --- | --- |
 | Top 1 | 7 | 0.40 | 0.13 | 368 / 368 |
 | Top 5 | 23 | 0.33 | 0.33 | 368 / 368 |
