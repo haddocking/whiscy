@@ -11,8 +11,10 @@ active_top10.txt, passive_top10.txt and haddock-top10.pdb for the top 10.
 """
 
 import argparse
+import filecmp
 import logging
 import os
+import shutil
 import sys
 
 import Bio.PDB
@@ -213,6 +215,12 @@ def main():
         files += ["haddock-{}.pdb".format(top)]
         files += ["active_{}.txt".format(top), "passive_{}.txt".format(top)]
         files += [LOG_FILE]
+        # Link the input structure, copied next to the report if needed
+        structure = os.path.basename(input_pdb_file_name)
+        if not os.path.exists(structure):
+            shutil.copyfile(input_pdb_file_name, structure)
+        if filecmp.cmp(structure, input_pdb_file_name, shallow=False):
+            files.insert(0, structure)
         selections = {
             "score \u2265 {}".format(ACTIVE_CUTOFF): (
                 ids_to_numbers(active_residue_ids),
@@ -226,7 +234,11 @@ def main():
         fname = generate_report(
             "haddock-cutoff.pdb", files, scores, options, selections
         )
-        logger.info("Report written to {}".format(fname))
+        logger.info("Report written to {}".format(os.path.relpath(fname)))
+        logger.info(
+            "To view it, run `python -m http.server` in this directory and open "
+            "http://localhost:8000/report.html"
+        )
 
 
 if __name__ == "__main__":

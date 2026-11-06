@@ -112,6 +112,11 @@ def test_report(scratch_path):
         assert Path(scratch_path, s["root"]["children"][0]["params"]["url"]).exists()
     html = Path(scratch_path, "report.html").read_text()
     assert Path(scratch_path, "active.txt").read_text() in html
+    # The input structure is copied next to the report and linked
+    assert filecmp.cmp(Path(scratch_path, "3qi0_C.pdb"), Path(DATA_PATH, "3qi0_C.pdb"))
+    assert 'href="3qi0_C.pdb"' in html
+    # The terminal says how to view the report
+    assert b"python -m http.server" in result.stdout
 
 
 @pytest.mark.regression

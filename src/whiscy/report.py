@@ -44,6 +44,8 @@ TEMPLATE = Template("""\
   td.active { font-weight: bold; }
   pre { white-space: pre-wrap; }
   table.sortable th { cursor: pointer; }
+  table.sortable th[data-dir=asc]::after { content: " ▲"; }
+  table.sortable th[data-dir=desc]::after { content: " ▼"; }
   #file-hint { background: #fff3cd; padding: 0.5rem; }
   @media (max-width: 900px) {
     .container { flex-direction: column; height: auto; }
@@ -96,6 +98,7 @@ document.querySelectorAll('table.sortable th').forEach(th => {
       return isNaN(x) ? text : x;
     };
     const dir = th.dataset.dir === 'desc' ? 1 : -1;
+    table.querySelectorAll('th').forEach(o => delete o.dataset.dir);
     th.dataset.dir = dir === 1 ? 'asc' : 'desc';
     rows.sort((a, b) => {
       const x = key(a), y = key(b);
@@ -211,7 +214,8 @@ def generate_report(pdb, files, scores, options, selections):
     )
 
     rows = [
-        "<table class='sortable'><tr><th>Rank</th><th>Residue</th><th>Score</th>"
+        "<table class='sortable'><tr><th data-dir='asc'>Rank</th><th>Residue</th>"
+        "<th>Score</th>"
         + "".join("<th>{}</th>".format(escape(name)) for name in names)
         + "</tr>"
     ]
