@@ -4,6 +4,13 @@ All notable changes to WHISCY, one line per pull request, newest first.
 Releases are tagged in git and published as Docker images at
 `ghcr.io/haddocking/whiscy:<tag>`.
 
+## [v1.6.1] - 2026-11-06
+
+- Report: show ▲/▼ on the sorted column of the residue table, say how to view
+  `report.html` at the end of `whiscy_haddock` (terminal and `whiscy.log`),
+  and link the input structure, copied next to the report when needed (#72,
+  closes #65)
+
 ## [v1.6.0] - 2026-11-04
 
 - Examples regenerated with latest version (#63, closes #55)
