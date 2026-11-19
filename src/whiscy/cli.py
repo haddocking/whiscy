@@ -77,8 +77,19 @@ def main():
         else:
             converted_surface.append(conversion_table[surface_list[n]])
 
+    # An empty .lac (no partly buried residue) is valid: smoothing then uses
+    # only the surface neighbours
+    if not len(surface_list):
+        logger.warning(
+            "No residues in {0}; if it is the .lac file, the chain looks "
+            "extended or disordered".format(args.surface_list)
+        )
+        if args.output_file:
+            open(args.output_file, "w").close()
+        return
+
     if not len(converted_surface):
-        logger.error("No surface residues")
+        logger.error("No residue of {0} could be converted".format(args.surface_list))
         sys.exit(1)
 
     logger.info("Initializing score calculation...")
