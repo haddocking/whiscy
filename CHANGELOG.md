@@ -4,6 +4,13 @@ All notable changes to WHISCY, one line per pull request, newest first.
 Releases are tagged in git and published as Docker images at
 `ghcr.io/haddocking/whiscy:<tag>`.
 
+## Unreleased
+
+- An empty `.lac` file (no partly buried residue, as in extended or
+  disordered chains) no longer stops `whiscy` with `No surface residues`:
+  it warns and writes an empty `.lcons`, and smoothing then uses only the
+  surface neighbours (#73, closes #66)
+
 ## [v1.6.1] - 2026-11-06
 
 - Report: show ▲/▼ on the sorted column of the residue table, say how to view

@@ -120,3 +120,19 @@ def test_regression_3QI0C(
     assert result.returncode == 0
 
     assert filecmp.cmp(test_prediction_output, prediction_file_3qi0_c)
+
+
+@pytest.mark.parametrize("scratch_path", ["scratch_whiscy_empty"], indirect=True)
+def test_empty_residue_list(
+    scratch_path, conversion_file_2snie, alignment_file_2snie, distance_file_2snie
+):
+    # An empty .lac file (extended chain, issue #66) gives an empty .lcons
+    empty_list = Path(scratch_path, "empty.lac")
+    empty_list.touch()
+    output = Path(scratch_path, "empty.lcons")
+    cmd_line = f"{sys.executable} {WHISCY_BIN} {empty_list} {conversion_file_2snie} {alignment_file_2snie} {distance_file_2snie} -o {output}"
+
+    result = subprocess.run(cmd_line.split(), capture_output=True, env=env)
+
+    assert result.returncode == 0
+    assert output.read_text() == ""
